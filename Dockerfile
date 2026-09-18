@@ -16,12 +16,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
-
 COPY . .
 
-RUN chmod +x entrypoint.sh \
+RUN composer install --no-dev --optimize-autoloader \
+    && chmod +x entrypoint.sh \
     && mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views storage/app/public \
     && mkdir -p bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
