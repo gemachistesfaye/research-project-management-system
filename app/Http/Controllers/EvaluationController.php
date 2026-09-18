@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Evaluation;
+use App\Models\Project;
+
+class EvaluationController extends Controller
+{
+    public function index()
+    {
+        $user = Auth::user();
+        $assigned = Evaluation::where('examiner_id', $user->id)
+            ->with('project.pi')
+            ->get();
+
+        $pending = $assigned->where('decision', 'Pending');
+        $completed = $assigned->where('decision', '!=', 'Pending');
+
+        return view('evaluations.index', compact('pending', 'completed'));
+    }
+
+    public function show($evalId)
+    {
+        $evaluation = Evaluation::where('eval_id', $evalId)
+            ->where('examiner_id', Auth::id())
+            ->with('project.pi')
+            ->firstOrFail();
+
+        return view('evaluations.show', compact('evaluation'));
+    }
+
+    public function submitScore(Request $request, $evalId)
+    {
+        $request->validate([
+            'score' => 'required|numeric|min:0|max:100',
+            'decision' => 'required|in:Accepted,AcceptedWithMinorMods,AcceptedWithMajorMods,Rejected',
+            'comments' => 'required|string',
+        ]);
+
+        $evaluation = Evaluation::where('eval_id', $evalId)
+            ->where('examiner_id', Auth::id())
+            ->firstOrFail();
+
+        if ($evaluation->decision !== 'Pending') {
+            return back()->with('error', 'This evaluation has already been submitted and cannot be re-submitted.');
+        }
+
+        $evaluation->update([
+            'score' => $request->score,
+            'decision' => $request->decision,
+            'comments' => $request->comments,
+            'evaluated_at' => now(),
+        ]);
+
+        $project = $evaluation->project;
+        $allEvaluated = $project->evaluations()->where('decision', 'Pending')->count() === 0;
+
+        if ($allEvaluated) {
+            $project->update(['status' => 'Dean_Review']);
+        }
+
+        return back()->with('success', 'Evaluation rubric score and technical critique submitted securely under blind review protocol.');
+    }
+}
+
