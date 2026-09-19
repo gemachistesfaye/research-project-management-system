@@ -59,7 +59,7 @@ class EvaluationController extends Controller
         $allEvaluated = $project->evaluations()->where('decision', 'Pending')->count() === 0;
 
         if ($allEvaluated) {
-            $project->update(['status' => 'Dean_Review']);
+            $project->update(['status' => 'UnderReview', 'under_review_at' => $project->under_review_at ?? now()]);
         }
 
         return back()->with('success', 'Evaluation rubric score and technical critique submitted securely under blind review protocol.');
