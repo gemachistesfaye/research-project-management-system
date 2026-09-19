@@ -31,5 +31,11 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Start the server
-exec php artisan serve --host=0.0.0.0 --port=8000
+# Fix storage permissions
+chmod -R 775 storage bootstrap/cache
+
+# Start PHP-FPM in background
+php-fpm -D
+
+# Start nginx in foreground
+nginx -g 'daemon off;'
