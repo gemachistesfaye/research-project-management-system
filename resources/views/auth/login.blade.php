@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('navbar-class', 'justify-content-center')
+@section('navbar-container-class', ' justify-content-center')
+
 @section('content')
 <div class="row justify-content-center my-4">
     <div class="col-md-5">
@@ -57,20 +60,17 @@
                     </span>
                 </button>
             </form>
-        </div>
 
-        {{-- Demo Quick Login --}}
-        <div class="card card-custom p-3 mt-3 text-center">
-            <div class="small text-muted mb-2"><i class="bi bi-info-circle me-1"></i> Demo Quick Login</div>
-            <form action="{{ route('login') }}" method="POST" class="d-inline">
-                @csrf
-                <input type="hidden" name="email" value="admin@gmu.edu.et">
-                <input type="hidden" name="password" value="GMU@Demo1">
-                <button type="submit" class="btn btn-outline-dark btn-sm fw-bold">
-                    <i class="bi bi-gear me-1"></i> Login as Admin
-                </button>
-            </form>
-            <div class="small text-muted mt-2" style="font-size: 0.7rem;">Password: GMU@Demo1</div>
+            <div class="text-center mt-3">
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="email" value="admin@gmu.edu.et">
+                    <input type="hidden" name="password" value="GMU@Demo1">
+                    <button type="submit" class="btn btn-outline-dark btn-sm fw-bold">
+                        <i class="bi bi-gear me-1"></i> Login as Admin
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
