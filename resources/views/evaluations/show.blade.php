@@ -12,7 +12,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <div class="card card-custom p-4 mb-4">
+        <div class="card shadow-sm border-0 p-4 mb-4">
             <h5 class="fw-bold mb-3">Proposal Details</h5>
             <p><strong>Project ID:</strong> #{{ $evaluation->project_id }}</p>
             <p><strong>Title:</strong> {{ $evaluation->project->title ?? 'N/A' }}</p>
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="card card-custom p-4">
+        <div class="card shadow-sm border-0 p-4">
             <h5 class="fw-bold mb-3">Evaluation Rubric</h5>
 
             @if($evaluation->decision !== 'Pending')
@@ -49,54 +49,29 @@
             @else
             <form action="{{ route('evaluations.submit', $evaluation->eval_id) }}" method="POST">
                 @csrf
-                <div class="card mb-3 border-0 shadow-sm">
-                    <div class="card-body">
-                        <h6 class="fw-bold mb-3"><i class="bi bi-speedometer me-2 text-primary"></i>Score</h6>
-                        <div class="d-flex align-items-center mb-2">
-                            <input type="range" name="score" id="scoreSlider" class="form-range me-3" min="0" max="100" step="1" value="{{ old('score', '50') }}" oninput="updateScorePreview(this.value)">
-                            <span id="scorePreview" class="badge bg-primary fs-6" style="min-width: 60px;">50</span>
-                        </div>
-                        <div class="d-flex justify-content-between small text-muted mb-2">
-                            <span>0</span>
-                            <span>25</span>
-                            <span>50</span>
-                            <span>75</span>
-                            <span>100</span>
-                        </div>
-                        <div class="mt-2 p-2 bg-light rounded small">
-                            <strong>Score Guide:</strong>
-                            <span class="ms-2" id="scoreGuide">Average</span>
-                        </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Evaluation Score (0 - 100) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" min="0" max="100" name="score" class="form-control form-control-lg fw-bold" required placeholder="e.g. 85.00">
                     </div>
-                </div>
-
-                <div class="card mb-3 border-0 shadow-sm">
-                    <div class="card-body">
-                        <h6 class="fw-bold mb-3"><i class="bi bi-journal-check me-2 text-primary"></i>Decision</h6>
-                        <select name="decision" id="decisionSelect" class="form-select" required onchange="updateDecisionExplanation()">
-                            <option value="Accepted">Accepted</option>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Recommendation Verdict <span class="text-danger">*</span></label>
+                        <select name="decision" class="form-select form-select-lg" required>
+                            <option value="Accepted">Accepted (Recommended for Funding)</option>
                             <option value="AcceptedWithMinorMods">Accepted with Minor Modifications</option>
                             <option value="AcceptedWithMajorMods">Accepted with Major Modifications</option>
-                            <option value="Rejected">Rejected</option>
+                            <option value="Rejected">Rejected (Does Not Meet Standards)</option>
                         </select>
-                        <div id="decisionExplanation" class="mt-2 p-2 bg-light rounded small text-muted">
-                            Strong proposal, recommended for full funding.
-                        </div>
                     </div>
                 </div>
 
-                <div class="card mb-3 border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="fw-bold mb-0"><i class="bi bi-chat-left-text me-2 text-primary"></i>Technical Comments</h6>
-                            <small class="text-muted"><span id="wordCount">0</span> words</small>
-                        </div>
-                        <textarea name="comments" id="commentsField" class="form-control" rows="5" required placeholder="Provide detailed feedback on methodology, feasibility, impact..." oninput="updateWordCount()">{{ old('comments') }}</textarea>
-                    </div>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold">Constructive Comments & Critique <span class="text-danger">*</span></label>
+                    <textarea name="comments" rows="5" class="form-control" required placeholder="Provide technical feedback, strengths, and areas of improvement..."></textarea>
                 </div>
 
-                <button type="button" class="btn btn-success w-100 py-2 confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="Submit evaluation? This cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success">
-                    <i class="bi bi-check-circle me-2"></i>Submit Evaluation
+                <button type="button" class="btn btn-dark btn-lg w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
+                    <i class="bi bi-send-check me-1"></i> Submit Evaluation Score
                 </button>
             </form>
             @endif
@@ -107,40 +82,4 @@
 <div class="mt-3">
     <a href="{{ route('evaluations.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back to Assignments</a>
 </div>
-
-<script>
-function updateScorePreview(value) {
-    document.getElementById('scorePreview').textContent = value;
-    let guide = '';
-    if (value >= 90) guide = 'Excellent';
-    else if (value >= 70) guide = 'Good';
-    else if (value >= 50) guide = 'Average';
-    else guide = 'Below expectations';
-    document.getElementById('scoreGuide').textContent = guide;
-}
-
-function updateDecisionExplanation() {
-    const select = document.getElementById('decisionSelect');
-    const explanation = document.getElementById('decisionExplanation');
-    const explanations = {
-        'Accepted': 'Strong proposal, recommended for full funding.',
-        'AcceptedWithMinorMods': 'Good proposal, minor changes needed.',
-        'AcceptedWithMajorMods': 'Potential proposal, significant revisions required.',
-        'Rejected': 'Does not meet institutional standards.'
-    };
-    explanation.textContent = explanations[select.value] || '';
-}
-
-function updateWordCount() {
-    const text = document.getElementById('commentsField').value.trim();
-    const count = text ? text.split(/\s+/).length : 0;
-    document.getElementById('wordCount').textContent = count;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    updateScorePreview(document.getElementById('scoreSlider').value);
-    updateDecisionExplanation();
-    updateWordCount();
-});
-</script>
 @endsection
