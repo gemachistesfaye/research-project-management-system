@@ -27,7 +27,7 @@ class GovernanceController extends Controller
     {
         $request->validate([
             'decision' => 'required|in:approve,reject',
-            'feedback' => 'nullable|string',
+            'comments' => 'nullable|string',
         ]);
 
         $project = Project::findOrFail($id);
@@ -45,7 +45,7 @@ class GovernanceController extends Controller
             $project->update(['status' => 'DH_Screened', 'dh_screened_at' => now()]);
             return back()->with('success', 'Project screened and forwarded to Coordinator.');
         } else {
-            $project->update(['status' => 'Returned', 'dh_screened_at' => null, 'feedback' => $request->feedback]);
+            $project->update(['status' => 'Returned', 'dh_screened_at' => null, 'feedback' => $request->comments]);
             return back()->with('success', 'Project sent back to PI for revisions.');
         }
     }
