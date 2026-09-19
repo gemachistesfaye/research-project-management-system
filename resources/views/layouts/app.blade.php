@@ -201,7 +201,11 @@
             color: var(--gmu-primary);
         }
 
-        /* Mobile Responsive Media Queries */
+        /* ========================================
+           Responsive: Tablet & Mobile
+           ======================================== */
+
+        /* Shared rules for BOTH tablet (768-991px) and mobile (<768px) */
         @media (max-width: 991.98px) {
             .brand-text {
                 font-size: 0.82rem !important;
@@ -212,10 +216,6 @@
             }
             .navbar-brand i {
                 font-size: 1.4rem !important;
-            }
-            .card-custom {
-                border-radius: 8px;
-                padding: 0.75rem !important;
             }
             .table-responsive {
                 border-radius: 8px;
@@ -229,10 +229,7 @@
             .dropdown-menu {
                 max-width: 92vw !important;
             }
-            #navbarNav {
-                display: none !important;
-            }
-            /* Fixed navbar on mobile */
+            /* Fixed navbar on tablet+mobile */
             .navbar-gmu {
                 position: fixed !important;
                 top: 0;
@@ -241,69 +238,16 @@
                 z-index: 1050 !important;
                 width: 100%;
             }
-            /* Add padding below navbar for fixed position */
             body {
                 padding-top: 70px !important;
             }
-            /* Smaller headings on mobile */
-            h3.fw-bold {
-                font-size: 1.1rem !important;
-            }
-            h5.fw-bold, h6.fw-bold {
-                font-size: 0.95rem !important;
-            }
-            /* Smaller badges on mobile */
-            .badge {
-                font-size: 0.65rem !important;
-                padding: 0.25em 0.5em !important;
-            }
-            /* Hide subtitle text on mobile */
             .navbar-gmu .d-flex .text-muted.small {
                 display: none !important;
             }
-            /* Compact KPI cards */
+            /* Compact KPI card content */
             .fs-1 {
                 font-size: 1.5rem !important;
             }
-            /* Stack buttons vertically on mobile */
-            .d-flex.gap-2 {
-                flex-wrap: wrap;
-            }
-            .d-flex.gap-2 .btn {
-                flex: 0 0 auto;
-                min-width: 0;
-                font-size: 0.75rem !important;
-                padding: 0.3rem 0.5rem !important;
-            }
-            /* Compact dashboard header */
-            .d-flex.justify-content-between.align-items-center {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 0.5rem !important;
-            }
-            .d-flex.justify-content-between.align-items-center .btn {
-                width: 100% !important;
-            }
-            /* Compact KPI cards */
-            .card-custom.p-4 {
-                padding: 0.75rem !important;
-            }
-            /* Compact quick actions */
-            .d-flex.flex-wrap.gap-2 .btn {
-                font-size: 0.78rem !important;
-                padding: 0.4rem 0.6rem !important;
-            }
-            /* Smaller table text */
-            .table td, .table th {
-                padding: 0.5rem !important;
-                font-size: 0.8rem !important;
-            }
-            /* KPI cards 2x2 on mobile (dashboard only) */
-            #kpi-cards > div[class*="col-"] {
-                flex: 0 0 50% !important;
-                max-width: 50% !important;
-            }
-            /* Compact KPI card content */
             .fs-2 {
                 font-size: 1rem !important;
             }
@@ -315,21 +259,107 @@
             .stat-bubble i {
                 font-size: 0.85rem !important;
             }
-            .card-custom.p-3 {
-                padding: 0.5rem !important;
-            }
             .text-muted.small.text-uppercase {
                 font-size: 0.6rem !important;
             }
             .small.text-muted {
                 font-size: 0.65rem !important;
             }
+        }
+
+        /* Tablet only (768px - 991px): keep layouts mostly desktop-like */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            h3.fw-bold {
+                font-size: 1.25rem !important;
+            }
+            .card-custom {
+                border-radius: 10px;
+                padding: 1rem !important;
+            }
+            .card-custom.p-4 {
+                padding: 1rem !important;
+            }
+            .card-custom.p-3 {
+                padding: 0.75rem !important;
+            }
+            .badge {
+                font-size: 0.72rem !important;
+                padding: 0.3em 0.6em !important;
+            }
+            .table td, .table th {
+                padding: 0.6rem !important;
+                font-size: 0.85rem !important;
+            }
+            .d-flex.gap-2 .btn {
+                font-size: 0.82rem !important;
+                padding: 0.35rem 0.65rem !important;
+            }
+        }
+
+        /* Mobile only (<768px): aggressive compacting */
+        @media (max-width: 767.98px) {
+            #navbarNav {
+                display: none !important;
+            }
+            h3.fw-bold {
+                font-size: 1.1rem !important;
+            }
+            h5.fw-bold, h6.fw-bold {
+                font-size: 0.95rem !important;
+            }
+            .badge {
+                font-size: 0.65rem !important;
+                padding: 0.25em 0.5em !important;
+            }
+            .card-custom {
+                border-radius: 8px;
+                padding: 0.75rem !important;
+            }
+            .card-custom.p-4 {
+                padding: 0.75rem !important;
+            }
+            .card-custom.p-3 {
+                padding: 0.5rem !important;
+            }
+            /* Stack buttons vertically on mobile */
+            .d-flex.gap-2 {
+                flex-wrap: wrap;
+            }
+            .d-flex.gap-2 .btn {
+                flex: 0 0 auto;
+                min-width: 0;
+                font-size: 0.75rem !important;
+                padding: 0.3rem 0.5rem !important;
+            }
+            /* Stack headers vertically on mobile */
+            .d-flex.justify-content-between.align-items-center {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.5rem !important;
+            }
+            .d-flex.justify-content-between.align-items-center .btn {
+                width: 100% !important;
+            }
+            .d-flex.flex-wrap.gap-2 .btn {
+                font-size: 0.78rem !important;
+                padding: 0.4rem 0.6rem !important;
+            }
+            /* Smaller table text on mobile */
+            .table td, .table th {
+                padding: 0.5rem !important;
+                font-size: 0.8rem !important;
+            }
+            /* KPI cards 2x2 on mobile */
+            #kpi-cards > div[class*="col-"] {
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
+            }
             /* Modal step indicators: wrap on narrow screens */
             .modal-body .d-flex.align-items-center.gap-2 {
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            /* Input groups: stack vertically on very narrow screens */
+            /* Input groups: stack vertically on mobile */
             .input-group {
                 flex-wrap: wrap;
             }
