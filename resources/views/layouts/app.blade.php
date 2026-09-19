@@ -995,6 +995,39 @@
     <!-- Bootstrap 5.3 JS Bundle (local) -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script>
+        // Lock background scroll when mobile offcanvas sidebar is open
+        (function() {
+            var scrollPos = 0;
+            var sidebar = document.getElementById('navbarOffcanvas');
+            if (!sidebar) return;
+
+            sidebar.addEventListener('show.bs.offcanvas', function () {
+                scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.top = '-' + scrollPos + 'px';
+                document.body.style.width = '100%';
+            });
+
+            sidebar.addEventListener('hide.bs.offcanvas', function () {
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                window.scrollTo(0, scrollPos);
+            });
+
+            // Block touchmove on background when sidebar is open
+            document.addEventListener('touchmove', function(e) {
+                if (sidebar.classList.contains('show')) {
+                    var offcanvasEl = sidebar.querySelector('.offcanvas-body');
+                    if (offcanvasEl && offcanvasEl.contains(e.target)) return;
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        })();
+    </script>
+    <script>
         document.querySelectorAll('form').forEach(function (form) {
             form.addEventListener('submit', function (e) {
                 var btn = form.querySelector('button[type="submit"]');
@@ -1075,27 +1108,27 @@
 
     {{-- Reusable Confirmation Modal --}}
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-dark text-white border-0">
-                    <h5 class="modal-title fw-bold" id="confirmModalLabel">
-                        <i class="bi bi-question-circle me-2"></i>Confirm Action
-                    </h5>
+                <div class="modal-header bg-dark text-white border-0 py-2">
+                    <h6 class="modal-title fw-bold" id="confirmModalLabel">
+                        <i class="bi bi-question-circle me-2"></i>Confirm
+                    </h6>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center py-4" id="confirmModalBody">
-                    <div class="mb-3">
-                        <i class="bi bi-question-circle text-warning" style="font-size: 3rem;"></i>
+                <div class="modal-body text-center py-3" id="confirmModalBody">
+                    <div class="mb-2">
+                        <i class="bi bi-question-circle text-warning" style="font-size: 2rem;"></i>
                     </div>
-                    <h5 class="fw-bold text-dark">Are you sure?</h5>
-                    <p class="text-muted mb-0">This action cannot be undone.</p>
+                    <h6 class="fw-bold text-dark mb-1">Are you sure?</h6>
+                    <p class="text-muted small mb-0">This action cannot be undone.</p>
                 </div>
-                <div class="modal-footer border-0 justify-content-center gap-2 pb-4">
-                    <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal">
-                        <i class="bi bi-x-lg me-1"></i>Cancel
+                <div class="modal-footer border-0 justify-content-center gap-2 pb-3 pt-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">
+                        Cancel
                     </button>
-                    <button type="button" class="btn btn-warning px-4 fw-bold" id="confirmActionBtn">
-                        <i class="bi bi-check-lg me-1"></i>Yes, Confirm
+                    <button type="button" class="btn btn-warning btn-sm px-3 fw-bold" id="confirmActionBtn">
+                        Yes, Confirm
                     </button>
                 </div>
             </div>
