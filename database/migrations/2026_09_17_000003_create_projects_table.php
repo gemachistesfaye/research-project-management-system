@@ -17,21 +17,7 @@ return new class extends Migration
             $table->foreignId('dept_id')->nullable()->constrained('departments')->onDelete('set null');
             $table->decimal('requested_budget', 14, 2)->default(0.00);
             $table->decimal('approved_budget', 14, 2)->nullable();
-            $table->enum('status', [
-                'Draft',
-                'Submitted',
-                'DH_Screened',
-                'UnderReview',
-                'Dean_Review',
-                'RCSC_Review',
-                'Approved',
-                'Active',
-                'Completed',
-                'Terminated',
-                'Withdrawn',
-                'Withdrawn',
-                'PendingCancellation'
-            ])->default('Draft');
+            $table->string('status', 50)->default('Draft');
             $table->tinyInteger('current_stage')->default(1);
             $table->boolean('ethical_cleared')->default(false);
             $table->string('proposal_document_url')->nullable();
