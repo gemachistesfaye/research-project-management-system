@@ -777,7 +777,7 @@
 
     @auth
     <!-- Mobile Offcanvas Right Sidebar -->
-    <div class="offcanvas offcanvas-end text-white d-lg-none" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel" style="background-color: var(--gmu-primary-dark); width: 310px;">
+    <div class="offcanvas offcanvas-end text-white d-lg-none" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel" style="background-color: var(--gmu-primary-dark); max-width: 320px; width: 70vw;">
         <div class="offcanvas-header border-bottom border-secondary pb-3">
             <div class="d-flex align-items-center">
                 <i class="bi bi-journal-bookmark-fill fs-3 text-warning me-2"></i>
@@ -788,7 +788,7 @@
             </div>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body p-3">
+        <div class="offcanvas-body p-3 d-flex flex-column">
             {{-- User info card --}}
             <div class="p-2 bg-dark bg-opacity-50 rounded-3 mb-3 border border-secondary">
                 <div class="d-flex justify-content-between align-items-center">
@@ -803,7 +803,7 @@
             </div>
 
             {{-- Main Navigation Links --}}
-            <ul class="nav nav-pills flex-column gap-0 mb-3">
+            <ul class="nav nav-pills flex-column gap-0 mb-3 flex-grow-1" style="overflow-y: auto;">
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('dashboard') ? 'active-link' : '' }}" href="{{ route('dashboard') }}" style="font-size: 0.85rem;">
                         <i class="bi bi-speedometer2 me-2"></i> Dashboard
@@ -923,25 +923,32 @@
                 @endif
             </ul>
 
-            {{-- Demo Role Switcher --}}
-            <div class="text-uppercase text-muted fw-bold mb-1 ps-1" style="font-size: 0.6rem; letter-spacing: 0.5px;">Switch Role (Demo)</div>
-            <div class="d-flex flex-wrap gap-1 mb-3">
-                <a href="{{ route('switch-role', 'pi') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">PI</a>
-                <a href="{{ route('switch-role', 'tm') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">TM</a>
-                <a href="{{ route('switch-role', 'dh') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">DH</a>
-                <a href="{{ route('switch-role', 'coordinator') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Coord</a>
-                <a href="{{ route('switch-role', 'reviewer') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Review</a>
-                <a href="{{ route('switch-role', 'dean') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Dean</a>
-                <a href="{{ route('switch-role', 'irerc') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">IRERC</a>
-                <a href="{{ route('switch-role', 'vparttcs') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">VP</a>
-                <a href="{{ route('switch-role', 'rcsc') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">RCSC</a>
-                <a href="{{ route('switch-role', 'finance') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Fin</a>
-                <a href="{{ route('switch-role', 'admin') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Admin</a>
+            {{-- Demo Role Switcher (Collapsible) --}}
+            <div>
+                <a class="btn btn-sm btn-outline-warning w-100 fw-bold mb-2" data-bs-toggle="collapse" href="#demoRoleCollapse" role="button" aria-expanded="false" style="font-size: 0.78rem;">
+                    <i class="bi bi-arrow-repeat me-1"></i> Switch Demo Role <i class="bi bi-chevron-down float-end mt-1"></i>
+                </a>
+                <div class="collapse" id="demoRoleCollapse">
+                    <div class="d-flex flex-wrap gap-1 mb-2">
+                        <a href="{{ route('switch-role', 'pi') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">PI</a>
+                        <a href="{{ route('switch-role', 'tm') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">TM</a>
+                        <a href="{{ route('switch-role', 'dh') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">DH</a>
+                        <a href="{{ route('switch-role', 'coordinator') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Coord</a>
+                        <a href="{{ route('switch-role', 'reviewer') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Review</a>
+                        <a href="{{ route('switch-role', 'dean') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Dean</a>
+                        <a href="{{ route('switch-role', 'irerc') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">IRERC</a>
+                        <a href="{{ route('switch-role', 'vparttcs') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">VP</a>
+                        <a href="{{ route('switch-role', 'rcsc') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">RCSC</a>
+                        <a href="{{ route('switch-role', 'finance') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Fin</a>
+                        <a href="{{ route('switch-role', 'admin') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Admin</a>
+                    </div>
+                </div>
             </div>
 
             <hr class="border-secondary my-2">
 
             {{-- Sign out --}}
+            <div class="mt-auto pt-2 flex-shrink-0">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-outline-light w-100 fw-bold py-2 confirm-btn" style="font-size: 0.85rem;"
@@ -954,6 +961,7 @@
                     <i class="bi bi-box-arrow-right me-2"></i> Sign Out
                 </button>
             </form>
+            </div>
         </div>
     </div>
     @endauth
