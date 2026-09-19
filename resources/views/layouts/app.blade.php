@@ -80,6 +80,12 @@
             background: rgba(212, 175, 55, 0.15);
             font-weight: 700 !important;
         }
+        #navbarOffcanvas .nav-link.active-link {
+            color: var(--gmu-gold) !important;
+            background: rgba(212, 175, 55, 0.2);
+            border-left: 3px solid var(--gmu-gold);
+            font-weight: 700 !important;
+        }
         /* Card Styling */
         .card-custom {
             border: 1px solid var(--gmu-card-border);
