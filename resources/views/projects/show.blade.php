@@ -16,7 +16,7 @@
         <h2 class="fw-bold mb-1 text-dark">{{ $project->title }}</h2>
         <div class="d-flex align-items-center flex-wrap gap-2">
             <span class="text-muted small">ID: {{ $project->project_id }}</span>
-            @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned']))
+            @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned', 'Rejected']))
                 <span class="badge bg-secondary fs-6"><i class="bi bi-pencil me-1"></i>{{ $project->status }}</span>
                 @if(Auth::user()->role === 'pi')
                 <form action="{{ route('projects.submit', $project->project_id) }}" method="POST" class="d-inline">
@@ -138,13 +138,13 @@
                 @endif
 
                 {{-- Edit --}}
-                @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned']) && Auth::user()->role === 'pi')
+                @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned', 'Rejected']) && Auth::user()->role === 'pi')
                 <a href="{{ route('projects.edit', $project->project_id) }}" class="btn w-100 mb-2 text-start fw-bold" style="background:#fff;color:#212529;border:1.5px solid #dee2e6;" onmouseover="this.style.background='#212529';this.style.color='#fff';this.style.borderColor='#212529'" onmouseout="this.style.background='#fff';this.style.color='#212529';this.style.borderColor='#dee2e6'">
                     <i class="bi bi-pencil-square me-2"></i>Edit Proposal
                 </a>
                 @endif
 
-                @if(in_array($project->status, ['Draft', 'Withdrawn', 'Submitted', 'DH_Screened', 'UnderReview']) && Auth::user()->role === 'pi')
+                @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned', 'Rejected', 'Submitted', 'DH_Screened', 'UnderReview']) && Auth::user()->role === 'pi')
                 <hr class="my-2">
                 @endif
 
@@ -159,7 +159,7 @@
                 @endif
 
                 {{-- Delete --}}
-                @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned']) && Auth::user()->role === 'pi')
+                @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned', 'Rejected']) && Auth::user()->role === 'pi')
                 <form action="{{ route('projects.destroy', $project->project_id) }}" method="POST" class="mb-2">
                     @csrf
                     @method('DELETE')
