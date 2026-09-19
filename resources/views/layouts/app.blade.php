@@ -270,8 +270,10 @@
                 flex-wrap: wrap;
             }
             .d-flex.gap-2 .btn {
-                flex: 1;
-                min-width: 120px;
+                flex: 0 0 auto;
+                min-width: 0;
+                font-size: 0.75rem !important;
+                padding: 0.3rem 0.5rem !important;
             }
             /* Compact dashboard header */
             .d-flex.justify-content-between.align-items-center {
@@ -300,6 +302,11 @@
             .row.g-3 > div[class*="col-"] {
                 flex: 0 0 50% !important;
                 max-width: 50% !important;
+            }
+            /* Projects filter: stack search & filter on mobile */
+            #filterForm .row.g-3 > div {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
             }
             /* Compact KPI card content */
             .fs-2 {
