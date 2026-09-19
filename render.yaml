@@ -12,7 +12,7 @@ services:
       - key: APP_DEBUG
         value: "false"
       - key: APP_URL
-        sync: false
+        value: https://research-project-management-system-goif.onrender.com
       - key: APP_KEY
         value: base64:d19mTWFnZWMxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ=
       - key: DB_CONNECTION
