@@ -922,22 +922,22 @@
 
             {{-- Demo Role Switcher (Collapsible) --}}
             <div>
-                <a class="btn btn-sm btn-outline-warning w-100 fw-bold mb-2" data-bs-toggle="collapse" href="#demoRoleCollapse" role="button" aria-expanded="false" style="font-size: 0.78rem;">
+                <a class="btn btn-outline-warning w-100 fw-bold mb-2 py-2" data-bs-toggle="collapse" href="#demoRoleCollapse" role="button" aria-expanded="false" style="font-size: 0.88rem;">
                     <i class="bi bi-arrow-repeat me-1"></i> Switch Demo Role <i class="bi bi-chevron-down float-end mt-1"></i>
                 </a>
                 <div class="collapse" id="demoRoleCollapse">
                     <div class="d-flex flex-wrap gap-1 mb-2">
-                        <a href="{{ route('switch-role', 'pi') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">PI</a>
-                        <a href="{{ route('switch-role', 'tm') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">TM</a>
-                        <a href="{{ route('switch-role', 'dh') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">DH</a>
-                        <a href="{{ route('switch-role', 'coordinator') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Coord</a>
-                        <a href="{{ route('switch-role', 'reviewer') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Review</a>
-                        <a href="{{ route('switch-role', 'dean') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Dean</a>
-                        <a href="{{ route('switch-role', 'irerc') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">IRERC</a>
-                        <a href="{{ route('switch-role', 'vparttcs') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">VP</a>
-                        <a href="{{ route('switch-role', 'rcsc') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">RCSC</a>
-                        <a href="{{ route('switch-role', 'finance') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Fin</a>
-                        <a href="{{ route('switch-role', 'admin') }}" class="btn btn-sm btn-outline-light py-0" style="font-size: 0.65rem;">Admin</a>
+                        <a href="{{ route('switch-role', 'pi') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Principal Investigator</a>
+                        <a href="{{ route('switch-role', 'tm') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Team Member</a>
+                        <a href="{{ route('switch-role', 'dh') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Dept. Head</a>
+                        <a href="{{ route('switch-role', 'coordinator') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Coordinator</a>
+                        <a href="{{ route('switch-role', 'reviewer') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Reviewer</a>
+                        <a href="{{ route('switch-role', 'dean') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">College Dean</a>
+                        <a href="{{ route('switch-role', 'irerc') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">IRERC</a>
+                        <a href="{{ route('switch-role', 'vparttcs') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">VP ARTTCS</a>
+                        <a href="{{ route('switch-role', 'rcsc') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">RCSC Chair</a>
+                        <a href="{{ route('switch-role', 'finance') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Finance</a>
+                        <a href="{{ route('switch-role', 'admin') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">System Admin</a>
                     </div>
                 </div>
             </div>
