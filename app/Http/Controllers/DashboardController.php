@@ -89,8 +89,8 @@ class DashboardController extends Controller
             ];
         } elseif (in_array($role, ['rcsc', 'vparttcs'])) {
             return [
-                'rcsc_pending' => BudgetRequest::where('approval_tier', 'RCSC')->where('status', 'Pending')->count(),
-                'approved' => BudgetRequest::where('approval_tier', 'RCSC')->where('status', 'Approved')->count(),
+                'rcsc_pending' => BudgetRequest::where('approval_tier', 'RCSC_VP')->where('status', 'Pending')->count(),
+                'approved' => BudgetRequest::where('approval_tier', 'RCSC_VP')->where('status', 'Approved')->count(),
                 'high_budget' => Project::where('requested_budget', '>=', 500000)->where('status', '!=', 'Draft')->count(),
             ];
         } elseif ($role === 'finance') {

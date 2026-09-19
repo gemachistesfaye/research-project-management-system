@@ -54,11 +54,11 @@ class GovernanceController extends Controller
     {
         $projects = Project::whereIn('status', ['DH_Screened', 'UnderReview'])->with(['pi', 'evaluations'])->get();
 
-        $reviewers = User::where('role', 'Examiner')
+        $reviewers = User::where('role', 'reviewer')
             ->with('department', 'evaluations')
             ->get()
             ->map(function ($reviewer) {
-                $activeReviews = $reviewer->evaluations()->whereNull('score')->count();
+                $activeReviews = $reviewer->evaluations()->where('decision', 'Pending')->count();
                 $totalEvaluations = $reviewer->evaluations()->whereNotNull('score')->count();
                 $avgScore = $reviewer->evaluations()->whereNotNull('score')->avg('score');
                 return [
@@ -116,7 +116,7 @@ class GovernanceController extends Controller
             return back()->with('error', 'This project requires RCSC approval (budget >= 500,000 ETB).');
         }
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved'];
+        $eligibleStatuses = ['UnderReview', 'Dean_Review'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for budget approval at its current status.');
         }
@@ -133,7 +133,7 @@ class GovernanceController extends Controller
         $budgetRequest->update($updateData);
 
         if ($request->decision === 'Approved') {
-            $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget]);
+            $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget, 'approved_at' => now()]);
         } else {
             $project->update(['status' => 'Rejected', 'feedback' => $request->comments]);
         }
@@ -184,7 +184,7 @@ class GovernanceController extends Controller
             return back()->with('error', 'This project requires Dean approval (budget < 500,000 ETB).');
         }
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved'];
+        $eligibleStatuses = ['UnderReview', 'Dean_Review'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for budget approval at its current status.');
         }
@@ -201,7 +201,7 @@ class GovernanceController extends Controller
         $budgetRequest->update($updateData);
 
         if ($request->decision === 'Approved') {
-            $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget]);
+            $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget, 'approved_at' => now()]);
         } else {
             $project->update(['status' => 'Rejected', 'feedback' => $request->comments]);
         }
@@ -240,7 +240,7 @@ class GovernanceController extends Controller
             return back()->with('error', 'Associated project not found.');
         }
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review'];
+        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for ethics review at its current status.');
         }
@@ -316,7 +316,7 @@ class GovernanceController extends Controller
     {
         $project = Project::findOrFail($id);
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review'];
+        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for ethics review at its current status.');
         }
@@ -342,6 +342,11 @@ class GovernanceController extends Controller
             'type'            => 'required|in:Completion,Award',
             'issued_to_name'  => 'required|string|max:255',
         ]);
+
+        $project = Project::where('project_id', $request->project_id)->first();
+        if ($project->status !== 'Completed') {
+            return back()->with('error', 'Certificates can only be issued for completed projects.');
+        }
 
         Certificate::create([
             'project_id'      => $request->project_id,

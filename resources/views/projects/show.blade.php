@@ -572,7 +572,7 @@
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-3 h-100">
                             <div class="small text-muted fw-bold mb-1">PI Signature</div>
-                            @if(isset($project->contract) && $project->contract->pi_signed_at)
+                            @if($project->pi_signature_date)
                                 <div class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i>Signed</div>
                             @else
                                 <div class="text-warning fw-bold"><i class="bi bi-clock me-1"></i>Pending</div>
@@ -582,7 +582,7 @@
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-3 h-100">
                             <div class="small text-muted fw-bold mb-1">VP Signature</div>
-                            @if(isset($project->contract) && $project->contract->vp_signed_at)
+                            @if($project->vp_signature_date)
                                 <div class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i>Signed</div>
                             @else
                                 <div class="text-warning fw-bold"><i class="bi bi-clock me-1"></i>Pending</div>
@@ -590,7 +590,7 @@
                         </div>
                     </div>
                 </div>
-                @if(Auth::user()->role === 'pi' && !isset($project->contract))
+                @if(in_array(Auth::user()->role, ['pi', 'vparttcs']) && $project->status === 'Approved')
                 <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-primary mt-3">
                     <i class="bi bi-pen me-1"></i>View & Sign Contract
                 </a>

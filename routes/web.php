@@ -55,15 +55,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/projects/{id}/submit', [ProjectController::class, 'submit'])->name('projects.submit');
     });
 
-    Route::middleware(['role:pi', 'permission:request_extension'])->group(function () {
+    Route::middleware(['permission:request_extension'])->group(function () {
         Route::post('/projects/{id}/request-extension', [LifecycleController::class, 'requestExtension'])->name('projects.request-extension');
     });
 
-    Route::middleware(['role:pi', 'permission:request_amendment'])->group(function () {
+    Route::middleware(['permission:request_amendment'])->group(function () {
         Route::post('/projects/{id}/request-amendment', [LifecycleController::class, 'requestAmendment'])->name('projects.request-amendment');
     });
 
-    Route::middleware(['role:pi', 'permission:request_termination'])->group(function () {
+    Route::middleware(['permission:request_termination'])->group(function () {
         Route::post('/projects/{id}/terminate', [LifecycleController::class, 'terminate'])->name('projects.terminate');
         Route::post('/projects/{id}/complete', [ProjectController::class, 'markComplete'])->name('projects.complete');
     });
@@ -86,8 +86,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/projects/{id}/request-cancel', [ProjectController::class, 'requestCancel'])->name('projects.request-cancel');
 
     // Admin: Approve/Reject Cancellation
-    Route::post('/projects/{id}/approve-cancel', [ProjectController::class, 'approveCancel'])->name('projects.approve-cancel');
-    Route::post('/projects/{id}/reject-cancel', [ProjectController::class, 'rejectCancel'])->name('projects.reject-cancel');
+    Route::middleware(['permission:manage_users'])->group(function () {
+        Route::post('/projects/{id}/approve-cancel', [ProjectController::class, 'approveCancel'])->name('projects.approve-cancel');
+        Route::post('/projects/{id}/reject-cancel', [ProjectController::class, 'rejectCancel'])->name('projects.reject-cancel');
+    });
 
     // Coordinator-only: Assign Reviewers
     Route::middleware(['role:coordinator', 'permission:assign_reviewer'])->group(function () {
@@ -143,13 +145,24 @@ Route::middleware(['auth'])->group(function () {
             if ((int) \Auth::id() !== (int) $project->pi_id) {
                 return back()->with('error', 'Only the PI can sign as PI.');
             }
+            if ($project->status !== 'Approved') {
+                return back()->with('error', 'Project must be approved before signing contracts.');
+            }
             $project->update(['pi_signature_date' => now()]);
             return back()->with('success', 'PI signature recorded successfully.');
         })->name('contracts.sign-pi');
         Route::post('/contracts/{id}/sign-vp', function ($id) {
             $project = \App\Models\Project::findOrFail($id);
-            $project->update(['vp_signature_date' => now(), 'contract_signed_at' => now()]);
-            return back()->with('success', 'VP signature recorded. Contract is now fully signed.');
+            if (!$project->pi_signature_date) {
+                return back()->with('error', 'PI must sign first before VP can sign.');
+            }
+            $project->update([
+                'vp_signature_date' => now(),
+                'contract_signed_at' => now(),
+                'status' => 'Active',
+                'activated_at' => now(),
+            ]);
+            return back()->with('success', 'VP signature recorded. Project is now Active.');
         })->name('contracts.sign-vp');
     });
 

@@ -26,6 +26,16 @@ class Project extends Model
         'contract_signed_at',
         'pi_signature_date',
         'vp_signature_date',
+        'feedback',
+        'dh_screened_at',
+        'under_review_at',
+        'approved_at',
+        'activated_at',
+        'completed_at',
+        'cancelled_at',
+        'cancelled_by_pi',
+        'cancellation_reason',
+        'admin_cancel_notes',
     ];
 
     protected $casts = [
