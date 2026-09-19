@@ -6,7 +6,7 @@ export DB_DATABASE=/data/database.sqlite
 export CACHE_DRIVER=file
 export SESSION_DRIVER=file
 export APP_KEY=base64:d19mTWFnZWMxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ=
-export APP_DEBUG=false
+export APP_DEBUG=true
 
 # Create SQLite database if not exists
 mkdir -p /data
