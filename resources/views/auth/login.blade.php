@@ -32,11 +32,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label class="form-label fw-bold mb-0">Password</label>
-                        <span class="small text-muted">
-                            <i class="bi bi-person-lock me-1"></i>Forgot password? Contact the <strong>System Administrator</strong>.
-                        </span>
+                    <label class="form-label fw-bold mb-0">Password</label>
+                    <div class="text-muted small mt-1">
+                        <i class="bi bi-person-lock me-1"></i>Forgot password? Contact the <strong>System Administrator</strong>.
                     </div>
                     <div class="input-group mt-1">
                         <input type="password" id="password" name="password" class="form-control"
