@@ -298,15 +298,10 @@
                 padding: 0.5rem !important;
                 font-size: 0.8rem !important;
             }
-            /* KPI cards 2x2 on mobile */
-            .row.g-3 > div[class*="col-"] {
+            /* KPI cards 2x2 on mobile (dashboard only) */
+            #kpi-cards > div[class*="col-"] {
                 flex: 0 0 50% !important;
                 max-width: 50% !important;
-            }
-            /* Projects filter: stack search & filter on mobile */
-            #filterForm .row.g-3 > div {
-                flex: 0 0 100% !important;
-                max-width: 100% !important;
             }
             /* Compact KPI card content */
             .fs-2 {
@@ -328,6 +323,29 @@
             }
             .small.text-muted {
                 font-size: 0.65rem !important;
+            }
+            /* Modal step indicators: wrap on narrow screens */
+            .modal-body .d-flex.align-items-center.gap-2 {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            /* Input groups: stack vertically on very narrow screens */
+            .input-group {
+                flex-wrap: wrap;
+            }
+            .input-group > .form-select,
+            .input-group > .form-control {
+                min-width: 0;
+            }
+            .input-group > .btn {
+                width: 100%;
+                margin-top: 0.25rem;
+            }
+            /* Project detail header: stack on mobile */
+            .d-flex.justify-content-between.align-items-start {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.5rem !important;
             }
         }
 
