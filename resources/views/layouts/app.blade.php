@@ -393,8 +393,8 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-lg navbar-gmu py-2">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-gmu py-2 @yield('navbar-class')">
+        <div class="container @yield('navbar-container-class')">
             <!-- Brand Identity -->
             <a class="navbar-brand d-flex align-items-center me-4" href="{{ route('dashboard') }}">
                 <i class="bi bi-journal-bookmark-fill fs-2 text-warning me-2"></i>
