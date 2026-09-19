@@ -1,18 +1,23 @@
 #!/bin/bash
 
-# Create SQLite database if not exists
-touch /data/database.sqlite
+set -e
 
-# Link database to persistent storage
-ln -sf /data/database.sqlite database/database.sqlite
+# Create SQLite database if not exists
+mkdir -p /data
+touch /data/database.sqlite
 
 # Run migrations
 php artisan migrate --force
 
 # Seed only if tables are empty
-php artisan tinker --execute="if(DB::table('users')->count() == 0){ Artisan::call('db:seed'); echo Artisan::output(); }" 2>/dev/null || true
+php artisan tinker --execute="if(DB::table('users')->count() == 0){ Artisan::call('db:seed'); echo Artisan::output(); echo 'SEED_OK'; } else { echo 'USERS_EXIST'; }" 2>&1 || echo "SEED_SKIPPED"
 
-# Cache config
+# Clear stale caches before rebuilding
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Rebuild caches
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
