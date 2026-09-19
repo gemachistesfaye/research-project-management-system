@@ -1,10 +1,10 @@
 # Research Project Management System
 
-A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance.
+A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance. Built for Gambella University.
 
 ## Features
 
-- **11 Role-Based Access Control (RBAC):** PI, Team Member, Department Head, Coordinator, Reviewer, Dean, IRERC, VP Academic, RCSC, Finance, Admin
+- **12 Role-Based Access Control (RBAC):** Principal Investigator, Team Member, Department Head, Coordinator, Reviewer, College Dean, IRERC Ethics Committee, VP Academic (ARTTCS), RCSC Chair, Finance Office, System Administrator
 - **Workflow Engine:** Draft → Submitted → DH Screened → Under Review → Approved → Active → Completed
 - **Blind Peer Review:** Anonymous double-blind evaluation with scoring rubrics
 - **Dual-Threshold Financial Governance:** Dean (<500k ETB) and RCSC (≥500k ETB) approval tiers
@@ -16,17 +16,56 @@ A full-featured web application for managing the complete lifecycle of academic 
 - **Procurement Requests:** Equipment and supplies procurement tied to projects
 - **Analytics Dashboard:** Real-time project statistics, budget charts, and departmental metrics
 - **Audit Trail:** Complete action logging for compliance
-- **Mobile Responsive:** Dark-themed, professional UI that works on all devices
+- **Mobile Responsive:** Dark-themed, professional UI with collapsible sidebar on mobile
 
 ## Tech Stack
 
-- **Backend:** Laravel 9 (PHP 8.0+)
-- **Database:** SQLite / MySQL
+- **Backend:** Laravel 9 (PHP 8.1)
+- **Web Server:** Nginx + PHP-FPM (production)
+- **Caching:** OPcache for compiled PHP, file-based cache for application data
+- **Database:** SQLite (production) / MySQL (local development)
 - **Frontend:** Bootstrap 5.3, Blade Templates, Chart.js
 - **PDF Generation:** barryvdh/laravel-dompdf
-- **Deployment:** Docker on Render
+- **Containerization:** Docker
 
-## Installation
+## Project Structure
+
+```
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/    # Auth, Admin, Projects, Governance, Finance, etc.
+│   │   └── Middleware/      # RBAC, TrustProxies, AuditLog
+│   ├── Models/             # User, Project, Budget, Review, Certificate, etc.
+│   └── Services/           # Business logic services
+├── database/
+│   ├── migrations/         # Database schema
+│   └── seeders/            # DatabaseSeeder, RbacSeeder (roles, permissions, demo users)
+├── public/
+│   └── vendor/             # Bootstrap 5.3 CSS/JS (local assets)
+├── resources/
+│   └── views/
+│       ├── layouts/        # app.blade.php (shared navbar, sidebar, footer)
+│       ├── admin/          # Users, Colleges, Departments, Thematic Areas
+│       ├── governance/     # Dean Approvals, RCSC Portal
+│       ├── projects/       # Project CRUD, Show, Edit
+│       └── ...
+├── routes/
+│   ├── web.php             # All web routes with RBAC middleware
+│   └── api.php
+├── nginx.conf              # Nginx config for production
+├── Dockerfile              # PHP 8.1-FPM + Nginx
+└── entrypoint.sh           # Container startup (migrate, seed, cache, launch)
+```
+
+## Local Installation
+
+### Prerequisites
+
+- PHP 8.1+
+- Composer
+- SQLite or MySQL
+
+### Setup
 
 ```bash
 git clone https://github.com/gemachistesfaye/research-project-management-system.git
@@ -40,12 +79,52 @@ php artisan serve
 
 Visit `http://localhost:8000`
 
+## Environment Variables
 
-1. Push to GitHub
-2. Create Docker-based Web Service on Render
-3. Add persistent disk mounted at `/data`
-4. Set environment variables (see `.env.example`)
-5. Deploy — migrations and seeding run automatically
+Key variables in `.env`:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `APP_KEY` | Encryption key | Pre-configured |
+| `APP_URL` | Application URL | Auto-detected |
+| `APP_DEBUG` | Debug mode | `false` in production |
+| `DB_CONNECTION` | Database driver | `sqlite` |
+| `DB_DATABASE` | Database path | `/data/database.sqlite` |
+| `CACHE_DRIVER` | Cache backend | `file` |
+| `SESSION_DRIVER` | Session storage | `file` |
+
+## Docker Deployment
+
+The application runs as a Docker container with **Nginx + PHP-FPM**:
+
+```bash
+docker build -t rpms .
+docker run -p 8000:8000 -v data:/data rpms
+```
+
+The container handles automatically on startup:
+1. Environment variable overrides for production
+2. Database migration and seeding
+3. Config, route, and view cache rebuild
+4. Nginx and PHP-FPM launch
+
+## RBAC Permissions
+
+The system enforces 60+ granular permissions across 12 roles:
+
+| Role | Key Permissions |
+|------|----------------|
+| Principal Investigator | Create/manage own projects, submit progress reports |
+| Team Member | View assigned projects, submit contributions |
+| Department Head | Screen proposals within department |
+| Coordinator | Assign reviewers, manage review workflow |
+| Reviewer | Conduct blind evaluations, submit scores |
+| College Dean | Approve/reject projects (<500k ETB), view college analytics |
+| IRERC Ethics Committee | Ethics review and approval |
+| VP Academic (ARTTCS) | Final approval, amendment review, certificate issuance |
+| RCSC Chair | Financial governance (≥500k ETB), budget approval |
+| Finance Office | Process disbursements, financial tracking |
+| System Administrator | Full access: users, colleges, departments, thematic areas, audit logs |
 
 ## License
 
