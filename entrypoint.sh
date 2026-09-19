@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 # Override .env with production values (the committed .env has Windows paths)
 export DB_CONNECTION=sqlite
 export DB_DATABASE=/data/database.sqlite
@@ -20,20 +18,10 @@ touch /data/database.sqlite
 # Run migrations
 php artisan migrate --force
 
-# Seed if users table is empty or missing
-php artisan tinker --execute="
-\$exists = Schema::hasTable('users');
-\$count = \$exists ? DB::table('users')->count() : 0;
-if (\$count == 0) {
-    Artisan::call('db:seed');
-    echo 'SEED_OK';
-} else {
-    echo 'USERS_EXIST (' . \$count . ')';
-}
-" 2>&1 || echo "SEED_FAILED"
+# Seed the database (uses firstOrCreate, safe to run multiple times)
+php artisan db:seed --force 2>&1 || echo "SEED_FAILED"
 
 # Clear stale caches and rate limiter before rebuilding
-php artisan cache:clear
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
