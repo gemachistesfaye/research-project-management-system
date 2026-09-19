@@ -166,11 +166,11 @@ function toggleDeanSubmitBtn(id) {
     var sel = document.getElementById('deanDecision' + id);
     var btn = document.getElementById('deanSubmitBtn' + id);
     if (sel.value === 'Approved') {
-        btn.className = 'btn btn-success fw-bold px-4';
+        btn.className = 'btn btn-success fw-bold px-4 confirm-btn';
     } else if (sel.value === 'Rejected') {
-        btn.className = 'btn btn-danger fw-bold px-4';
+        btn.className = 'btn btn-danger fw-bold px-4 confirm-btn';
     } else {
-        btn.className = 'btn btn-primary fw-bold px-4';
+        btn.className = 'btn btn-primary fw-bold px-4 confirm-btn';
     }
 }
 </script>

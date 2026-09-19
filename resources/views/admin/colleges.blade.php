@@ -88,7 +88,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold">Create College</button>
+                    <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Create College" data-confirm-message="Create this new college?" data-confirm-icon="bi-bank" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-primary">Create College</button>
                 </div>
             </form>
         </div>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold">Update College</button>
+                    <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Update College" data-confirm-message="Save changes to this college?" data-confirm-icon="bi-check-circle" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Save" data-confirm-btn-class="btn-primary">Update College</button>
                 </div>
             </form>
         </div>
@@ -144,7 +144,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger fw-bold">Delete College</button>
+                    <button type="submit" class="btn btn-danger fw-bold confirm-btn" data-confirm-title="Delete College" data-confirm-message="Permanently delete this college and all its departments? This action cannot be undone." data-confirm-icon="bi-trash" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Delete" data-confirm-btn-class="btn-danger">Delete College</button>
                 </div>
             </form>
         </div>

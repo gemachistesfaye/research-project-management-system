@@ -60,7 +60,7 @@
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('projects.show', $project->project_id) }}" class="btn btn-sm btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-sm fw-bold" style="background:#e67700;color:#fff;border:none;" onmouseover="this.style.background='#cc6600'" onmouseout="this.style.background='#e67700'"><i class="bi bi-check-lg me-1"></i>Update</button>
+                        <button type="submit" class="btn btn-sm fw-bold confirm-btn" style="background:#e67700;color:#fff;border:none;" onmouseover="this.style.background='#cc6600'" onmouseout="this.style.background='#e67700'" data-confirm-title="Update Proposal" data-confirm-message="Save changes to this proposal?" data-confirm-icon="bi-check-lg" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Update" data-confirm-btn-class="btn-dark"><i class="bi bi-check-lg me-1"></i>Update</button>
                     </div>
                 </form>
             </div>

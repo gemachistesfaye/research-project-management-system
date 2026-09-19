@@ -225,7 +225,7 @@
                             <label class="form-label small fw-bold">Justification</label>
                             <textarea name="reason" rows="3" class="form-control" required placeholder="Reason for extension request..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-warning w-100 fw-bold">Submit Extension Request</button>
+                        <button type="submit" class="btn btn-warning w-100 fw-bold confirm-btn" data-confirm-title="Submit Extension" data-confirm-message="Submit this extension request for approval?" data-confirm-icon="bi-clock-history" data-confirm-color="text-warning" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-warning">Submit Extension Request</button>
                     </form>
                 </div>
             </div>
@@ -514,7 +514,7 @@
                                 <option value="{{ $rev->id }}">{{ $rev->name }} ({{ $rev->department ? $rev->department->name : 'Faculty' }})</option>
                             @endforeach
                         </select>
-                        <button type="submit" class="btn btn-primary fw-bold">Assign Examiner</button>
+                        <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Assign Examiner" data-confirm-message="Assign this reviewer for blind evaluation?" data-confirm-icon="bi-person-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Assign" data-confirm-btn-class="btn-primary">Assign Examiner</button>
                     </div>
                 </form>
                 @endif

@@ -141,7 +141,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold px-4">
+                    <button type="submit" class="btn btn-primary fw-bold px-4 confirm-btn" data-confirm-title="Save Changes" data-confirm-message="Save changes to this thematic area?" data-confirm-icon="bi-check-circle" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Save" data-confirm-btn-class="btn-primary">
                         <i class="bi bi-check-lg me-1"></i> Save Changes
                     </button>
                 </div>

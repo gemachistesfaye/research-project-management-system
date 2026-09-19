@@ -150,7 +150,7 @@
                             <span id="budget-warning-text"></span>
                         </div>
 
-                        <button type="submit" class="btn btn-success btn-sm w-100 fw-bold">
+                        <button type="submit" class="btn btn-success btn-sm w-100 fw-bold confirm-btn" data-confirm-title="Submit Procurement" data-confirm-message="Submit this purchase request?" data-confirm-icon="bi-cart-check" data-confirm-color="text-success" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success">
                             <i class="bi bi-send me-1"></i> Submit Request
                         </button>
                     </form>
