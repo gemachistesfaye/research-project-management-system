@@ -900,24 +900,15 @@
                     </a>
                 </li>
                 @endif
-                @if(Auth::user()->hasPermission('view_audit_logs'))
+                @if(Auth::user()->role === 'admin')
                 <li class="nav-item">
-                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.audit-logs') ? 'active-link' : '' }}" href="{{ route('admin.audit-logs') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-shield-check me-2"></i> Audit Logs
+                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.colleges') ? 'active-link' : '' }}" href="{{ route('admin.colleges') }}" style="font-size: 0.85rem;">
+                        <i class="bi bi-bank me-2"></i> Colleges
                     </a>
                 </li>
-                @endif
-                @if(Auth::user()->hasPermission('manage_thematic_areas'))
                 <li class="nav-item">
-                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.thematic-areas') ? 'active-link' : '' }}" href="{{ route('admin.thematic-areas') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-tags me-2"></i> Thematic Areas
-                    </a>
-                </li>
-                @endif
-                @if(Auth::user()->hasPermission('hrms_sync'))
-                <li class="nav-item">
-                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.hrms-sync') ? 'active-link' : '' }}" href="{{ route('admin.hrms-sync') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-cloud-arrow-up me-2"></i> HRMS Sync
+                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.departments') ? 'active-link' : '' }}" href="{{ route('admin.departments') }}" style="font-size: 0.85rem;">
+                        <i class="bi bi-building me-2"></i> Departments
                     </a>
                 </li>
                 @endif
@@ -995,35 +986,67 @@
     <!-- Bootstrap 5.3 JS Bundle (local) -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script>
-        // Lock background scroll when mobile offcanvas sidebar is open
+        // Lock background scroll when mobile offcanvas OR modal is open
         (function() {
             var scrollPos = 0;
-            var sidebar = document.getElementById('navbarOffcanvas');
-            if (!sidebar) return;
 
-            sidebar.addEventListener('show.bs.offcanvas', function () {
+            function lockScroll() {
                 scrollPos = window.pageYOffset || document.documentElement.scrollTop;
                 document.body.style.overflow = 'hidden';
                 document.body.style.position = 'fixed';
                 document.body.style.top = '-' + scrollPos + 'px';
                 document.body.style.width = '100%';
-            });
+            }
 
-            sidebar.addEventListener('hide.bs.offcanvas', function () {
+            function unlockScroll() {
                 document.body.style.overflow = '';
                 document.body.style.position = '';
                 document.body.style.top = '';
                 document.body.style.width = '';
                 window.scrollTo(0, scrollPos);
+            }
+
+            function isAnyOverlayOpen() {
+                var sidebar = document.getElementById('navbarOffcanvas');
+                var sidebarOpen = sidebar && sidebar.classList.contains('show');
+                var modalOpen = document.querySelector('.modal.show');
+                return sidebarOpen || modalOpen;
+            }
+
+            // Offcanvas sidebar
+            var sidebar = document.getElementById('navbarOffcanvas');
+            if (sidebar) {
+                sidebar.addEventListener('show.bs.offcanvas', lockScroll);
+                sidebar.addEventListener('hide.bs.offcanvas', function() {
+                    if (!document.querySelector('.modal.show')) unlockScroll();
+                });
+            }
+
+            // All Bootstrap modals (confirm, create, reset password, etc.)
+            document.querySelectorAll('.modal').forEach(function(modal) {
+                modal.addEventListener('show.bs.modal', function() {
+                    if (!isAnyOverlayOpen()) lockScroll();
+                });
+                modal.addEventListener('hide.bs.modal', function() {
+                    setTimeout(function() {
+                        if (!isAnyOverlayOpen()) unlockScroll();
+                    }, 100);
+                });
             });
 
-            // Block touchmove on background when sidebar is open
+            // Block touchmove on background when any overlay is open
             document.addEventListener('touchmove', function(e) {
-                if (sidebar.classList.contains('show')) {
-                    var offcanvasEl = sidebar.querySelector('.offcanvas-body');
-                    if (offcanvasEl && offcanvasEl.contains(e.target)) return;
-                    e.preventDefault();
+                if (!isAnyOverlayOpen()) return;
+                // Allow scroll inside sidebar body
+                var sidebar = document.getElementById('navbarOffcanvas');
+                if (sidebar && sidebar.classList.contains('show')) {
+                    var offcanvasBody = sidebar.querySelector('.offcanvas-body');
+                    if (offcanvasBody && offcanvasBody.contains(e.target)) return;
                 }
+                // Allow scroll inside modal body
+                var openModal = document.querySelector('.modal.show .modal-body');
+                if (openModal && openModal.contains(e.target)) return;
+                e.preventDefault();
             }, { passive: false });
         })();
     </script>
