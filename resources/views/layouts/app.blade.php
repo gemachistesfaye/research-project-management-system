@@ -377,23 +377,6 @@
                 align-items: flex-start !important;
                 gap: 0.5rem !important;
             }
-            /* Modal: full-width buttons on mobile */
-            .modal-footer {
-                flex-direction: column !important;
-                gap: 0.5rem !important;
-            }
-            .modal-footer .btn {
-                width: 100% !important;
-            }
-            .modal-body {
-                font-size: 0.9rem !important;
-            }
-            .modal-body h5 {
-                font-size: 1rem !important;
-            }
-            .modal-title {
-                font-size: 0.95rem !important;
-            }
         }
 
         /* Project Lifecycle Timeline */
