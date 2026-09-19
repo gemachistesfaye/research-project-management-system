@@ -49,27 +49,27 @@
 </div>
 
 <div class="modal fade" id="issueCertificateModal" tabindex="-1" aria-labelledby="issueCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <form method="POST" action="{{ route('certificates.store') }}">
                 @csrf
                 @method('POST')
-                <div class="modal-header bg-success-subtle">
-                    <h5 class="modal-title fw-bold" id="issueCertificateModalLabel">
+                <div class="modal-header bg-success-subtle py-2">
+                    <h5 class="modal-title fw-bold" id="issueCertificateModalLabel" style="white-space:normal;">
                         <i class="bi bi-file-earmark-pdf me-2 text-success"></i>Issue New Completion Certificate
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="alert alert-info small py-2 mb-3">
+                <div class="modal-body py-2">
+                    <div class="alert alert-info small py-2 mb-2" style="white-space:normal; word-wrap:break-word;">
                         <i class="bi bi-info-circle me-1"></i>
-                        Only projects with <span class="badge bg-success">Completed</span> status can have certificates issued. Ensure the project has passed all clearance and budget approvals before issuing.
+                        Only projects with <span class="badge bg-success">Completed</span> status can have certificates issued.
                     </div>
 
-                    <div class="row g-3 mb-3">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Project <span class="text-danger">*</span></label>
-                            <select name="project_id" class="form-select" required>
+                            <label class="form-label fw-bold small mb-1">Project <span class="text-danger">*</span></label>
+                            <select name="project_id" class="form-select form-select-sm" required>
                                 <option value="">-- Select Completed Project --</option>
                                 @foreach($completedProjects as $proj)
                                     <option value="{{ $proj->project_id }}">#{{ $proj->project_id }} — {{ $proj->title }}</option>
@@ -77,8 +77,8 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Certificate Type <span class="text-danger">*</span></label>
-                            <select name="type" class="form-select" required>
+                            <label class="form-label fw-bold small mb-1">Certificate Type <span class="text-danger">*</span></label>
+                            <select name="type" class="form-select form-select-sm" required>
                                 <option value="">-- Select Type --</option>
                                 <option value="Completion">Completion Certificate</option>
                                 <option value="Award">Journal Award Letter</option>
@@ -86,15 +86,15 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Issued To (Full Name) <span class="text-danger">*</span></label>
-                        <input type="text" name="issued_to_name" class="form-control" required placeholder="e.g. Dr. Alemayehu T. Feyissa">
-                        <div class="form-text">Enter the name of the Principal Investigator as it should appear on the certificate.</div>
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">Issued To (Full Name) <span class="text-danger">*</span></label>
+                        <input type="text" name="issued_to_name" class="form-control form-control-sm" required placeholder="e.g. Dr. Alemayehu T. Feyissa">
+                        <div class="form-text small">Enter the name of the PI as it should appear on the certificate.</div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success fw-bold px-4 confirm-btn" data-confirm-title="Issue Certificate" data-confirm-message="Issue this certificate? This action cannot be undone." data-confirm-icon="bi-file-earmark-check" data-confirm-color="text-success" data-confirm-btn-text="Yes, Issue" data-confirm-btn-class="btn-success">
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success fw-bold px-3 btn-sm confirm-btn" data-confirm-title="Issue Certificate" data-confirm-message="Issue this certificate? This action cannot be undone." data-confirm-icon="bi-file-earmark-check" data-confirm-color="text-success" data-confirm-btn-text="Yes, Issue" data-confirm-btn-class="btn-success">
                         <i class="bi bi-file-earmark-check me-1"></i> Issue Certificate
                     </button>
                 </div>

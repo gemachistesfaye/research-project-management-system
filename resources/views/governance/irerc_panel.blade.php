@@ -150,30 +150,30 @@
 
 @foreach($pending as $c)
 <div class="modal fade" id="irercDecisionModal{{ $c->id }}" tabindex="-1" aria-labelledby="irercDecisionModalLabel{{ $c->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <form method="POST" action="{{ route('irerc.decision', $c->id) }}">
                 @csrf
-                <div class="modal-header" style="background: #1e293b;">
-                    <h5 class="modal-title fw-bold text-white" id="irercDecisionModalLabel{{ $c->id }}">
+                <div class="modal-header py-2" style="background: #1e293b;">
+                    <h5 class="modal-title fw-bold text-white" id="irercDecisionModalLabel{{ $c->id }}" style="white-space:normal;">
                         <i class="bi bi-shield-exclamation me-2"></i>IRERC Ethics Review — {{ $c->project->title ?? 'N/A' }}
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row g-3 mb-3">
+                <div class="modal-body py-2">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Project</label>
-                            <input type="text" class="form-control" value="{{ $c->project->title ?? 'N/A' }}" disabled>
+                            <label class="form-label fw-bold small mb-1">Project</label>
+                            <input type="text" class="form-control form-control-sm" value="{{ $c->project->title ?? 'N/A' }}" disabled>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Current Risk Level</label>
-                            <input type="text" class="form-control" value="{{ $c->risk_level }}" disabled>
+                            <label class="form-label fw-bold small mb-1">Current Risk Level</label>
+                            <input type="text" class="form-control form-control-sm" value="{{ $c->risk_level }}" disabled>
                         </div>
                     </div>
 
-                    <div class="mb-3 p-3" style="background: #f1f5f9;">
-                        <label class="form-label fw-bold mb-2"><i class="bi bi-clipboard2-check me-1"></i> Ethics Checklist</label>
+                    <div class="mb-2 p-2" style="background: #f1f5f9;">
+                        <label class="form-label fw-bold mb-1 small"><i class="bi bi-clipboard2-check me-1"></i> Ethics Checklist</label>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="ethics_checklist[]" value="human_subjects" id="humanSubjects{{ $c->id }}">
                             <label class="form-check-label" for="humanSubjects{{ $c->id }}">Human subjects involved</label>
@@ -196,18 +196,18 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">IRERC Decision <span class="text-danger">*</span></label>
-                        <select name="decision" class="form-select" required id="irercDecision{{ $c->id }}" onchange="toggleIrercSubmitBtn({{ $c->id }})">
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">IRERC Decision <span class="text-danger">*</span></label>
+                        <select name="decision" class="form-select form-select-sm" required id="irercDecision{{ $c->id }}" onchange="toggleIrercSubmitBtn({{ $c->id }})">
                             <option value="">-- Select Decision --</option>
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Updated Risk Level</label>
-                        <select name="risk_level" class="form-select" required>
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">Updated Risk Level</label>
+                        <select name="risk_level" class="form-select form-select-sm" required>
                             <option value="Low" {{ $c->risk_level === 'Low' ? 'selected' : '' }}>Low</option>
                             <option value="Medium" {{ $c->risk_level === 'Medium' ? 'selected' : '' }}>Medium</option>
                             <option value="High" {{ $c->risk_level === 'High' ? 'selected' : '' }}>High</option>
@@ -215,14 +215,14 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">IRERC Comments <span class="text-danger">*</span></label>
-                        <textarea name="comments" class="form-control" rows="3" required placeholder="Enter ethics review comments..."></textarea>
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">IRERC Comments <span class="text-danger">*</span></label>
+                        <textarea name="comments" class="form-control form-control-sm" rows="2" required placeholder="Enter ethics review comments..."></textarea>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-dark fw-bold" id="irercSubmitBtn{{ $c->id }}" disabled>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark fw-bold btn-sm" id="irercSubmitBtn{{ $c->id }}" disabled>
                         <i class="bi bi-check-circle me-1"></i> Submit Decision
                     </button>
                 </div>

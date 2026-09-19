@@ -97,61 +97,61 @@
 
 @foreach($pending as $r)
 <div class="modal fade" id="rcscDecisionModal{{ $r->request_id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <form method="POST" action="{{ route('rcsc.decision', $r->request_id) }}">
                 @csrf
-                <div class="modal-header bg-danger-subtle">
-                    <h5 class="modal-title fw-bold">
+                <div class="modal-header bg-danger-subtle py-2">
+                    <h5 class="modal-title fw-bold" style="white-space:normal;">
                         <i class="bi bi-award me-2"></i>RCSC Budget Decision — {{ $r->project->title ?? 'N/A' }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row g-3 mb-3">
+                <div class="modal-body py-2">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Project</label>
-                            <input type="text" class="form-control" value="{{ $r->project->title ?? 'N/A' }}" disabled>
+                            <label class="form-label fw-bold small mb-1">Project</label>
+                            <input type="text" class="form-control form-control-sm" value="{{ $r->project->title ?? 'N/A' }}" disabled>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Project Budget</label>
-                            <input type="text" class="form-control fw-bold text-danger" value="{{ number_format($r->project->requested_budget ?? 0, 2) }} ETB" disabled>
+                            <label class="form-label fw-bold small mb-1">Project Budget</label>
+                            <input type="text" class="form-control form-control-sm fw-bold text-danger" value="{{ number_format($r->project->requested_budget ?? 0, 2) }} ETB" disabled>
                         </div>
                     </div>
-                    <div class="row g-3 mb-3">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Phase</label>
-                            <input type="text" class="form-control" value="Phase {{ $r->milestone_phase }}" disabled>
+                            <label class="form-label fw-bold small mb-1">Phase</label>
+                            <input type="text" class="form-control form-control-sm" value="Phase {{ $r->milestone_phase }}" disabled>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Requested Amount</label>
-                            <input type="text" class="form-control" value="{{ number_format($r->requested_amount, 2) }} ETB" disabled>
+                            <label class="form-label fw-bold small mb-1">Requested Amount</label>
+                            <input type="text" class="form-control form-control-sm" value="{{ number_format($r->requested_amount, 2) }} ETB" disabled>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">RCSC Decision <span class="text-danger">*</span></label>
-                        <select name="decision" class="form-select" required id="rcscDecision{{ $r->request_id }}" onchange="toggleRcscSubmitBtn({{ $r->request_id }})">
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">RCSC Decision <span class="text-danger">*</span></label>
+                        <select name="decision" class="form-select form-select-sm" required id="rcscDecision{{ $r->request_id }}" onchange="toggleRcscSubmitBtn({{ $r->request_id }})">
                             <option value="">-- Select Decision --</option>
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Approved Amount (ETB)</label>
-                        <input type="number" name="approved_amount" class="form-control" min="0" step="0.01" placeholder="{{ $r->requested_amount }}">
-                        <div class="form-text">Leave blank or equal to requested amount if approving full amount.</div>
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">Approved Amount (ETB)</label>
+                        <input type="number" name="approved_amount" class="form-control form-control-sm" min="0" step="0.01" placeholder="{{ $r->requested_amount }}">
+                        <div class="form-text small">Leave blank if approving full amount.</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Comments</label>
-                        <textarea name="comments" class="form-control" rows="3" placeholder="Optional comments on the decision..."></textarea>
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">Comments</label>
+                        <textarea name="comments" class="form-control form-control-sm" rows="2" placeholder="Optional comments on the decision..."></textarea>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger fw-bold px-4 confirm-btn" id="rcscSubmitBtn{{ $r->request_id }}" data-confirm-title="Submit RCSC Decision" data-confirm-message="Submit your RCSC budget decision? This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-danger">
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger fw-bold px-3 btn-sm confirm-btn" id="rcscSubmitBtn{{ $r->request_id }}" data-confirm-title="Submit RCSC Decision" data-confirm-message="Submit your RCSC budget decision? This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-danger">
                         <i class="bi bi-check-circle me-1"></i> Submit RCSC Decision
                     </button>
                 </div>
