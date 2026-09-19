@@ -64,12 +64,12 @@
 
         {{-- Termination Modal --}}
         <div class="modal fade" id="terminateModal{{ $project->project_id }}" tabindex="-1">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <form action="{{ route('projects.terminate', $project->project_id) }}" method="POST" id="termForm{{ $project->project_id }}">
                         @csrf
-                        <div class="modal-header bg-danger text-white">
-                            <h6 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle me-2"></i>Terminate Project</h6>
+                        <div class="modal-header bg-danger text-white py-2">
+                            <h6 class="modal-title fw-bold" style="white-space:normal;"><i class="bi bi-exclamation-triangle me-2"></i>Terminate Project</h6>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
@@ -86,7 +86,7 @@
                             </div>
 
                             {{-- DANGER BANNER --}}
-                            <div class="alert alert-danger d-flex align-items-center small mb-3">
+                            <div class="alert alert-danger d-flex align-items-center small mb-3 py-2" style="white-space:normal; word-wrap:break-word;">
                                 <i class="bi bi-shield-exclamation fs-4 me-2"></i>
                                 <div>
                                     <strong>Critical Warning:</strong> Project termination is <u>irreversible</u>.
@@ -218,17 +218,17 @@
                             </div>
                         </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-warning fw-bold" id="nextBtn_{{ $project->project_id }}"
+                        <div class="modal-footer py-2">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-warning fw-bold btn-sm" id="nextBtn_{{ $project->project_id }}"
                                     onclick="goToStep2({{ $project->project_id }})">
                                 <i class="bi bi-arrow-right-circle me-1"></i> Next: Review
                             </button>
-                            <button type="button" class="btn btn-danger fw-bold confirm-btn" id="confirmBtn_{{ $project->project_id }}" style="display:none;"
+                            <button type="button" class="btn btn-danger fw-bold btn-sm confirm-btn" id="confirmBtn_{{ $project->project_id }}" style="display:none;"
                                     data-confirm-title="Terminate Project" data-confirm-message="FINAL CONFIRMATION: Are you absolutely sure you want to terminate this project? This action CANNOT be undone." data-confirm-icon="bi-exclamation-triangle" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Terminate" data-confirm-btn-class="btn-danger">
                                 <i class="bi bi-exclamation-triangle me-1"></i> Confirm Termination
                             </button>
-                            <button type="button" class="btn btn-outline-danger fw-bold" id="backBtn_{{ $project->project_id }}" style="display:none;"
+                            <button type="button" class="btn btn-outline-danger fw-bold btn-sm" id="backBtn_{{ $project->project_id }}" style="display:none;"
                                     onclick="goToStep1({{ $project->project_id }})">
                                 <i class="bi bi-arrow-left-circle me-1"></i> Back
                             </button>
