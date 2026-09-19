@@ -71,13 +71,13 @@
                         </button>
 
                         <div class="modal fade" id="resetPasswordModal{{ $u->id }}" tabindex="-1">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <form method="POST" action="{{ route('admin.users.reset-password', $u->id) }}">
                                         @csrf
                                         <div class="modal-header bg-warning-subtle">
-                                            <h5 class="modal-title fw-bold">
-                                                <i class="bi bi-shield-lock me-2"></i>Admin Password Reset — {{ $u->name }}
+                                            <h5 class="modal-title fw-bold text-truncate">
+                                                <i class="bi bi-shield-lock me-2"></i>Reset Password — {{ $u->name }}
                                             </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
@@ -97,9 +97,9 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-warning fw-bold text-dark confirm-btn" data-confirm-title="Reset Password" data-confirm-message="Reset password for {{ $u->name }}?" data-confirm-icon="bi-key" data-confirm-color="text-warning" data-confirm-btn-text="Yes, Reset" data-confirm-btn-class="btn-warning">
+                                        <div class="modal-footer flex-column flex-sm-row gap-2">
+                                            <button type="button" class="btn btn-outline-secondary w-100 w-sm-auto" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-warning fw-bold text-dark confirm-btn w-100 w-sm-auto" data-confirm-title="Reset Password" data-confirm-message="Reset password for {{ $u->name }}?" data-confirm-icon="bi-key" data-confirm-color="text-warning" data-confirm-btn-text="Yes, Reset" data-confirm-btn-class="btn-warning">
                                                 <i class="bi bi-key-fill me-1"></i> Reset Password
                                             </button>
                                         </div>
