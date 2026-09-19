@@ -442,25 +442,3 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/admin/colleges/{id}', [AdminController::class, 'destroyCollege'])->name('admin.colleges.destroy');
     });
 });
-
-// TEMPORARY DIAGNOSTIC — remove after debugging
-Route::get('/debug-db', function () {
-    $dbPath = config('database.connections.sqlite.database');
-    $fileExists = file_exists($dbPath);
-    $userCount = \App\Models\User::count();
-    $admin = \App\Models\User::where('email', 'admin@gmu.edu.et')->first();
-    $hasAdmin = $admin ? 'YES' : 'NO';
-    $hashMatch = $admin ? (Hash::check('GMU@Demo1', $admin->password) ? 'YES' : 'NO') : 'N/A';
-    $appKey = substr(config('app.key'), 0, 20) . '...';
-
-    return response()->json([
-        'db_path' => $dbPath,
-        'file_exists' => $fileExists,
-        'user_count' => $userCount,
-        'admin_exists' => $hasAdmin,
-        'password_matches' => $hashMatch,
-        'app_key_prefix' => $appKey,
-        'app_url' => config('app.url'),
-        'app_debug' => config('app.debug'),
-    ]);
-});
