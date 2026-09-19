@@ -43,6 +43,12 @@ class Project extends Model
         'contract_signed_at' => 'datetime',
         'pi_signature_date' => 'datetime',
         'vp_signature_date' => 'datetime',
+        'dh_screened_at' => 'datetime',
+        'under_review_at' => 'datetime',
+        'approved_at' => 'datetime',
+        'activated_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'cancelled_at' => 'datetime',
     ];
 
     public function pi()
