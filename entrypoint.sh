@@ -2,6 +2,12 @@
 
 set -e
 
+# Override .env with production values (the committed .env has Windows paths)
+export DB_CONNECTION=sqlite
+export DB_DATABASE=/data/database.sqlite
+export CACHE_DRIVER=file
+export SESSION_DRIVER=file
+
 # Create SQLite database if not exists
 mkdir -p /data
 touch /data/database.sqlite
