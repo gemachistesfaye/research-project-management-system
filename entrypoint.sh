@@ -2,12 +2,6 @@
 
 set -e
 
-# Auto-detect APP_URL if not set (Render proxy detection)
-if [ -z "$APP_URL" ]; then
-    export APP_URL="https://${RENDER_EXTERNAL_HOSTNAME:-research-project-management-system-goif.onrender.com}"
-    echo "APP_URL auto-detected: $APP_URL"
-fi
-
 # Create SQLite database if not exists
 mkdir -p /data
 touch /data/database.sqlite
