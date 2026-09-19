@@ -82,12 +82,12 @@ class EvaluationController extends Controller
                 ]);
             } else {
                 $feedback = $project->evaluations()
-                    ->where('decision', 'AcceptedWithMinorMods')
+                    ->whereIn('decision', ['Accepted', 'AcceptedWithMinorMods'])
                     ->pluck('comments')
                     ->implode('; ');
                 $project->update([
-                    'status' => 'UnderReview',
-                    'under_review_at' => $project->under_review_at ?? now(),
+                    'status' => 'Approved',
+                    'approved_at' => $project->approved_at ?? now(),
                     'feedback' => $feedback ?: $project->feedback,
                 ]);
             }
