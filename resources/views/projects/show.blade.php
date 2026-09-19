@@ -303,7 +303,13 @@
                                 {{ number_format($project->requested_budget, 2) }} ETB
                                 @if($project->approved_budget)
                                     <span class="text-success fs-6">/ {{ number_format($project->approved_budget, 2) }} ETB (Ratified)</span>
-        @endif
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         {{-- Request Withdrawal Form (PI: Approved/Active needs admin approval) --}}
         @if(Auth::user()->role === 'pi' && in_array($project->status, ['Approved', 'Active']))
@@ -354,11 +360,6 @@
             </div>
         </div>
         @endif
-
-    </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div>
                     <div class="text-muted small text-uppercase fw-bold mb-2">Abstract & Problem Statement</div>

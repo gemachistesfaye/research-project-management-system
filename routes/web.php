@@ -85,11 +85,9 @@ Route::middleware(['auth'])->group(function () {
     // Project Request Cancel (PI: request cancel for Approved/Active, needs admin approval)
     Route::post('/projects/{id}/request-cancel', [ProjectController::class, 'requestCancel'])->name('projects.request-cancel');
 
-    // Admin: Approve/Reject Cancellation
-    Route::middleware(['permission:manage_users'])->group(function () {
-        Route::post('/projects/{id}/approve-cancel', [ProjectController::class, 'approveCancel'])->name('projects.approve-cancel');
-        Route::post('/projects/{id}/reject-cancel', [ProjectController::class, 'rejectCancel'])->name('projects.reject-cancel');
-    });
+    // Admin/Dean/RCSC/Coordinator: Approve/Reject Cancellation
+    Route::post('/projects/{id}/approve-cancel', [ProjectController::class, 'approveCancel'])->name('projects.approve-cancel');
+    Route::post('/projects/{id}/reject-cancel', [ProjectController::class, 'rejectCancel'])->name('projects.reject-cancel');
 
     // Coordinator-only: Assign Reviewers
     Route::middleware(['role:coordinator', 'permission:assign_reviewer'])->group(function () {
