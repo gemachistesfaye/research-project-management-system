@@ -181,16 +181,6 @@
                 </form>
                 @endif
 
-                {{-- Simple Cancel (Submitted/DH_Screened/UnderReview) --}}
-                @if(Auth::user()->role === 'pi' && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview']))
-                <form action="{{ route('projects.cancel', $project->project_id) }}" method="POST">
-                    @csrf
-                    <button type="button" class="btn w-100 mb-2 text-start confirm-btn fw-bold" style="background:#fff;color:#e67700;border:1.5px solid #e67700;" onmouseover="this.style.background='#e67700';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#e67700'" data-confirm-title="Cancel Proposal" data-confirm-message="Are you sure you want to cancel this proposal?" data-confirm-icon="bi-x-circle" data-confirm-color="text-warning" data-confirm-btn-text="Yes, Cancel" data-confirm-btn-class="btn-warning">
-                        <i class="bi bi-x-circle me-2"></i>Cancel Proposal
-                    </button>
-                </form>
-                @endif
-
                 {{-- Request Withdrawal (Approved/Active - needs admin approval) --}}
                 @if(Auth::user()->role === 'pi' && in_array($project->status, ['Approved', 'Active']))
                 <button class="btn w-100 mb-2 text-start fw-bold" style="background:#fff;color:#e67700;border:1.5px solid #e67700;" onmouseover="this.style.background='#e67700';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#e67700'" type="button" data-bs-toggle="collapse" data-bs-target="#requestCancelForm">
