@@ -60,18 +60,36 @@ class EvaluationController extends Controller
 
         if ($allEvaluated) {
             $hasRejection = $project->evaluations()->where('decision', 'Rejected')->exists();
+            $hasMajorMods = $project->evaluations()->where('decision', 'AcceptedWithMajorMods')->exists();
 
             if ($hasRejection) {
-                $rejectionComments = $project->evaluations()
+                $comments = $project->evaluations()
                     ->where('decision', 'Rejected')
                     ->pluck('comments')
                     ->implode('; ');
                 $project->update([
                     'status' => 'Rejected',
-                    'feedback' => $rejectionComments,
+                    'feedback' => $comments,
+                ]);
+            } elseif ($hasMajorMods) {
+                $comments = $project->evaluations()
+                    ->where('decision', 'AcceptedWithMajorMods')
+                    ->pluck('comments')
+                    ->implode('; ');
+                $project->update([
+                    'status' => 'Returned',
+                    'feedback' => 'Major modifications required: ' . $comments,
                 ]);
             } else {
-                $project->update(['status' => 'UnderReview', 'under_review_at' => $project->under_review_at ?? now()]);
+                $feedback = $project->evaluations()
+                    ->where('decision', 'AcceptedWithMinorMods')
+                    ->pluck('comments')
+                    ->implode('; ');
+                $project->update([
+                    'status' => 'UnderReview',
+                    'under_review_at' => $project->under_review_at ?? now(),
+                    'feedback' => $feedback ?: $project->feedback,
+                ]);
             }
         }
 

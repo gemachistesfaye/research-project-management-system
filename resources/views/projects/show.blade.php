@@ -59,7 +59,7 @@
     <div class="d-flex align-items-start">
         <i class="bi bi-exclamation-triangle-fill fs-4 text-warning me-3 mt-1"></i>
         <div>
-            <h6 class="fw-bold mb-1">{{ $project->status === 'Returned' ? 'Returned by Department Head' : 'Rejected' }}</h6>
+            <h6 class="fw-bold mb-1">{{ $project->status === 'Rejected' ? 'Rejected by Reviewer' : 'Returned — Modifications Required' }}</h6>
             <p class="mb-0">{{ $project->feedback }}</p>
         </div>
     </div>
