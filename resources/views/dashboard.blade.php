@@ -103,7 +103,7 @@
 @endif
 
 {{-- Role-Specific KPI Summary Cards --}}
-<div class="row g-3 mb-4">
+<div id="kpi-cards" class="row g-3 mb-4">
     {{-- PI KPI Cards --}}
     @if($role === 'pi')
     <div class="col-md-3 col-sm-6">

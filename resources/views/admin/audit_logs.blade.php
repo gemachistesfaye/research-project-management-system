@@ -10,11 +10,11 @@
     <form method="GET" action="{{ route('admin.audit-logs') }}" class="row g-3 align-items-end mb-4">
         <div class="col-md-3">
             <label for="date_from" class="form-label small fw-semibold">Date From</label>
-            <input type="date" class="form-control" id="date_from" name="date_from" value="{{ $filters['date_from'] ?? '' }}">
+            <input type="date" class="form-control" id="date_from" name="date_from" value="{{ $filters['date_from'] ?? '' }}" onchange="this.form.submit()">
         </div>
         <div class="col-md-3">
             <label for="date_to" class="form-label small fw-semibold">Date To</label>
-            <input type="date" class="form-control" id="date_to" name="date_to" value="{{ $filters['date_to'] ?? '' }}">
+            <input type="date" class="form-control" id="date_to" name="date_to" value="{{ $filters['date_to'] ?? '' }}" onchange="this.form.submit()">
         </div>
         <div class="col-md-3">
             <label for="action" class="form-label small fw-semibold">Action Type</label>

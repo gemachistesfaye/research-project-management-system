@@ -11,7 +11,7 @@
 </nav>
 
 {{-- ── Page Header ────────────────────────────────────────────────────────── --}}
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold mb-1 text-dark">{{ $project->title }}</h2>
         <div class="d-flex align-items-center flex-wrap gap-2">
