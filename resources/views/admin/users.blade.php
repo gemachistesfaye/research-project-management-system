@@ -76,13 +76,13 @@
                                     <form method="POST" action="{{ route('admin.users.reset-password', $u->id) }}">
                                         @csrf
                                         <div class="modal-header bg-warning-subtle">
-                                            <h5 class="modal-title fw-bold">
+                                            <h5 class="modal-title fw-bold" style="white-space:normal; word-wrap:break-word;">
                                                 <i class="bi bi-shield-lock me-2"></i>Admin Password Reset — {{ $u->name }}
                                             </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="alert alert-info small py-2 mb-3">
+                                            <div class="alert alert-info small py-2 mb-3" style="white-space:normal; word-wrap:break-word;">
                                                 <i class="bi bi-info-circle me-1"></i>
                                                 This is the <strong>only</strong> password reset path. Verify the user's identity in person before proceeding.
                                             </div>
@@ -127,49 +127,49 @@
 
 <!-- Modal for Creating New User -->
 <div class="modal fade" id="createUserModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <form method="POST" action="{{ route('admin.users.store') }}">
                 @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold"><i class="bi bi-person-plus me-2 text-success"></i>Create New Institutional User Account</h5>
+                <div class="modal-header py-2">
+                    <h5 class="modal-title fw-bold" style="white-space:normal;"><i class="bi bi-person-plus me-2 text-success"></i>Create New User Account</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row g-3 mb-3">
+                <div class="modal-body py-2">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Staff / Employee ID</label>
-                            <input type="text" name="staff_id" class="form-control" required placeholder="e.g. GMU-STAFF-999">
+                            <label class="form-label fw-bold small mb-1">Staff / Employee ID</label>
+                            <input type="text" name="staff_id" class="form-control form-control-sm" required placeholder="e.g. GMU-STAFF-999">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Full Name</label>
-                            <input type="text" name="name" class="form-control" required placeholder="Dr. John Doe">
+                            <label class="form-label fw-bold small mb-1">Full Name</label>
+                            <input type="text" name="name" class="form-control form-control-sm" required placeholder="Dr. John Doe">
                         </div>
                     </div>
 
-                    <div class="row g-3 mb-3">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Email Address</label>
-                            <input type="email" name="email" class="form-control" required placeholder="johndoe@gmu.edu.et">
+                            <label class="form-label fw-bold small mb-1">Email Address</label>
+                            <input type="email" name="email" class="form-control form-control-sm" required placeholder="johndoe@gmu.edu.et">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Initial Password</label>
-                            <input type="password" name="password" class="form-control" required
+                            <label class="form-label fw-bold small mb-1">Initial Password</label>
+                            <input type="password" name="password" class="form-control form-control-sm" required
                                    placeholder="Min 8 chars, upper, lower, number, symbol">
-                            <div class="form-text small text-muted">User must change this on first login.</div>
+                            <div class="form-text small text-muted">User must change on first login.</div>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Confirm Password</label>
-                        <input type="password" name="password_confirmation" class="form-control" required
+                    <div class="mb-2">
+                        <label class="form-label fw-bold small mb-1">Confirm Password</label>
+                        <input type="password" name="password_confirmation" class="form-control form-control-sm" required
                                placeholder="Re-enter password">
                     </div>
 
-                    <div class="row g-3 mb-3">
+                    <div class="row g-2 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">System Role</label>
-                            <select name="role" class="form-select" required>
+                            <label class="form-label fw-bold small mb-1">System Role</label>
+                            <select name="role" class="form-select form-select-sm" required>
                                 <option value="pi">Principal Investigator (PI)</option>
                                 <option value="tm">Team Member / Co-Researcher (TM)</option>
                                 <option value="reviewer">Blind Peer Examiner (Reviewer)</option>
@@ -184,8 +184,8 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Department (Optional)</label>
-                            <select name="dept_id" class="form-select">
+                            <label class="form-label fw-bold small mb-1">Department (Optional)</label>
+                            <select name="dept_id" class="form-select form-select-sm">
                                 <option value="">-- Central Admin / University-wide --</option>
                                 @foreach($departments as $d)
                                     <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->code }})</option>
@@ -194,9 +194,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success fw-bold px-4 confirm-btn" data-confirm-title="Create User" data-confirm-message="Create this new user account?" data-confirm-icon="bi-person-plus" data-confirm-color="text-success" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-success">
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success fw-bold px-3 btn-sm confirm-btn" data-confirm-title="Create User" data-confirm-message="Create this new user account?" data-confirm-icon="bi-person-plus" data-confirm-color="text-success" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-success">
                         <i class="bi bi-person-plus me-1"></i> Create User Account
                     </button>
                 </div>
