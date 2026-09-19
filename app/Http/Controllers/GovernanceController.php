@@ -45,7 +45,7 @@ class GovernanceController extends Controller
             $project->update(['status' => 'DH_Screened', 'dh_screened_at' => now()]);
             return back()->with('success', 'Project screened and forwarded to Coordinator.');
         } else {
-            $project->update(['status' => 'Submitted', 'dh_screened_at' => null]);
+            $project->update(['status' => 'Returned', 'dh_screened_at' => null]);
             return back()->with('success', 'Project sent back to PI for revisions.');
         }
     }
@@ -132,6 +132,12 @@ class GovernanceController extends Controller
 
         $budgetRequest->update($updateData);
 
+        if ($request->decision === 'Approved') {
+            $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget]);
+        } else {
+            $project->update(['status' => 'Rejected']);
+        }
+
         return back()->with('success', "Budget request {$request->decision} successfully by Dean.");
     }
 
@@ -194,6 +200,12 @@ class GovernanceController extends Controller
 
         $budgetRequest->update($updateData);
 
+        if ($request->decision === 'Approved') {
+            $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget]);
+        } else {
+            $project->update(['status' => 'Rejected']);
+        }
+
         return back()->with('success', "Budget request {$request->decision} successfully by RCSC.");
     }
 
@@ -248,6 +260,8 @@ class GovernanceController extends Controller
 
         if ($request->decision === 'Approved') {
             Project::where('project_id', $clearance->project_id)->update(['ethical_cleared' => true]);
+        } else {
+            Project::where('project_id', $clearance->project_id)->update(['status' => 'Rejected']);
         }
 
         return back()->with('success', "Ethics review {$request->decision} successfully.");

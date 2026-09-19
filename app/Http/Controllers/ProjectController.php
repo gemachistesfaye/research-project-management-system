@@ -76,8 +76,8 @@ class ProjectController extends Controller
             abort(403, 'Only the PI can submit their own draft proposal.');
         }
 
-        if (!in_array($project->status, ['Draft', 'Withdrawn'])) {
-            return back()->with('error', 'Only draft or withdrawn proposals can be submitted.');
+        if (!in_array($project->status, ['Draft', 'Withdrawn', 'Returned'])) {
+            return back()->with('error', 'Only draft, withdrawn, or returned proposals can be submitted.');
         }
 
         $project->update(['status' => 'Submitted', 'current_stage' => 1, 'dh_screened_at' => null, 'under_review_at' => null, 'approved_at' => null, 'activated_at' => null, 'completed_at' => null]);
@@ -169,8 +169,8 @@ class ProjectController extends Controller
             abort(403, 'You can only edit your own projects.');
         }
 
-        if (!in_array($project->status, ['Draft', 'Withdrawn'])) {
-            return back()->with('error', 'Only draft or withdrawn proposals can be edited.');
+        if (!in_array($project->status, ['Draft', 'Withdrawn', 'Returned'])) {
+            return back()->with('error', 'Only draft, withdrawn, or returned proposals can be edited.');
         }
 
         $thematicAreas = \App\Models\ThematicArea::all();
@@ -187,8 +187,8 @@ class ProjectController extends Controller
             abort(403, 'You can only edit your own projects.');
         }
 
-        if (!in_array($project->status, ['Draft', 'Withdrawn'])) {
-            return back()->with('error', 'Only draft or withdrawn proposals can be edited.');
+        if (!in_array($project->status, ['Draft', 'Withdrawn', 'Returned'])) {
+            return back()->with('error', 'Only draft, withdrawn, or returned proposals can be edited.');
         }
 
         $request->validate([
@@ -227,8 +227,8 @@ class ProjectController extends Controller
             abort(403, 'You can only delete your own projects.');
         }
 
-        if (!in_array($project->status, ['Draft', 'Withdrawn'])) {
-            return back()->with('error', 'Only draft or withdrawn proposals can be deleted.');
+        if (!in_array($project->status, ['Draft', 'Withdrawn', 'Returned'])) {
+            return back()->with('error', 'Only draft, withdrawn, or returned proposals can be deleted.');
         }
 
         $pid = $project->project_id;
@@ -337,7 +337,7 @@ class ProjectController extends Controller
             abort(403, 'You can only withdraw your own projects.');
         }
 
-        if (!in_array($project->status, ['Draft', 'Submitted', 'DH_Screened', 'UnderReview'])) {
+        if (!in_array($project->status, ['Draft', 'Returned', 'Submitted', 'DH_Screened', 'UnderReview'])) {
             return back()->with('error', 'This project cannot be withdrawn at this stage.');
         }
 

@@ -27,9 +27,11 @@
                             '' => ['label' => 'All', 'color' => 'dark', 'icon' => 'bi-grid'],
                             'Draft' => ['label' => 'Draft', 'color' => 'secondary', 'icon' => 'bi-pencil'],
                             'Submitted' => ['label' => 'Submitted', 'color' => 'info', 'icon' => 'bi-send'],
+                            'Returned' => ['label' => 'Returned', 'color' => 'warning', 'icon' => 'bi-arrow-return-left'],
                             'DH_Screened' => ['label' => 'Screened', 'color' => 'primary', 'icon' => 'bi-eye'],
                             'UnderReview' => ['label' => 'Under Review', 'color' => 'warning', 'icon' => 'bi-hourglass-split'],
                             'Approved' => ['label' => 'Approved', 'color' => 'success', 'icon' => 'bi-check-circle'],
+                            'Rejected' => ['label' => 'Rejected', 'color' => 'danger', 'icon' => 'bi-x-circle'],
                             'Active' => ['label' => 'Active', 'color' => 'primary', 'icon' => 'bi-play-circle'],
                             'Completed' => ['label' => 'Completed', 'color' => 'success', 'icon' => 'bi-trophy'],
                             'Withdrawn' => ['label' => 'Withdrawn', 'color' => 'dark', 'icon' => 'bi-x-circle'],
@@ -79,6 +81,8 @@
                     <td>
                         @if($p->status === 'Draft')
                             <span class="badge bg-secondary text-white px-2 py-1"><i class="bi bi-pencil me-1"></i>Draft</span>
+                        @elseif($p->status === 'Returned')
+                            <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-arrow-return-left me-1"></i>Returned</span>
                         @elseif($p->status === 'Withdrawn')
                             <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-x-circle me-1"></i>Withdrawn</span>
                         @elseif($p->status === 'Approved' || $p->status === 'Completed')
@@ -97,7 +101,7 @@
                     </td>
                     <td>
                         <div class="d-flex gap-1">
-                            @if(in_array($p->status, ['Draft', 'Withdrawn']) && Auth::user()->role === 'pi')
+                            @if(in_array($p->status, ['Draft', 'Withdrawn', 'Returned']) && Auth::user()->role === 'pi')
                                 <form action="{{ route('projects.submit', $p->project_id) }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="button" class="btn btn-sm btn-dark confirm-btn" data-confirm-title="Submit Proposal" data-confirm-message="This proposal will be sent to the Department Head for initial screening." data-confirm-icon="bi-send" data-confirm-color="text-success" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success" style="min-width:80px"><i class="bi bi-send me-1"></i>Submit</button>
