@@ -320,16 +320,7 @@
         avatarInput.addEventListener('change', function() {
             if (this.files && this.files.length > 0) {
                 var form = document.getElementById('avatarForm');
-                var data = new FormData(form);
-                // Copy avatar file into the main profile form instead
-                var profileForm = document.getElementById('profileForm');
-                var fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.name = 'avatar';
-                fileInput.files = avatarInput.files;
-                fileInput.style.display = 'none';
-                profileForm.appendChild(fileInput);
-                profileForm.submit();
+                form.submit();
             }
         });
     }
