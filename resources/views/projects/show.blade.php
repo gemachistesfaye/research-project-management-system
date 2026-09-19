@@ -54,6 +54,18 @@
     </a>
 </div>
 
+@if(in_array($project->status, ['Returned', 'Rejected']) && $project->feedback)
+<div class="alert alert-warning border-start border-4 border-warning mb-4">
+    <div class="d-flex align-items-start">
+        <i class="bi bi-exclamation-triangle-fill fs-4 text-warning me-3 mt-1"></i>
+        <div>
+            <h6 class="fw-bold mb-1">{{ $project->status === 'Returned' ? 'Returned by Department Head' : 'Rejected' }}</h6>
+            <p class="mb-0">{{ $project->feedback }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 {{-- ── Project Lifecycle Status Timeline (SDD Figure 6) ─────────────────── --}}
 @php
     $stages = [
