@@ -25,6 +25,10 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             color: #1e293b;
             letter-spacing: -0.01em;
+            overflow-x: hidden;
+        }
+        html {
+            overflow-x: hidden;
         }
         /* Navbar Styling */
         .navbar-gmu {
@@ -181,6 +185,12 @@
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
             border-radius: 10px;
         }
+        /* Profile dropdown: fixed so it doesn't shift page content */
+        .profile-dropdown-menu.show {
+            position: fixed !important;
+            right: 1rem !important;
+            left: auto !important;
+        }
         .dropdown-item {
             font-size: 0.86rem;
             border-radius: 6px;
@@ -248,7 +258,7 @@
                 padding: 0.25em 0.5em !important;
             }
             /* Hide subtitle text on mobile */
-            .d-flex .text-muted.small {
+            .navbar-gmu .d-flex .text-muted.small {
                 display: none !important;
             }
             /* Compact KPI cards */
@@ -695,7 +705,7 @@
                                 <span class="badge badge-role mt-1" style="font-size: 0.65rem; padding: 2px 6px; cursor: pointer;">{{ strtoupper(Auth::user()->role) }} ▾</span>
                             </div>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end p-2 shadow-lg" aria-labelledby="userProfileMenuBtn" style="min-width: 250px; z-index: 1050;">
+                        <ul class="dropdown-menu dropdown-menu-end p-2 shadow-lg profile-dropdown-menu" aria-labelledby="userProfileMenuBtn" style="min-width: 250px; z-index: 1050;">
                             <li class="dropdown-header fw-bold border-bottom pb-2 mb-1">
                                 <i class="bi bi-person-badge me-1 text-success"></i> Account Profile
                             </li>
@@ -721,7 +731,13 @@
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline m-0">
                                     @csrf
-                                    <button type="submit" class="dropdown-item text-danger small fw-bold">
+                                    <button type="submit" class="dropdown-item text-danger small fw-bold confirm-btn"
+                                            data-confirm-title="Sign Out"
+                                            data-confirm-message="Are you sure you want to sign out of your account?"
+                                            data-confirm-icon="bi-box-arrow-right"
+                                            data-confirm-color="text-danger"
+                                            data-confirm-btn-text="Yes, Sign Out"
+                                            data-confirm-btn-class="btn-danger">
                                         <i class="bi bi-box-arrow-right me-2"></i> Sign Out
                                     </button>
                                 </form>
@@ -903,7 +919,13 @@
             {{-- Sign out --}}
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-outline-light w-100 fw-bold py-2" style="font-size: 0.85rem;">
+                <button type="submit" class="btn btn-outline-light w-100 fw-bold py-2 confirm-btn" style="font-size: 0.85rem;"
+                        data-confirm-title="Sign Out"
+                        data-confirm-message="Are you sure you want to sign out of your account?"
+                        data-confirm-icon="bi-box-arrow-right"
+                        data-confirm-color="text-danger"
+                        data-confirm-btn-text="Yes, Sign Out"
+                        data-confirm-btn-class="btn-danger">
                     <i class="bi bi-box-arrow-right me-2"></i> Sign Out
                 </button>
             </form>
@@ -1003,6 +1025,18 @@
                 confirmForm = null;
                 confirmBtn.disabled = false;
             });
+
+            // Position profile dropdown below the trigger button
+            var profileDropdown = document.getElementById('userProfileMenuBtn');
+            if (profileDropdown) {
+                profileDropdown.addEventListener('show.bs.dropdown', function () {
+                    var rect = profileDropdown.getBoundingClientRect();
+                    var menu = profileDropdown.nextElementSibling;
+                    if (menu) {
+                        menu.style.top = rect.bottom + 4 + 'px';
+                    }
+                });
+            }
         });
     </script>
 
