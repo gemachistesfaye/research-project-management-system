@@ -166,11 +166,11 @@ function toggleRcscSubmitBtn(id) {
     var sel = document.getElementById('rcscDecision' + id);
     var btn = document.getElementById('rcscSubmitBtn' + id);
     if (sel.value === 'Approved') {
-        btn.className = 'btn btn-success fw-bold px-4';
+        btn.className = 'btn btn-success fw-bold px-4 confirm-btn';
     } else if (sel.value === 'Rejected') {
-        btn.className = 'btn btn-danger fw-bold px-4';
+        btn.className = 'btn btn-danger fw-bold px-4 confirm-btn';
     } else {
-        btn.className = 'btn btn-danger fw-bold px-4';
+        btn.className = 'btn btn-danger fw-bold px-4 confirm-btn';
     }
 }
 </script>

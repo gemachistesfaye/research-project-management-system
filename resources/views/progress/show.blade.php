@@ -127,7 +127,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-dark fw-bold w-100">
+                    <button type="submit" class="btn btn-dark fw-bold w-100 confirm-btn" data-confirm-title="Submit Report" data-confirm-message="Submit this progress report?" data-confirm-icon="bi-send" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
                         <i class="bi bi-send me-1"></i> Submit Report
                     </button>
                 </form>

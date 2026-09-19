@@ -172,7 +172,7 @@
                                     <form action="{{ route('team.destroy', $member->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                        <button type="submit" class="btn btn-sm btn-danger confirm-btn" data-confirm-title="Remove Team Member" data-confirm-message="Remove this team member from the project?" data-confirm-icon="bi-person-dash" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Remove" data-confirm-btn-class="btn-danger">Remove</button>
                                     </form>
                                 </div>
                             </div>

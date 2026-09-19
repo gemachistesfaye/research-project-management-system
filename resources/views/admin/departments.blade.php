@@ -92,7 +92,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold">Create Department</button>
+                    <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Create Department" data-confirm-message="Create this new department?" data-confirm-icon="bi-building" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-primary">Create Department</button>
                 </div>
             </form>
         </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold">Update Department</button>
+                    <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Update Department" data-confirm-message="Save changes to this department?" data-confirm-icon="bi-check-circle" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Save" data-confirm-btn-class="btn-primary">Update Department</button>
                 </div>
             </form>
         </div>
@@ -156,7 +156,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger fw-bold">Delete Department</button>
+                    <button type="submit" class="btn btn-danger fw-bold confirm-btn" data-confirm-title="Delete Department" data-confirm-message="Permanently delete this department? This action cannot be undone." data-confirm-icon="bi-trash" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Delete" data-confirm-btn-class="btn-danger">Delete Department</button>
                 </div>
             </form>
         </div>
