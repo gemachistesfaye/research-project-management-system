@@ -534,7 +534,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($project->evaluations as $ev)
+                            @forelse($project->evaluations->filter(function($ev) {
+                                if(Auth::user()->role === 'reviewer' && $ev->examiner_id === Auth::id() && $ev->decision === 'Pending') {
+                                    return false;
+                                }
+                                return true;
+                            }) as $ev)
                             <tr>
                                 <td>
                                     @if(Auth::user()->role === 'pi' || Auth::user()->role === 'reviewer')
