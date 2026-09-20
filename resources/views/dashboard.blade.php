@@ -945,6 +945,7 @@
                                                        value="{{ number_format($req->approved_amount, 2) }} ETB" readonly tabindex="-1">
                                                 <span class="input-group-text bg-light text-muted"><i class="bi bi-lock-fill"></i></span>
                                             </div>
+                                            <input type="hidden" name="amount" value="{{ $req->approved_amount }}">
                                             <small class="text-muted" style="font-size:0.7rem;">Locked to ratified tranche budget</small>
                                         </div>
                                         <div class="col-6">
