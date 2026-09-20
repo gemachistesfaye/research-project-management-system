@@ -610,10 +610,21 @@
                         </div>
                     </div>
                 </div>
-                @if(in_array(Auth::user()->role, ['pi', 'vparttcs']) && $project->status === 'Approved')
-                <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-primary mt-3">
-                    <i class="bi bi-pen me-1"></i>View & Sign Contract
-                </a>
+                @if(in_array(Auth::user()->role, ['pi', 'vparttcs', 'coordinator', 'admin']))
+                    @if($project->status === 'Approved')
+                    <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-primary mt-3">
+                        <i class="bi bi-pen me-1"></i>View & Sign Contract
+                    </a>
+                    @else
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-file-earmark-text me-1"></i>View Contract
+                        </a>
+                        <a href="{{ route('contracts.download', $project->project_id) }}" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-download me-1"></i>Download PDF
+                        </a>
+                    </div>
+                    @endif
                 @endif
             </div>
         </div>

@@ -124,8 +124,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/team/{memberId}', [TeamMemberController::class, 'destroy'])->name('team.destroy');
     });
 
-    // SCR-08: Contract Signing (PI and VP only)
-    Route::middleware(['role:pi,vparttcs', 'permission:sign_contract'])->group(function () {
+    // SCR-08: Contract Signing (PI and VP sign; Coordinator and Admin can view)
+    Route::middleware(['role:pi,vparttcs,coordinator,admin'])->group(function () {
         Route::get('/contracts/{id}/sign', function ($id) {
             $project = \App\Models\Project::findOrFail($id);
             $user = \Auth::user();
