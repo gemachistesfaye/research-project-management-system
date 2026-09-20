@@ -78,14 +78,33 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-success">
-                                        <i class="bi bi-pencil-square me-1"></i>Manage
-                                    </a>
-                                    <button class="btn btn-sm btn-outline-primary quick-assign-btn"
-                                            data-project-id="{{ $p->project_id }}"
-                                            data-project-title="{{ $p->title }}">
-                                        <i class="bi bi-lightning me-1"></i>Quick Assign
-                                    </button>
+                                    <div class="d-flex align-items-center gap-1 flex-wrap">
+                                        <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-success py-1 px-2" style="font-size: 0.78rem;">
+                                            <i class="bi bi-pencil-square me-1"></i>Manage
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-primary py-1 px-2 quick-assign-btn"
+                                                data-project-id="{{ $p->project_id }}"
+                                                data-project-title="{{ $p->title }}"
+                                                style="font-size: 0.78rem;">
+                                            <i class="bi bi-lightning me-1"></i>Quick Assign
+                                        </button>
+                                        @if(!$p->irercClearance)
+                                        <form action="{{ route('projects.create-irerc-clearance', $p->project_id) }}" method="POST" class="d-inline mb-0">
+                                            @csrf
+                                            <button type="button" class="btn btn-sm btn-outline-info py-1 px-2 fw-semibold confirm-btn" style="font-size: 0.78rem;" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to IRERC for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-info" data-confirm-btn-text="Yes, Send" data-confirm-btn-class="btn-info text-white">
+                                                <i class="bi bi-shield-plus me-1"></i>Send to Ethics
+                                            </button>
+                                        </form>
+                                        @else
+                                            @if($p->irercClearance->status === 'Approved')
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle py-1 px-2" style="font-size: 0.72rem;"><i class="bi bi-shield-check me-1"></i>Ethics Cleared</span>
+                                            @elseif($p->irercClearance->status === 'Rejected')
+                                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle py-1 px-2" style="font-size: 0.72rem;"><i class="bi bi-shield-x me-1"></i>Ethics Rejected</span>
+                                            @else
+                                                <span class="badge bg-warning-subtle text-dark border border-warning-subtle py-1 px-2" style="font-size: 0.72rem;"><i class="bi bi-hourglass-split me-1"></i>Ethics Pending</span>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                             @empty

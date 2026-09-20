@@ -52,7 +52,7 @@ class GovernanceController extends Controller
 
     public function coordinatorHub()
     {
-        $projects = Project::whereIn('status', ['DH_Screened', 'UnderReview'])->with(['pi', 'evaluations'])->get();
+        $projects = Project::whereIn('status', ['DH_Screened', 'UnderReview'])->with(['pi', 'evaluations', 'irercClearance'])->get();
 
         $reviewers = User::where('role', 'reviewer')
             ->with('department', 'evaluations')
