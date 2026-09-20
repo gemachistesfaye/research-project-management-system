@@ -223,6 +223,18 @@
                 <i class="bi bi-check-circle-fill me-2"></i>
                 <strong>Contract Fully Signed</strong> &mdash; Signed on {{ $project->contract_signed_at->format('M d, Y \a\t h:i A') }}
             </div>
+        @elseif($project->status !== 'Approved')
+            <div class="alert alert-warning border-start border-4 border-warning mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-bank fs-3 text-warning me-3"></i>
+                    <div>
+                        <h6 class="fw-bold mb-1">Financial Budget Ratification Pending</h6>
+                        <p class="small text-muted mb-0">
+                            This project is currently in <strong>{{ $project->status === 'Dean_Review' ? 'Dean Review (<500k ETB)' : ($project->status === 'RCSC_Review' ? 'RCSC / VP Review (>=500k ETB)' : $project->status) }}</strong>. Contract signing is strictly locked until the financial budget is officially ratified and approved by the {{ $project->requested_budget >= 500000 ? 'RCSC / VP' : 'College Dean' }}.
+                        </p>
+                    </div>
+                </div>
+            </div>
         @elseif($project->irercClearance && $project->irercClearance->status !== 'Approved')
             <div class="alert alert-warning border-start border-4 border-warning mb-4">
                 <div class="d-flex align-items-center">
@@ -265,7 +277,7 @@
                                 <p class="text-success fw-bold mb-1">Signed by {{ $project->pi->name }}</p>
                                 <small class="text-muted">Date: {{ $pi_signed_date->format('M d, Y \a\t h:i A') }}</small>
                             </div>
-                        @else
+                        @elseif(in_array(Auth::user()->role, ['pi', 'admin']) && (int)Auth::id() === (int)$project->pi_id || Auth::user()->role === 'admin')
                             <form method="POST" action="{{ route('contracts.sign-pi', $project->project_id) }}">
                                 @csrf
                                 <p class="text-muted small mb-3">
@@ -276,6 +288,11 @@
                                     <i class="bi bi-pen me-1"></i> Sign as PI
                                 </button>
                             </form>
+                        @else
+                            <div class="p-3 bg-light rounded text-center text-muted">
+                                <i class="bi bi-lock me-1"></i>
+                                Awaiting Principal Investigator signature (<strong>{{ $project->pi->name }}</strong>).
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -298,7 +315,12 @@
                                 <p class="text-success fw-bold mb-1">Signed by VP</p>
                                 <small class="text-muted">Date: {{ $vp_signed_date->format('M d, Y \a\t h:i A') }}</small>
                             </div>
-                        @else
+                        @elseif(!$pi_signed)
+                            <div class="p-3 bg-light rounded text-center text-muted">
+                                <i class="bi bi-hourglass-split me-1"></i>
+                                <span>PI must sign first before VP authorization.</span>
+                            </div>
+                        @elseif(in_array(Auth::user()->role, ['vparttcs', 'admin']))
                             <form method="POST" action="{{ route('contracts.sign-vp', $project->project_id) }}">
                                 @csrf
                                 <p class="text-muted small mb-3">
@@ -309,10 +331,10 @@
                                     <i class="bi bi-pen me-1"></i> Sign as VP
                                 </button>
                             </form>
-                        @endif
-                        @if(!$pi_signed)
-                            <div class="form-text text-muted text-center mt-2">
-                                <i class="bi bi-info-circle me-1"></i> PI must sign first
+                        @else
+                            <div class="p-3 bg-light rounded text-center text-muted">
+                                <i class="bi bi-lock me-1"></i>
+                                Awaiting Vice President authorization signature.
                             </div>
                         @endif
                     </div>
@@ -328,17 +350,21 @@
         const agreeCheckbox = document.getElementById('agreeTerms');
         const piSignBtn = document.getElementById('piSignBtn');
         const vpSignBtn = document.getElementById('vpSignBtn');
-        const piSigned = {{ $pi_signed ? 'true' : 'false' }};
+
+        function toggleButtons() {
+            const isChecked = agreeCheckbox ? agreeCheckbox.checked : false;
+            if (piSignBtn) {
+                piSignBtn.disabled = !isChecked;
+            }
+            if (vpSignBtn) {
+                vpSignBtn.disabled = !isChecked;
+            }
+        }
 
         if (agreeCheckbox) {
-            agreeCheckbox.addEventListener('change', function() {
-                if (!piSigned && piSignBtn) {
-                    piSignBtn.disabled = !this.checked;
-                }
-                if (piSigned && vpSignBtn) {
-                    vpSignBtn.disabled = !this.checked;
-                }
-            });
+            agreeCheckbox.addEventListener('change', toggleButtons);
+            // Run on load in case browser restored checkbox state
+            toggleButtons();
         }
     });
 </script>

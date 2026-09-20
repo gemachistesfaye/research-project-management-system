@@ -82,6 +82,9 @@
                                         <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-success py-1 px-2" style="font-size: 0.78rem;">
                                             <i class="bi bi-pencil-square me-1"></i>Manage
                                         </a>
+                                        <a href="{{ route('progress.show', $p->project_id) }}" class="btn btn-sm btn-outline-dark py-1 px-2" style="font-size: 0.78rem;" title="View & Audit Progress Reports">
+                                            <i class="bi bi-graph-up me-1"></i>Progress
+                                        </a>
                                         <button class="btn btn-sm btn-outline-primary py-1 px-2 quick-assign-btn"
                                                 data-project-id="{{ $p->project_id }}"
                                                 data-project-title="{{ $p->title }}"

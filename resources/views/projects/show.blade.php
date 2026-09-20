@@ -27,12 +27,12 @@
             @elseif($project->status === 'Approved')
                 <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>{{ $project->status }}</span>
                 @if(in_array(Auth::user()->role, ['pi', 'vparttcs']) && (!$project->irercClearance || $project->irercClearance->status === 'Approved'))
-                <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary btn-sm fw-bold shadow-sm">
+                <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-dark btn-sm fw-bold shadow-sm">
                     <i class="bi bi-pen me-1"></i>View & Sign Contract
                 </a>
                 @endif
             @elseif($project->status === 'Active')
-                <span class="badge bg-primary fs-6"><i class="bi bi-play-circle me-1"></i>{{ $project->status }}</span>
+                <span class="badge bg-dark fs-6"><i class="bi bi-play-circle me-1"></i>{{ $project->status }}</span>
                 <a href="{{ route('progress.show', $project->project_id) }}" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
                     <i class="bi bi-graph-up me-1"></i>Progress &amp; Milestones
                 </a>
@@ -74,9 +74,9 @@
                 <span class="badge bg-secondary fs-6">{{ $project->status }}</span>
             @endif
             @if($project->requested_budget >= 500000)
-                <span class="badge bg-danger fs-6">RCSC Governance Tier (≥500k ETB)</span>
+                <span class="badge bg-dark fs-6">RCSC Governance Tier (≥500k ETB)</span>
             @else
-                <span class="badge bg-info text-dark fs-6">College Dean Tier (&lt;500k ETB)</span>
+                <span class="badge bg-secondary fs-6">College Dean Tier (&lt;500k ETB)</span>
             @endif
             @if($project->irercClearance)
                 @if($project->irercClearance->status === 'Approved')
@@ -172,7 +172,7 @@
             <div class="card-body p-3">
                 {{-- Sign Contract --}}
                 @if($project->status === 'Approved' && in_array(Auth::user()->role, ['pi', 'vparttcs']) && (!$project->irercClearance || $project->irercClearance->status === 'Approved'))
-                <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary w-100 mb-2 text-start fw-bold shadow-sm">
+                <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-dark w-100 mb-2 text-start fw-bold shadow-sm">
                     <i class="bi bi-pen me-2"></i>View & Sign Contract
                 </a>
                 @endif
@@ -354,8 +354,8 @@
                                     <span class="text-success fs-5">{{ number_format($project->approved_budget, 2) }} ETB</span>
                                     <small class="text-muted d-block" style="font-size:0.75rem;">(Orig. Requested: {{ number_format($project->requested_budget, 2) }} ETB + {{ number_format($project->approved_budget - $project->requested_budget, 2) }} ETB Amendment)</small>
                                 @else
-                                    <span class="text-primary fs-5">{{ number_format($project->approved_budget ?: $project->requested_budget, 2) }} ETB</span>
-                                    <span class="badge bg-success-subtle text-success ms-1">Ratified</span>
+                                    <span class="text-dark fs-5 fw-bold">{{ number_format($project->approved_budget ?: $project->requested_budget, 2) }} ETB</span>
+                                    <span class="badge bg-dark ms-1">Ratified</span>
                                 @endif
                             </div>
                         </div>
@@ -372,7 +372,7 @@
                 @if($project->proposal_document_url)
                 <div class="mt-3">
                     <div class="text-muted small text-uppercase fw-bold mb-2">Proposal Document</div>
-                    <a href="{{ Storage::url($project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-primary fw-bold">
+                    <a href="{{ Storage::url($project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-dark fw-bold">
                         <i class="bi bi-file-pdf me-1"></i>View Proposal PDF
                     </a>
                 </div>
@@ -433,9 +433,9 @@
         {{-- Team Members Card --}}
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-people me-2 text-info"></i>Team Members</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-people me-2 text-dark"></i>Team Members</h5>
                 @if(Auth::user()->role === 'pi' && in_array($project->status, ['Draft', 'Submitted']))
-                <a href="{{ route('team.index', $project->project_id) }}" class="btn btn-sm btn-outline-info">
+                <a href="{{ route('team.index', $project->project_id) }}" class="btn btn-sm btn-outline-dark">
                     <i class="bi bi-plus-circle me-1"></i>Manage
                 </a>
                 @endif
@@ -444,7 +444,7 @@
                 @forelse($project->members as $member)
                 <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded-3 mb-2">
                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center me-3" style="width:40px;height:40px;">
+                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center me-3" style="width:40px;height:40px;">
                             <i class="bi bi-person"></i>
                         </div>
                         <div>
@@ -458,7 +458,7 @@
                     <i class="bi bi-people fs-3 d-block mb-2"></i>
                     No team members added yet.
                     @if(Auth::user()->role === 'pi')
-                    <a href="{{ route('team.index', $project->project_id) }}" class="btn btn-sm btn-outline-info mt-2">
+                    <a href="{{ route('team.index', $project->project_id) }}" class="btn btn-sm btn-outline-dark mt-2">
                         <i class="bi bi-plus-circle me-1"></i>Add Team Members
                     </a>
                     @endif
@@ -484,9 +484,9 @@
                     <div class="col-md-4">
                         <div class="p-3 bg-light rounded-3 text-center h-100">
                             <div class="small text-muted fw-bold mb-1">Tranche 1 (Advance)</div>
-                            <div class="fs-5 fw-bold text-primary">{{ number_format($tranche1, 2) }} ETB</div>
+                            <div class="fs-5 fw-bold text-dark">{{ number_format($tranche1, 2) }} ETB</div>
                             <div class="progress mt-2" style="height: 6px;">
-                                <div class="progress-bar bg-primary" style="width: 30%"></div>
+                                <div class="progress-bar bg-dark" style="width: 30%"></div>
                             </div>
                             <div class="small text-muted mt-1">30% of budget</div>
                         </div>
@@ -494,9 +494,9 @@
                     <div class="col-md-4">
                         <div class="p-3 bg-light rounded-3 text-center h-100">
                             <div class="small text-muted fw-bold mb-1">Tranche 2 (Mid-term)</div>
-                            <div class="fs-5 fw-bold text-info">{{ number_format($tranche2, 2) }} ETB</div>
+                            <div class="fs-5 fw-bold text-dark">{{ number_format($tranche2, 2) }} ETB</div>
                             <div class="progress mt-2" style="height: 6px;">
-                                <div class="progress-bar bg-info" style="width: 40%"></div>
+                                <div class="progress-bar bg-secondary" style="width: 40%"></div>
                             </div>
                             <div class="small text-muted mt-1">40% of budget</div>
                         </div>
@@ -530,13 +530,13 @@
         @endphp
 
         @if(in_array($project->status, ['Dean_Review', 'RCSC_Review', 'UnderReview']))
-        <div class="card shadow-sm border-0 mb-4 border-top border-4 {{ $project->requested_budget >= 500000 ? 'border-danger' : 'border-info' }}">
+        <div class="card shadow-sm border-0 mb-4 border-top border-4 {{ $project->requested_budget >= 500000 ? 'border-danger' : 'border-dark' }}">
             <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                 <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-bank me-2 text-success"></i>Financial Budget Approval (SCR-08)</h5>
                 @if($project->requested_budget >= 500000)
                     <span class="badge bg-danger fs-6">RCSC / VP Tier (&ge;500k ETB)</span>
                 @else
-                    <span class="badge bg-info text-dark fs-6">College Dean Tier (&lt;500k ETB)</span>
+                    <span class="badge bg-secondary fs-6">College Dean Tier (&lt;500k ETB)</span>
                 @endif
             </div>
             <div class="card-body p-4">
@@ -545,7 +545,7 @@
                         <i class="bi bi-shield-exclamation me-1"></i>Scientific review complete. Requires formal ratification by <strong>RCSC Committee / Vice President</strong> threshold.
                     </div>
                 @else
-                    <div class="alert alert-info small mb-3 rounded-3">
+                    <div class="alert alert-secondary small mb-3 rounded-3">
                         <i class="bi bi-check-circle me-1"></i>Scientific review complete. Requires financial review & approval by <strong>College Dean</strong>.
                     </div>
                 @endif
@@ -578,12 +578,12 @@
         {{-- Blind Peer Review Evaluations --}}
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-eye-slash me-2 text-primary"></i>Blind Peer Review Evaluations</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-eye-slash me-2 text-dark"></i>Blind Peer Review Evaluations</h5>
                 @if(Auth::user()->role === 'coordinator' && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active']))
                     @if(!$project->irercClearance)
                     <form action="{{ route('projects.create-irerc-clearance', $project->project_id) }}" method="POST" class="d-inline">
                         @csrf
-                        <button type="button" class="btn btn-sm btn-outline-primary fw-bold confirm-btn" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to the Institutional Research Ethics Review Committee (IRERC) for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Request" data-confirm-btn-class="btn-primary">
+                        <button type="button" class="btn btn-sm btn-outline-dark fw-bold confirm-btn" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to the Institutional Research Ethics Review Committee (IRERC) for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Request" data-confirm-btn-class="btn-dark">
                             <i class="bi bi-shield-plus me-1"></i>Send to Ethics (IRERC)
                         </button>
                     </form>
@@ -602,7 +602,7 @@
                                 <option value="{{ $rev->id }}">{{ $rev->name }} ({{ $rev->department ? $rev->department->name : 'Faculty' }})</option>
                             @endforeach
                         </select>
-                        <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Assign Examiner" data-confirm-message="Assign this reviewer for blind evaluation?" data-confirm-icon="bi-person-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Assign" data-confirm-btn-class="btn-primary">Assign Examiner</button>
+                        <button type="submit" class="btn btn-dark fw-bold confirm-btn" data-confirm-title="Assign Examiner" data-confirm-message="Assign this reviewer for blind evaluation?" data-confirm-icon="bi-person-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Assign" data-confirm-btn-class="btn-dark">Assign Examiner</button>
                     </div>
                 </form>
                 @endif
@@ -634,7 +634,7 @@
                                     @endif
                                 </td>
                                 <td><span class="fw-bold fs-6">{{ $ev->score }} / 100</span></td>
-                                <td><span class="badge bg-info text-dark">{{ $ev->decision }}</span></td>
+                                <td><span class="badge bg-secondary">{{ $ev->decision }}</span></td>
                                 <td class="small">{{ $ev->comments ?: 'Pending critique submission...' }}</td>
                                 <td class="small">{{ $ev->evaluated_at ? $ev->evaluated_at->diffForHumans() : 'Pending' }}</td>
                             </tr>
@@ -700,9 +700,9 @@
                                     @if($bReq->milestone_phase === 'Tranche 1')
                                         <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1</span>
                                     @elseif($bReq->milestone_phase === 'Tranche 2')
-                                        <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2</span>
+                                        <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2</span>
                                     @elseif($bReq->milestone_phase === 'Tranche 3')
-                                        <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3</span>
+                                        <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3</span>
                                     @elseif($bReq->milestone_phase === 'Budget Amendment')
                                         <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-cash-stack me-1"></i>Budget Amendment</span>
                                     @else
@@ -776,7 +776,7 @@
         @if(in_array($project->status, ['Approved', 'Active', 'Completed']))
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-file-earmark-text me-2 text-primary"></i>Project Contract</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-file-earmark-text me-2 text-dark"></i>Project Contract</h5>
             </div>
             <div class="card-body p-4">
                 <div class="row g-3">
@@ -804,19 +804,19 @@
                 @if(in_array(Auth::user()->role, ['pi', 'vparttcs', 'coordinator', 'admin']))
                     @if(!$project->pi_signature_date || !$project->vp_signature_date)
                     <div class="d-flex gap-2 mt-3 flex-wrap">
-                        <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary fw-bold">
+                        <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-dark fw-bold">
                             <i class="bi bi-pen me-1"></i>View &amp; Sign Contract
                         </a>
-                        <a href="{{ route('contracts.download', $project->project_id) }}" class="btn btn-outline-success">
+                        <a href="{{ route('contracts.download', $project->project_id) }}" class="btn btn-outline-dark">
                             <i class="bi bi-download me-1"></i>Download PDF
                         </a>
                     </div>
                     @else
                     <div class="d-flex gap-2 mt-3 flex-wrap">
-                        <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-primary btn-sm">
+                        <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-dark btn-sm">
                             <i class="bi bi-file-earmark-text me-1"></i>View Signed Contract
                         </a>
-                        <a href="{{ route('contracts.download', $project->project_id) }}" class="btn btn-outline-success btn-sm">
+                        <a href="{{ route('contracts.download', $project->project_id) }}" class="btn btn-outline-dark btn-sm">
                             <i class="bi bi-download me-1"></i>Download PDF
                         </a>
                     </div>
@@ -834,9 +834,9 @@
             @endphp
 
             @if($myPendingEval)
-            <div class="card shadow-sm border-0 mb-4 border-top border-primary border-4">
+            <div class="card shadow-sm border-0 mb-4 border-top border-dark border-4">
                 <div class="card-body p-4">
-                    <h5 class="fw-bold mb-2 text-dark"><i class="bi bi-pencil-square me-2 text-primary"></i>Submit Peer Critique</h5>
+                    <h5 class="fw-bold mb-2 text-dark"><i class="bi bi-pencil-square me-2 text-dark"></i>Submit Peer Critique</h5>
                     <p class="small text-muted mb-3">Score the research methodology, originality, and institutional feasibility.</p>
 
                     <form method="POST" action="{{ route('evaluations.submit', $myPendingEval->eval_id) }}">
@@ -862,7 +862,7 @@
                             <textarea name="comments" rows="4" class="form-control" required placeholder="Provide technical feedback, strengths, and areas of improvement..."></textarea>
                         </div>
 
-                        <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
+                        <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
                             <i class="bi bi-send-check me-1"></i> Submit Evaluation Score
                         </button>
                     </form>

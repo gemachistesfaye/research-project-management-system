@@ -88,11 +88,25 @@ class EvaluationController extends Controller
 
                 // Dual-Threshold Financial Routing: < 500k ETB -> Dean_Review, >= 500k ETB -> RCSC_Review
                 $targetStatus = ($project->requested_budget >= 500000.00) ? 'RCSC_Review' : 'Dean_Review';
+                $approvalTier = ($project->requested_budget >= 500000.00) ? 'RCSC_VP' : 'Dean';
 
                 $project->update([
                     'status' => $targetStatus,
                     'feedback' => $feedback ?: $project->feedback,
                 ]);
+
+                // Ensure a pending BudgetRequest exists so it shows in Dean Approvals / RCSC Portal
+                \App\Models\BudgetRequest::firstOrCreate(
+                    [
+                        'project_id' => $project->project_id,
+                        'milestone_phase' => 1,
+                        'approval_tier' => $approvalTier,
+                    ],
+                    [
+                        'requested_amount' => $project->requested_budget,
+                        'status' => 'Pending',
+                    ]
+                );
             }
         }
 

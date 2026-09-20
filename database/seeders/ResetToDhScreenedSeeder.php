@@ -31,3 +31,4 @@ class ResetToDhScreenedSeeder extends Seeder
         ]);
     }
 }
+
