@@ -163,5 +163,48 @@ class RPMSWorkflowTest extends TestCase
         $downloadResponse = $this->actingAs($pi)->get(route('certificates.download', $cert->id));
         $downloadResponse->assertStatus(200);
     }
+
+    public function test_irerc_ethics_review_and_clearance_lifecycle()
+    {
+        $coordinator = User::factory()->create(['role' => 'coordinator']);
+        \App\Services\RbacService::syncUserRole($coordinator);
+
+        $irercOfficer = User::factory()->create(['role' => 'irerc']);
+        \App\Services\RbacService::syncUserRole($irercOfficer);
+
+        $thematic = ThematicArea::create(['title' => 'Public Health & Epidemiology']);
+
+        $project = Project::create([
+            'title' => 'Clinical Study on Malaria Vector Resistance in Gambella',
+            'abstract_text' => 'Clinical diagnostic study involving patient blood samples',
+            'thematic_id' => $thematic->id,
+            'pi_id' => User::factory()->create(['role' => 'pi'])->id,
+            'requested_budget' => 350000.00,
+            'status' => 'UnderReview',
+        ]);
+
+        // 1. Coordinator routes project to IRERC
+        $response = $this->actingAs($coordinator)->post(route('projects.create-irerc-clearance', $project->project_id));
+        $response->assertSessionHas('success', 'IRERC ethics clearance created successfully.');
+
+        $clearance = \App\Models\IRERCClearance::where('project_id', $project->project_id)->first();
+        $this->assertNotNull($clearance);
+        $this->assertEquals('Pending', $clearance->status);
+
+        // 2. IRERC committee reviews and approves with Low Risk
+        $irercResponse = $this->actingAs($irercOfficer)->post(route('irerc.decision', $clearance->id), [
+            'decision' => 'Approved',
+            'risk_level' => 'Low',
+            'conditions' => 'Informed consent protocol approved. Data anonymization required.',
+        ]);
+        $irercResponse->assertSessionHas('success');
+
+        $clearance->refresh();
+        $this->assertEquals('Approved', $clearance->status);
+        $this->assertStringStartsWith('IRERC-', $clearance->clearance_code);
+
+        $project->refresh();
+        $this->assertTrue((bool)$project->ethical_cleared);
+    }
 }
 
