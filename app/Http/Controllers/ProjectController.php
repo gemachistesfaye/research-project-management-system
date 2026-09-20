@@ -80,6 +80,10 @@ class ProjectController extends Controller
             return back()->with('error', 'Only draft, withdrawn, returned, or rejected proposals can be submitted.');
         }
 
+        if (in_array($project->status, ['Returned', 'Rejected', 'Withdrawn'])) {
+            Evaluation::where('project_id', $project->project_id)->delete();
+        }
+
         $project->update(['status' => 'Submitted', 'current_stage' => 1, 'dh_screened_at' => null, 'under_review_at' => null, 'approved_at' => null, 'activated_at' => null, 'completed_at' => null]);
 
         return back()->with('success', 'Proposal submitted for Department Head screening.');
@@ -308,18 +312,27 @@ class ProjectController extends Controller
 
         $existing = Evaluation::where('project_id', $project->project_id)
             ->where('examiner_id', $request->examiner_id)
-            ->exists();
-        if ($existing) {
-            return back()->with('error', 'This reviewer is already assigned to this project.');
-        }
+            ->first();
 
-        Evaluation::create([
-            'project_id' => $project->project_id,
-            'examiner_id' => $request->examiner_id,
-            'score' => 0.00,
-            'decision' => 'Pending',
-            'is_blind_masked' => true,
-        ]);
+        if ($existing) {
+            if ($existing->decision === 'Pending') {
+                return back()->with('error', 'This reviewer is already assigned and has a pending evaluation.');
+            }
+            $existing->update([
+                'score' => 0.00,
+                'decision' => 'Pending',
+                'comments' => null,
+                'evaluated_at' => null,
+            ]);
+        } else {
+            Evaluation::create([
+                'project_id' => $project->project_id,
+                'examiner_id' => $request->examiner_id,
+                'score' => 0.00,
+                'decision' => 'Pending',
+                'is_blind_masked' => true,
+            ]);
+        }
 
         if ($project->status === 'DH_Screened') {
             $project->update(['status' => 'UnderReview', 'current_stage' => 2, 'under_review_at' => now()]);
