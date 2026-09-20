@@ -138,6 +138,18 @@ Route::middleware(['auth'])->group(function () {
             $vp_signed_date = $project->vp_signature_date;
             return view('contracts.sign', compact('project', 'pi_signed', 'vp_signed', 'pi_signed_date', 'vp_signed_date'));
         })->name('contracts.show');
+        Route::get('/contracts/{id}/download', function ($id) {
+            $project = \App\Models\Project::with(['pi', 'thematicArea', 'department'])->findOrFail($id);
+            $user = \Auth::user();
+            if ($user->role === 'pi' && (int) $project->pi_id !== (int) $user->id) {
+                abort(403, 'You can only download contracts for your own projects.');
+            }
+            if (class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('contracts.pdf', compact('project'));
+                return $pdf->download('Contract-Project-' . $project->project_id . '.pdf');
+            }
+            return redirect()->route('contracts.show', $id);
+        })->name('contracts.download');
         Route::post('/contracts/{id}/sign-pi', function ($id) {
             $project = \App\Models\Project::findOrFail($id);
             if ((int) \Auth::id() !== (int) $project->pi_id) {

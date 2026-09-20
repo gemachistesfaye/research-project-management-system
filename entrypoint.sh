@@ -8,18 +8,15 @@ export SESSION_DRIVER=file
 export APP_KEY=base64:d19mTWFnZWMxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ=
 export APP_DEBUG=false
 
-# Create SQLite database if not exists
+# Create SQLite database if not exists (preserve data on restarts and redeploys)
 mkdir -p /data
-
-# Remove stale database to force clean reseed (demo app, no production data)
-rm -f /data/database.sqlite
-touch /data/database.sqlite
-
-# Run migrations
-php artisan migrate --force
-
-# Seed the database (uses firstOrCreate, safe to run multiple times)
-php artisan db:seed --force 2>&1 || echo "SEED_FAILED"
+if [ ! -f /data/database.sqlite ]; then
+    touch /data/database.sqlite
+    php artisan migrate --force
+    php artisan db:seed --force 2>&1 || echo "SEED_FAILED"
+else
+    php artisan migrate --force
+fi
 
 # Clear stale caches and rate limiter before rebuilding
 php artisan config:clear
