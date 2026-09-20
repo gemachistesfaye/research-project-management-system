@@ -116,7 +116,7 @@ class GovernanceController extends Controller
             return back()->with('error', 'This project requires RCSC approval (budget >= 500,000 ETB).');
         }
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review'];
+        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'RCSC_Review', 'DH_Screened'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for budget approval at its current status.');
         }
@@ -184,7 +184,7 @@ class GovernanceController extends Controller
             return back()->with('error', 'This project requires Dean approval (budget < 500,000 ETB).');
         }
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review'];
+        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'RCSC_Review', 'DH_Screened'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for budget approval at its current status.');
         }
@@ -241,7 +241,7 @@ class GovernanceController extends Controller
             return back()->with('error', 'Associated project not found.');
         }
 
-        $eligibleStatuses = ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active'];
+        $eligibleStatuses = ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'RCSC_Review', 'Approved', 'Active'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for ethics review at its current status.');
         }
@@ -319,7 +319,7 @@ class GovernanceController extends Controller
     {
         $project = Project::findOrFail($id);
 
-        $eligibleStatuses = ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active'];
+        $eligibleStatuses = ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'RCSC_Review', 'Approved', 'Active'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for ethics review at its current status.');
         }
@@ -373,5 +373,18 @@ class GovernanceController extends Controller
             'project'          => $cert->project,
         ]);
         return $pdf->download('Certificate-' . $cert->certificate_code . '.pdf');
+    }
+
+    public function viewCertificate($id)
+    {
+        $cert = Certificate::with('project')->findOrFail($id);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('certificates.pdf', [
+            'certificate_code' => $cert->certificate_code,
+            'type'             => $cert->type,
+            'issued_to_name'   => $cert->issued_to_name,
+            'issued_at'        => $cert->issued_at,
+            'project'          => $cert->project,
+        ]);
+        return $pdf->stream('Certificate-' . $cert->certificate_code . '.pdf');
     }
 }

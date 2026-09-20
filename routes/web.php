@@ -515,6 +515,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:coordinator,pi,vparttcs,admin'])->group(function () {
         Route::get('/certificates/{id}/download', [GovernanceController::class, 'downloadCertificate'])->name('certificates.download');
+        Route::get('/certificates/{id}/view', [GovernanceController::class, 'viewCertificate'])->name('certificates.view');
     });
 
     Route::middleware(['role:coordinator', 'permission:view_projects'])->group(function () {

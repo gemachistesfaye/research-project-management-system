@@ -30,9 +30,14 @@
                     <td><span class="badge bg-success">{{ $c->type }}</span></td>
                     <td>{{ $c->issued_at ? $c->issued_at->format('M d, Y H:i') : 'N/A' }}</td>
                     <td>
-                        <a href="{{ route('certificates.download', $c->id) }}" class="btn btn-sm btn-outline-danger" title="Download PDF">
-                            <i class="bi bi-file-pdf me-1"></i>Download PDF
-                        </a>
+                        <div class="d-flex gap-1 align-items-center flex-wrap">
+                            <a href="{{ route('certificates.view', $c->id) }}" target="_blank" class="btn btn-sm btn-outline-primary" title="View Certificate in browser">
+                                <i class="bi bi-eye me-1"></i>View
+                            </a>
+                            <a href="{{ route('certificates.download', $c->id) }}" class="btn btn-sm btn-outline-danger" title="Download PDF">
+                                <i class="bi bi-download me-1"></i>Download PDF
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 @empty

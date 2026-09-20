@@ -51,8 +51,11 @@
                 </a>
                 @php $cert = $project->certificates ? $project->certificates->first() : null; @endphp
                 @if($cert)
+                    <a href="{{ route('certificates.view', $cert->id) }}" target="_blank" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
+                        <i class="bi bi-eye me-1"></i>View Certificate
+                    </a>
                     <a href="{{ route('certificates.download', $cert->id) }}" class="btn btn-dark btn-sm fw-bold shadow-sm">
-                        <i class="bi bi-award me-1"></i>Download Certificate (PDF)
+                        <i class="bi bi-download me-1"></i>Download PDF
                     </a>
                 @elseif(in_array(Auth::user()->role, ['coordinator', 'admin']))
                     <a href="{{ route('certificates') }}" class="btn btn-success btn-sm fw-bold shadow-sm">
