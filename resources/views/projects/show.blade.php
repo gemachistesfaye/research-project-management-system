@@ -51,6 +51,15 @@
             @else
                 <span class="badge bg-info text-dark fs-6">College Dean Tier (&lt;500k ETB)</span>
             @endif
+            @if($project->irercClearance)
+                @if($project->irercClearance->status === 'Approved')
+                    <span class="badge bg-success fs-6"><i class="bi bi-shield-check me-1"></i>Ethics Cleared ({{ $project->irercClearance->clearance_code }})</span>
+                @elseif($project->irercClearance->status === 'Rejected')
+                    <span class="badge bg-danger fs-6"><i class="bi bi-shield-x me-1"></i>Ethics Rejected</span>
+                @else
+                    <span class="badge bg-warning text-dark fs-6"><i class="bi bi-shield-exclamation me-1"></i>Ethics Review Pending</span>
+                @endif
+            @endif
             <span class="text-muted small ms-auto">
                 <i class="bi bi-clock me-1"></i>Last updated {{ $project->updated_at ? $project->updated_at->diffForHumans() : $project->created_at->diffForHumans() }}
             </span>
@@ -195,6 +204,18 @@
                 <button class="btn w-100 mb-2 text-start fw-bold" style="background:#fff;color:#dc3545;border:1.5px solid #dc3545;" onmouseover="this.style.background='#dc3545';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#dc3545'" type="button" data-bs-toggle="collapse" data-bs-target="#terminateForm">
                     <i class="bi bi-x-octagon me-2"></i>Terminate Project
                 </button>
+                @endif
+
+                {{-- Send to Ethics Review (IRERC) --}}
+                @if(in_array(Auth::user()->role, ['coordinator', 'admin']) && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active']))
+                    @if(!$project->irercClearance)
+                    <form action="{{ route('projects.create-irerc-clearance', $project->project_id) }}" method="POST" class="mb-2">
+                        @csrf
+                        <button type="button" class="btn w-100 text-start confirm-btn fw-bold" style="background:#fff;color:#0d6efd;border:1.5px solid #0d6efd;" onmouseover="this.style.background='#0d6efd';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#0d6efd'" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to the Institutional Research Ethics Review Committee (IRERC) for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Request" data-confirm-btn-class="btn-primary">
+                            <i class="bi bi-shield-plus me-2"></i>Send to Ethics (IRERC)
+                        </button>
+                    </form>
+                    @endif
                 @endif
 
                 {{-- Mark Complete --}}

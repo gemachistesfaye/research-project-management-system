@@ -461,8 +461,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dean/approvals/{id}/decision', [GovernanceController::class, 'deanDecision'])->name('dean.decision');
     });
 
-    Route::middleware(['role:irerc', 'permission:ethics_review'])->group(function () {
+    Route::middleware(['role:irerc,coordinator,admin'])->group(function () {
         Route::get('/irerc/panel', [GovernanceController::class, 'irercPanel'])->name('irerc.panel');
+    });
+
+    Route::middleware(['role:irerc,admin', 'permission:ethics_review'])->group(function () {
         Route::post('/irerc/panel/{id}/decision', [GovernanceController::class, 'irercDecision'])->name('irerc.decision');
     });
 
