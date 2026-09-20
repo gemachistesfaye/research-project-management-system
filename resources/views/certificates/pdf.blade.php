@@ -168,7 +168,7 @@
         </div>
     </div>
 
-    <div class="date-line">Issued on {{ $issued_at->format('F j, Y') }}</div>
+    <div class="date-line">Issued on {{ $issued_at ? \Carbon\Carbon::parse($issued_at)->format('F j, Y') : now()->format('F j, Y') }}</div>
 
     <div class="footer">
         <div class="footer-col">
