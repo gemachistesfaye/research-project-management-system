@@ -541,14 +541,14 @@
                 <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-eye-slash me-2 text-primary"></i>Blind Peer Review Evaluations</h5>
             </div>
             <div class="card-body p-4">
-                @if(Auth::user()->role === 'coordinator')
+                @if(Auth::user()->role === 'coordinator' && in_array($project->status, ['DH_Screened', 'UnderReview']) && $project->evaluations->where('decision', 'Pending')->count() < 2 && $project->evaluations->count() < 2)
                 <form method="POST" action="{{ route('projects.assign-reviewer', $project->project_id) }}" class="mb-4 p-3 bg-light rounded-3">
                     @csrf
                     <div class="fw-bold mb-2">Assign Blind Peer Examiner</div>
                     <div class="input-group">
                         <select name="examiner_id" class="form-select" required>
                             <option value="">-- Select Faculty Member for Blind Review --</option>
-                            @foreach($reviewers as $rev)
+                            @foreach($reviewers->whereNotIn('id', $project->evaluations->pluck('examiner_id')) as $rev)
                                 <option value="{{ $rev->id }}">{{ $rev->name }} ({{ $rev->department ? $rev->department->name : 'Faculty' }})</option>
                             @endforeach
                         </select>
