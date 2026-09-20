@@ -213,18 +213,40 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:finance', 'permission:process_disbursement'])->group(function () {
         Route::get('/finance/disbursement', function () {
             // Ensure all Active projects have Tranche 1 queued if not already present
-            $activeProjects = \App\Models\Project::where('status', 'Active')->get();
+            $activeProjects = \App\Models\Project::where('status', 'Active')->with('milestoneReports')->get();
             foreach ($activeProjects as $p) {
-                $hasTranche = \App\Models\BudgetRequest::where('project_id', $p->project_id)->exists();
-                if (!$hasTranche) {
-                    $approvedBudget = $p->approved_budget ?: $p->requested_budget;
+                $approvedBudget = $p->approved_budget ?: $p->requested_budget;
+                $tier = ($approvedBudget >= 500000) ? 'RCSC_VP' : 'Dean';
+
+                $hasTranche1 = \App\Models\BudgetRequest::where('project_id', $p->project_id)
+                    ->where('milestone_phase', 'Tranche 1')
+                    ->exists();
+                if (!$hasTranche1) {
                     $tranche1Amount = round($approvedBudget * 0.30, 2);
-                    $tier = ($approvedBudget >= 500000) ? 'RCSC_VP' : 'Dean';
                     \App\Models\BudgetRequest::create([
                         'project_id' => $p->project_id,
                         'milestone_phase' => 'Tranche 1',
                         'requested_amount' => $tranche1Amount,
                         'approved_amount' => $tranche1Amount,
+                        'approval_tier' => $tier,
+                        'status' => 'Approved',
+                        'approved_by' => \Auth::id() ?? $p->pi_id,
+                    ]);
+                }
+
+                // Check if project has an approved milestone report and Tranche 2 is not yet created
+                $hasApprovedMilestone = $p->milestoneReports->whereIn('status', ['Approved', 'Coordinator_Audited'])->count() > 0;
+                $hasTranche2 = \App\Models\BudgetRequest::where('project_id', $p->project_id)
+                    ->where('milestone_phase', 'Tranche 2')
+                    ->exists();
+
+                if ($hasApprovedMilestone && !$hasTranche2) {
+                    $tranche2Amount = round($approvedBudget * 0.40, 2);
+                    \App\Models\BudgetRequest::create([
+                        'project_id' => $p->project_id,
+                        'milestone_phase' => 'Tranche 2',
+                        'requested_amount' => $tranche2Amount,
+                        'approved_amount' => $tranche2Amount,
                         'approval_tier' => $tier,
                         'status' => 'Approved',
                         'approved_by' => \Auth::id() ?? $p->pi_id,

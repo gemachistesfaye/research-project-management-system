@@ -40,6 +40,30 @@ class DashboardController extends Controller
                 ->with(['project.pi'])
                 ->get();
         } elseif ($role === 'finance') {
+            // Auto-queue Tranche 2 for any active projects with approved milestone reports
+            $activeProjects = Project::where('status', 'Active')->with('milestoneReports')->get();
+            foreach ($activeProjects as $p) {
+                $hasApprovedMilestone = $p->milestoneReports->whereIn('status', ['Approved', 'Coordinator_Audited'])->count() > 0;
+                $hasTranche2 = BudgetRequest::where('project_id', $p->project_id)
+                    ->where('milestone_phase', 'Tranche 2')
+                    ->exists();
+
+                if ($hasApprovedMilestone && !$hasTranche2) {
+                    $approvedBudget = $p->approved_budget ?: $p->requested_budget;
+                    $tier = ($approvedBudget >= 500000) ? 'RCSC_VP' : 'Dean';
+                    $tranche2Amount = round($approvedBudget * 0.40, 2);
+                    BudgetRequest::create([
+                        'project_id'       => $p->project_id,
+                        'milestone_phase'  => 'Tranche 2',
+                        'requested_amount' => $tranche2Amount,
+                        'approved_amount'  => $tranche2Amount,
+                        'approval_tier'    => $tier,
+                        'status'           => 'Approved',
+                        'approved_by'      => $user->id,
+                    ]);
+                }
+            }
+
             $pendingDisbursements = BudgetRequest::where('status', 'Approved')
                 ->where('milestone_phase', 'like', 'Tranche%')
                 ->whereHas('project', function ($q) {
