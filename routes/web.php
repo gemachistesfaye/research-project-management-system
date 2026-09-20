@@ -402,9 +402,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dh/screening/{id}/decision', [GovernanceController::class, 'dhScreeningDecision'])->name('dh.screening.decision');
     });
 
-    Route::middleware(['role:coordinator', 'permission:manage_certificates'])->group(function () {
+    Route::middleware(['role:coordinator,admin', 'permission:manage_certificates'])->group(function () {
         Route::get('/certificates', [GovernanceController::class, 'certificates'])->name('certificates');
         Route::post('/certificates', [GovernanceController::class, 'storeCertificate'])->name('certificates.store');
+    });
+
+    Route::middleware(['role:coordinator,pi,vparttcs,admin'])->group(function () {
         Route::get('/certificates/{id}/download', [GovernanceController::class, 'downloadCertificate'])->name('certificates.download');
     });
 

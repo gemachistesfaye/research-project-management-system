@@ -17,6 +17,12 @@ class RPMSWorkflowTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(\Database\Seeders\RbacSeeder::class);
+    }
+
     public function test_double_blind_peer_review_masking()
     {
         $pi = User::factory()->create(['role' => 'pi', 'name' => 'Dr. Abebe']);
@@ -120,6 +126,42 @@ class RPMSWorkflowTest extends TestCase
         $this->assertNotNull($project->vp_signature_date);
         $this->assertNotNull($project->contract_signed_at);
         $this->assertEquals('Active', $project->status);
+    }
+
+    public function test_completion_certificate_issuance_and_download()
+    {
+        $pi = User::factory()->create(['role' => 'pi']);
+        \App\Services\RbacService::syncUserRole($pi);
+
+        $coordinator = User::factory()->create(['role' => 'coordinator']);
+        \App\Services\RbacService::syncUserRole($coordinator);
+
+        $thematic = ThematicArea::create(['title' => 'Renewable Energy']);
+
+        $project = Project::create([
+            'title' => 'Solar Microgrid Gambella',
+            'abstract_text' => 'Renewable solar implementation',
+            'thematic_id' => $thematic->id,
+            'pi_id' => $pi->id,
+            'requested_budget' => 400000.00,
+            'status' => 'Completed',
+        ]);
+
+        // Coordinator issues completion certificate
+        $response = $this->actingAs($coordinator)->post(route('certificates.store'), [
+            'project_id' => $project->project_id,
+            'type' => 'Completion',
+            'issued_to_name' => 'Dr. Abebe Bikila',
+        ]);
+        $response->assertSessionHas('success', 'Certificate issued successfully.');
+
+        $cert = \App\Models\Certificate::where('project_id', $project->project_id)->first();
+        $this->assertNotNull($cert);
+        $this->assertStringStartsWith('GMU-CERT-', $cert->certificate_code);
+
+        // PI downloads certificate PDF
+        $downloadResponse = $this->actingAs($pi)->get(route('certificates.download', $cert->id));
+        $downloadResponse->assertStatus(200);
     }
 }
 
