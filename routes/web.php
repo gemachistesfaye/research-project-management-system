@@ -361,11 +361,15 @@ Route::middleware(['auth'])->group(function () {
             return back()->with('success', 'Purchase request submitted successfully.');
         })->name('procurement.store');
     });
-    Route::middleware(['role:coordinator', 'permission:manage_procurement'])->group(function () {
+    Route::middleware(['role:coordinator,admin', 'permission:manage_procurement'])->group(function () {
         Route::post('/procurement/{id}/approve', function ($id) {
             \App\Models\ProcurementRequest::findOrFail($id)->update(['status' => 'Approved']);
             return back()->with('success', 'Purchase request approved.');
         })->name('procurement.approve');
+        Route::post('/procurement/{id}/mark-purchased', function ($id) {
+            \App\Models\ProcurementRequest::findOrFail($id)->update(['status' => 'Purchased']);
+            return back()->with('success', 'Item marked as Purchased & Delivered.');
+        })->name('procurement.mark-purchased');
         Route::post('/procurement/{id}/reject', function ($id) {
             \App\Models\ProcurementRequest::findOrFail($id)->update(['status' => 'Rejected']);
             return back()->with('success', 'Purchase request rejected.');
@@ -505,6 +509,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:coordinator,admin', 'permission:manage_certificates'])->group(function () {
         Route::get('/certificates', [GovernanceController::class, 'certificates'])->name('certificates');
         Route::post('/certificates', [GovernanceController::class, 'storeCertificate'])->name('certificates.store');
+        Route::post('/projects/{id}/complete', [ProjectController::class, 'markComplete'])->name('projects.mark-complete');
     });
 
     Route::middleware(['role:coordinator,pi,vparttcs,admin'])->group(function () {

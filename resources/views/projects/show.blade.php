@@ -31,10 +31,34 @@
                     <i class="bi bi-pen me-1"></i>View & Sign Contract
                 </a>
                 @endif
-            @elseif($project->status === 'Completed')
-                <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>Completed</span>
             @elseif($project->status === 'Active')
                 <span class="badge bg-primary fs-6"><i class="bi bi-play-circle me-1"></i>{{ $project->status }}</span>
+                <a href="{{ route('progress.show', $project->project_id) }}" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
+                    <i class="bi bi-graph-up me-1"></i>Progress &amp; Milestones
+                </a>
+                @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
+                <form action="{{ route('projects.mark-complete', $project->project_id) }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="button" class="btn btn-success btn-sm fw-bold shadow-sm confirm-btn" data-confirm-title="Mark Project as Complete" data-confirm-message="All tranches have been disbursed and milestones met. Mark this research project as officially Completed?" data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Complete Project" data-confirm-btn-class="btn-success">
+                        <i class="bi bi-check-all me-1"></i>Mark as Completed
+                    </button>
+                </form>
+                @endif
+            @elseif($project->status === 'Completed')
+                <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>Completed</span>
+                <a href="{{ route('progress.show', $project->project_id) }}" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
+                    <i class="bi bi-graph-up me-1"></i>Progress History
+                </a>
+                @php $cert = $project->certificates ? $project->certificates->first() : null; @endphp
+                @if($cert)
+                    <a href="{{ route('certificates.download', $cert->id) }}" class="btn btn-dark btn-sm fw-bold shadow-sm">
+                        <i class="bi bi-award me-1"></i>Download Certificate (PDF)
+                    </a>
+                @elseif(in_array(Auth::user()->role, ['coordinator', 'admin']))
+                    <a href="{{ route('certificates') }}" class="btn btn-success btn-sm fw-bold shadow-sm">
+                        <i class="bi bi-award me-1"></i>Issue Completion Certificate
+                    </a>
+                @endif
             @elseif(in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview']))
                 <span class="badge bg-warning text-dark fs-6"><i class="bi bi-hourglass-split me-1"></i>{{ $project->status }}</span>
             @elseif($project->status === 'Rejected' || $project->status === 'Terminated')
@@ -193,7 +217,7 @@
                 @endif
 
                 {{-- Extend --}}
-                @if(in_array($project->status, ['Active', 'Approved']) && in_array(Auth::user()->role, ['pi', 'coordinator', 'admin']))
+                @if(in_array($project->status, ['Active', 'Approved']) && Auth::user()->role === 'pi' && (int)$project->pi_id === (int)Auth::id())
                 <button class="btn w-100 mb-2 text-start fw-bold" style="background:#fff;color:#e67700;border:1.5px solid #e67700;" onmouseover="this.style.background='#e67700';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#e67700'" type="button" data-bs-toggle="collapse" data-bs-target="#extensionForm">
                     <i class="bi bi-hourglass-split me-2"></i>Request Extension
                 </button>
@@ -321,11 +345,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded-3 h-100">
-                            <div class="text-muted small text-uppercase fw-bold mb-1">Budget</div>
-                            <div class="fs-5 fw-bold text-primary">
-                                {{ number_format($project->requested_budget, 2) }} ETB
-                                @if($project->approved_budget)
-                                    <span class="text-success fs-6">/ {{ number_format($project->approved_budget, 2) }} ETB (Ratified)</span>
+                            <div class="text-muted small text-uppercase fw-bold mb-1">Grant Budget</div>
+                            <div class="fs-6 fw-bold">
+                                @if($project->approved_budget && $project->approved_budget != $project->requested_budget)
+                                    <span class="text-success fs-5">{{ number_format($project->approved_budget, 2) }} ETB</span>
+                                    <small class="text-muted d-block" style="font-size:0.75rem;">(Orig. Requested: {{ number_format($project->requested_budget, 2) }} ETB + {{ number_format($project->approved_budget - $project->requested_budget, 2) }} ETB Amendment)</small>
+                                @else
+                                    <span class="text-primary fs-5">{{ number_format($project->approved_budget ?: $project->requested_budget, 2) }} ETB</span>
+                                    <span class="badge bg-success-subtle text-success ms-1">Ratified</span>
                                 @endif
                             </div>
                         </div>
@@ -664,7 +691,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($project->budgetRequests->filter(fn($r) => str_starts_with($r->milestone_phase, 'Tranche')) as $bReq)
+                            @forelse($project->budgetRequests->filter(fn($r) => str_starts_with($r->milestone_phase, 'Tranche') || $r->milestone_phase === 'Budget Amendment')->sortBy('id') as $bReq)
                             <tr>
                                 <td class="fw-bold text-dark">
                                     @if($bReq->milestone_phase === 'Tranche 1')
@@ -673,6 +700,8 @@
                                         <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2</span>
                                     @elseif($bReq->milestone_phase === 'Tranche 3')
                                         <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3</span>
+                                    @elseif($bReq->milestone_phase === 'Budget Amendment')
+                                        <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-cash-stack me-1"></i>Budget Amendment</span>
                                     @else
                                         <span class="badge bg-secondary text-white">{{ $bReq->milestone_phase }}</span>
                                     @endif
@@ -684,6 +713,8 @@
                                         40% (Mid-Term)
                                     @elseif($bReq->milestone_phase === 'Tranche 3')
                                         30% (Final)
+                                    @elseif($bReq->milestone_phase === 'Budget Amendment')
+                                        Supplemental / Amendment
                                     @else
                                         -
                                     @endif
