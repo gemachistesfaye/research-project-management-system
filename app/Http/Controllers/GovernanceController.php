@@ -226,6 +226,7 @@ class GovernanceController extends Controller
         $request->validate([
             'decision'   => 'required|in:Approved,Rejected',
             'risk_level' => 'required|in:Low,Medium,High,Critical',
+            'comments'   => 'nullable|string',
             'conditions' => 'nullable|string',
         ]);
 
@@ -240,16 +241,18 @@ class GovernanceController extends Controller
             return back()->with('error', 'Associated project not found.');
         }
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved'];
+        $eligibleStatuses = ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for ethics review at its current status.');
         }
 
+        $notes = $request->comments ?: $request->conditions;
+
         $updateData = [
-            'status'       => $request->decision,
-            'risk_level'   => $request->risk_level,
-            'committee_notes' => $request->conditions,
-            'issued_at'    => now(),
+            'status'          => $request->decision,
+            'risk_level'      => $request->risk_level,
+            'committee_notes' => $notes,
+            'issued_at'       => now(),
         ];
 
         if ($request->decision === 'Approved') {
@@ -261,7 +264,7 @@ class GovernanceController extends Controller
         if ($request->decision === 'Approved') {
             Project::where('project_id', $clearance->project_id)->update(['ethical_cleared' => true]);
         } else {
-            Project::where('project_id', $clearance->project_id)->update(['status' => 'Rejected', 'feedback' => $request->conditions]);
+            Project::where('project_id', $clearance->project_id)->update(['status' => 'Rejected', 'feedback' => $notes]);
         }
 
         return back()->with('success', "Ethics review {$request->decision} successfully.");

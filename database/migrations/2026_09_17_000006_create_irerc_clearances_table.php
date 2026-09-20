@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('irerc_clearances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained('projects', 'project_id')->onDelete('cascade');
-            $table->enum('risk_level', ['Low', 'Medium', 'High'])->default('Low');
-            $table->enum('status', ['Pending', 'Approved', 'Rejected', 'Conditional'])->default('Pending');
+            $table->string('risk_level', 50)->default('Low');
+            $table->string('status', 50)->default('Pending');
             $table->string('clearance_code')->nullable()->unique();
             $table->text('committee_notes')->nullable();
             $table->timestamp('issued_at')->nullable();
