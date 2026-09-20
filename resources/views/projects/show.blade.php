@@ -331,6 +331,22 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="mb-4">
+                    <div class="text-muted small text-uppercase fw-bold mb-2">Abstract & Problem Statement</div>
+                    <div class="p-3 bg-light rounded-3 border-start border-success border-3">
+                        {{ $project->abstract_text }}
+                    </div>
+                </div>
+
+                @if($project->proposal_document_url)
+                <div class="mt-3">
+                    <div class="text-muted small text-uppercase fw-bold mb-2">Proposal Document</div>
+                    <a href="{{ Storage::url($project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-primary fw-bold">
+                        <i class="bi bi-file-pdf me-1"></i>View Proposal PDF
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -383,24 +399,6 @@
             </div>
         </div>
         @endif
-
-                <div>
-                    <div class="text-muted small text-uppercase fw-bold mb-2">Abstract & Problem Statement</div>
-                    <div class="p-3 bg-light rounded-3 border-start border-success border-3">
-                        {{ $project->abstract_text }}
-                    </div>
-                </div>
-
-                @if($project->proposal_document_url)
-                <div>
-                    <div class="text-muted small text-uppercase fw-bold mb-2">Proposal Document</div>
-                    <a href="{{ Storage::url($project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-primary fw-bold">
-                        <i class="bi bi-file-pdf me-1"></i>View Proposal PDF
-                    </a>
-                </div>
-                @endif
-            </div>
-        </div>
 
         {{-- Team Members Card --}}
         <div class="card shadow-sm border-0 mb-4">
