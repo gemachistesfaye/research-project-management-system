@@ -65,7 +65,10 @@ class DashboardController extends Controller
             }
 
             $pendingDisbursements = BudgetRequest::where('status', 'Approved')
-                ->where('milestone_phase', 'like', 'Tranche%')
+                ->where(function ($q) {
+                    $q->where('milestone_phase', 'like', 'Tranche%')
+                      ->orWhere('milestone_phase', 'Budget Amendment');
+                })
                 ->whereHas('project', function ($q) {
                     $q->whereIn('status', ['Active', 'Approved', 'Completed']);
                 })

@@ -111,6 +111,11 @@ class Project extends Model
         return $this->hasOne(ProjectTermination::class, 'project_id', 'project_id');
     }
 
+    public function procurementRequests()
+    {
+        return $this->hasMany(ProcurementRequest::class, 'project_id', 'project_id');
+    }
+
     public function certificates()
     {
         return $this->hasMany(Certificate::class, 'project_id', 'project_id');

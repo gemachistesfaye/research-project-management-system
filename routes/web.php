@@ -255,7 +255,10 @@ Route::middleware(['auth'])->group(function () {
             }
 
             $pendingRequests = \App\Models\BudgetRequest::where('status', 'Approved')
-                ->where('milestone_phase', 'like', 'Tranche%')
+                ->where(function ($q) {
+                    $q->where('milestone_phase', 'like', 'Tranche%')
+                      ->orWhere('milestone_phase', 'Budget Amendment');
+                })
                 ->whereHas('project', function ($q) {
                     $q->whereIn('status', ['Active', 'Approved', 'Completed']);
                 })
@@ -440,7 +443,29 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/amendments/{id}/approve', function ($id) {
             $amend = \App\Models\BudgetAmendment::findOrFail($id);
             $amend->update(['status' => 'Approved', 'approved_by' => \Auth::id()]);
-            return back()->with('success', 'Budget amendment approved.');
+
+            // Increment project approved_budget
+            $project = \App\Models\Project::where('project_id', $amend->project_id)->first();
+            if ($project) {
+                $oldBudget = $project->approved_budget ?: $project->requested_budget;
+                $newBudget = $oldBudget + $amend->delta_amount;
+                $project->update(['approved_budget' => $newBudget]);
+
+                // Auto-queue Amendment Disbursement in Finance
+                $tier = ($newBudget >= 500000) ? 'RCSC_VP' : 'Dean';
+                \App\Models\BudgetRequest::create([
+                    'project_id'       => $project->project_id,
+                    'milestone_phase'  => 'Budget Amendment',
+                    'requested_amount' => $amend->delta_amount,
+                    'approved_amount'  => $amend->delta_amount,
+                    'approval_tier'    => $tier,
+                    'status'           => 'Approved',
+                    'approved_by'      => \Auth::id(),
+                    'notes'            => 'Approved supplemental budget amendment: ' . $amend->justification,
+                ]);
+            }
+
+            return back()->with('success', 'Budget amendment of ETB ' . number_format($amend->delta_amount, 2) . ' approved and queued for Finance disbursement.');
         })->name('amendments.approve');
         Route::post('/amendments/{id}/reject', function ($id) {
             $amend = \App\Models\BudgetAmendment::findOrFail($id);
