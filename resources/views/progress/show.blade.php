@@ -78,7 +78,8 @@
         </div>
     </div>
 
-    {{-- Submit New Report --}}
+    @if(in_array(Auth::user()->role, ['pi', 'tm']))
+    {{-- Submit New Report (PI & TM Only) --}}
     <div class="col-lg-5">
         <div class="card card-custom">
             <div class="card-header bg-dark text-white fw-bold">
@@ -134,9 +135,10 @@
             </div>
         </div>
     </div>
+    @endif
 
     {{-- Report History & Timeline --}}
-    <div class="col-lg-7">
+    <div class="{{ in_array(Auth::user()->role, ['pi', 'tm']) ? 'col-lg-7' : 'col-12' }}">
         {{-- Milestone Timeline --}}
         @if($reports->count() > 0)
         <div class="card card-custom mb-4">
@@ -229,11 +231,11 @@
                         </div>
                     @endif
 
-                    {{-- Coordinator Review Form (visible to coordinator/dh) --}}
-                    @if(in_array(Auth::user()->role, ['coordinator', 'dh']))
+                    {{-- Coordinator Review Form (strictly coordinator and admin) --}}
+                    @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
                     <div class="card border-dark border-opacity-25 mt-3">
                         <div class="card-header bg-dark bg-opacity-10 py-2">
-                            <small class="fw-bold text-dark"><i class="bi bi-pencil-square me-1"></i>Coordinator Review</small>
+                            <small class="fw-bold text-dark"><i class="bi bi-pencil-square me-1"></i>Coordinator Milestone Audit &amp; Review</small>
                         </div>
                         <div class="card-body py-3">
                             <form action="{{ route('progress.update', $report->id) }}" method="POST">
@@ -242,7 +244,7 @@
                                 <div class="mb-3">
                                     <label class="form-label small fw-bold">Coordinator Feedback</label>
                                     <textarea name="coordinator_feedback" class="form-control form-control-sm" rows="2"
-                                              placeholder="Add feedback...">{{ $report->coordinator_feedback }}</textarea>
+                                              placeholder="Add coordinator feedback...">{{ $report->coordinator_feedback }}</textarea>
                                 </div>
                                 <div class="d-flex gap-2 align-items-center">
                                     <select name="status" class="form-select form-select-sm" style="width: auto;">
@@ -251,11 +253,15 @@
                                         <option value="Needs_Revision" {{ $report->status === 'Needs_Revision' ? 'selected' : '' }}>Needs Revision</option>
                                     </select>
                                     <button type="button" class="btn btn-sm btn-dark confirm-btn" data-confirm-title="Update Report" data-confirm-message="Update this progress report status?" data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Update" data-confirm-btn-class="btn-dark">
-                                        <i class="bi bi-check-lg me-1"></i> Update
+                                        <i class="bi bi-check-lg me-1"></i> Update &amp; Ratify
                                     </button>
                                 </div>
                             </form>
                         </div>
+                    </div>
+                    @elseif(Auth::user()->role === 'dh')
+                    <div class="mt-3 p-2 bg-light rounded border text-muted small">
+                        <i class="bi bi-eye me-1"></i><strong>Department Head Read-Only:</strong> Milestone review, audit and status updates are managed by the Research Coordinator.
                     </div>
                     @endif
                 </div>

@@ -100,8 +100,8 @@ class ProgressReportController extends Controller
         $project = Project::where('project_id', $report->project_id)->firstOrFail();
         $user = Auth::user();
 
-        if ($user->role === 'dh' && (int) $project->dept_id !== (int) $user->dept_id) {
-            abort(403, 'You can only review progress reports for projects within your department.');
+        if (!in_array($user->role, ['coordinator', 'admin'])) {
+            abort(403, 'Only Research Coordinators and Administrators are authorized to audit and approve progress reports.');
         }
 
         $request->validate([

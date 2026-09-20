@@ -112,7 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['permission:submit_progress_report'])->group(function () {
         Route::post('/progress/{projectId}', [ProgressReportController::class, 'store'])->name('progress.store');
     });
-    Route::middleware(['permission:review_progress_report'])->group(function () {
+    Route::middleware(['role:coordinator,admin', 'permission:review_progress_report'])->group(function () {
         Route::put('/progress/report/{reportId}', [ProgressReportController::class, 'update'])->name('progress.update');
     });
 
@@ -168,6 +168,9 @@ Route::middleware(['auth'])->group(function () {
             $project = \App\Models\Project::with('irercClearance')->findOrFail($id);
             if (!in_array(\Auth::user()->role, ['vparttcs', 'admin'])) {
                 return back()->with('error', 'Only the Vice President (ARTTCS) or System Admin can sign this contract as VP.');
+            }
+            if ($project->status !== 'Approved') {
+                return back()->with('error', 'Project budget must be ratified and approved before VP contract authorization.');
             }
             if (!$project->pi_signature_date) {
                 return back()->with('error', 'PI must sign first before VP can sign.');
@@ -230,6 +233,10 @@ Route::middleware(['auth'])->group(function () {
             }
 
             $pendingRequests = \App\Models\BudgetRequest::where('status', 'Approved')
+                ->where('milestone_phase', 'like', 'Tranche%')
+                ->whereHas('project', function ($q) {
+                    $q->where('status', 'Active');
+                })
                 ->with('project.pi')
                 ->get();
             $disbursedHistory = \App\Models\BudgetRequest::where('status', 'Released')
