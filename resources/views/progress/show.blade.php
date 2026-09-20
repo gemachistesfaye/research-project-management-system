@@ -74,6 +74,41 @@
                         </div>
                     </div>
                 </div>
+    {{-- Financial Disbursement & Tranche Status (Visible to PI, TM, Coordinator, DH) --}}
+    @php
+        $ratifiedTotal = $project->approved_budget ?: $project->requested_budget;
+        $totalReleased = $project->budgetRequests->where('status', 'Released')->sum('approved_amount');
+        $tranches = $project->budgetRequests->filter(fn($r) => str_starts_with($r->milestone_phase, 'Tranche'));
+    @endphp
+    <div class="col-12">
+        <div class="card card-custom border-start border-success border-4">
+            <div class="card-body p-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-cash-stack text-success fs-4 me-2"></i>
+                        <div>
+                            <span class="fw-bold text-dark">Finance Disbursement &amp; Tranche Status</span>
+                            <small class="text-muted d-block" style="font-size:0.75rem;">Ratified Budget: {{ number_format($ratifiedTotal, 2) }} ETB &bull; Total Disbursed: <strong class="text-success">{{ number_format($totalReleased, 2) }} ETB</strong></small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 align-items-center flex-wrap">
+                        @foreach(['Tranche 1' => '30% Advance', 'Tranche 2' => '40% Mid-Term', 'Tranche 3' => '30% Final'] as $trancheName => $trancheDesc)
+                            @php
+                                $foundReq = $tranches->firstWhere('milestone_phase', $trancheName);
+                            @endphp
+                            <div class="border rounded px-2 py-1 bg-light d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+                                <strong>{{ $trancheName }}:</strong>
+                                @if($foundReq && $foundReq->status === 'Released')
+                                    <span class="badge bg-success text-white"><i class="bi bi-check-all me-1"></i>Disbursed ({{ number_format($foundReq->approved_amount, 0) }} ETB)</span>
+                                @elseif($foundReq && $foundReq->status === 'Approved')
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i>Queued in Finance ({{ number_format($foundReq->approved_amount, 0) }} ETB)</span>
+                                @else
+                                    <span class="badge bg-secondary text-white">Pending Milestone</span>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>

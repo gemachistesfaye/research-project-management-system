@@ -618,9 +618,125 @@
                             @endforelse
                         </tbody>
                     </table>
+        </div>
+
+        {{-- Financial Disbursements & Tranche Tracking Card (Visible to PI, Coordinator, DH, Dean, VP, Finance, Admin) --}}
+        @if(in_array($project->status, ['Approved', 'Active', 'Completed']) && in_array(Auth::user()->role, ['pi', 'tm', 'coordinator', 'dh', 'dean', 'vparttcs', 'rcsc', 'finance', 'admin']))
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="bi bi-cash-stack me-2 text-success"></i>Financial Disbursements &amp; Tranche Tracking
+                </h5>
+                @php
+                    $totalRatified = $project->approved_budget ?: $project->requested_budget;
+                    $totalReleased = $project->budgetRequests->where('status', 'Released')->sum('approved_amount');
+                    $releasePct = $totalRatified > 0 ? round(($totalReleased / $totalRatified) * 100, 1) : 0;
+                @endphp
+                <span class="badge bg-light text-dark border px-2 py-1">
+                    Released: <strong>{{ number_format($totalReleased, 2) }} ETB</strong> / {{ number_format($totalRatified, 2) }} ETB ({{ $releasePct }}%)
+                </span>
+            </div>
+            <div class="card-body p-4">
+                {{-- Overall Budget Progress Bar --}}
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between text-muted small mb-1">
+                        <span>Fund Release Progress</span>
+                        <span class="fw-bold text-dark">{{ $releasePct }}% Disbursed</span>
+                    </div>
+                    <div class="progress" style="height: 12px; border-radius: 6px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ $releasePct }}%; border-radius: 6px;"
+                             aria-valuenow="{{ $releasePct }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                {{-- Tranches Table --}}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tranche Phase</th>
+                                <th>Allocation %</th>
+                                <th>Approved Amount</th>
+                                <th>Status</th>
+                                <th>Disbursement Method</th>
+                                <th>Released Date</th>
+                                <th>Voucher / Ref</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($project->budgetRequests->filter(fn($r) => str_starts_with($r->milestone_phase, 'Tranche')) as $bReq)
+                            <tr>
+                                <td class="fw-bold text-dark">
+                                    @if($bReq->milestone_phase === 'Tranche 1')
+                                        <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1</span>
+                                    @elseif($bReq->milestone_phase === 'Tranche 2')
+                                        <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2</span>
+                                    @elseif($bReq->milestone_phase === 'Tranche 3')
+                                        <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3</span>
+                                    @else
+                                        <span class="badge bg-secondary text-white">{{ $bReq->milestone_phase }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($bReq->milestone_phase === 'Tranche 1')
+                                        30% (Advance)
+                                    @elseif($bReq->milestone_phase === 'Tranche 2')
+                                        40% (Mid-Term)
+                                    @elseif($bReq->milestone_phase === 'Tranche 3')
+                                        30% (Final)
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="fw-bold text-dark">{{ number_format($bReq->approved_amount ?? $bReq->requested_amount, 2) }} ETB</td>
+                                <td>
+                                    @if($bReq->status === 'Released')
+                                        <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-check-all me-1"></i>Disbursed</span>
+                                    @elseif($bReq->status === 'Approved')
+                                        <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>Pending Finance Release</span>
+                                    @else
+                                        <span class="badge bg-secondary text-white">{{ $bReq->status }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($bReq->payment_method)
+                                        <span class="badge bg-light text-dark border">{{ $bReq->payment_method }}</span>
+                                    @else
+                                        <span class="text-muted small">Pending Release</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($bReq->disbursed_at)
+                                        <span class="fw-semibold text-dark">{{ $bReq->disbursed_at->format('M d, Y') }}</span>
+                                        <small class="text-muted d-block" style="font-size:0.72rem;">{{ $bReq->disbursed_at->format('h:i A') }}</small>
+                                    @else
+                                        <span class="text-muted small">-</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($bReq->notes)
+                                        <span class="badge bg-light text-dark border text-truncate" style="max-width: 150px;" title="{{ $bReq->notes }}">
+                                            <i class="bi bi-receipt me-1"></i>{{ $bReq->notes }}
+                                        </span>
+                                    @else
+                                        <span class="text-muted small">-</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <i class="bi bi-wallet2 fs-3 d-block text-secondary mb-2"></i>
+                                    Tranche releases will appear here as the contract is signed and milestones are approved.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+        @endif
 
         {{-- Contract Section --}}
         @if(in_array($project->status, ['Approved', 'Active', 'Completed']))
@@ -652,14 +768,19 @@
                     </div>
                 </div>
                 @if(in_array(Auth::user()->role, ['pi', 'vparttcs', 'coordinator', 'admin']))
-                    @if($project->status === 'Approved')
-                    <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-primary mt-3">
-                        <i class="bi bi-pen me-1"></i>View & Sign Contract
-                    </a>
+                    @if(!$project->pi_signature_date || !$project->vp_signature_date)
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
+                        <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary fw-bold">
+                            <i class="bi bi-pen me-1"></i>View &amp; Sign Contract
+                        </a>
+                        <a href="{{ route('contracts.download', $project->project_id) }}" class="btn btn-outline-success">
+                            <i class="bi bi-download me-1"></i>Download PDF
+                        </a>
+                    </div>
                     @else
-                    <div class="d-flex gap-2 mt-3">
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
                         <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-file-earmark-text me-1"></i>View Contract
+                            <i class="bi bi-file-earmark-text me-1"></i>View Signed Contract
                         </a>
                         <a href="{{ route('contracts.download', $project->project_id) }}" class="btn btn-outline-success btn-sm">
                             <i class="bi bi-download me-1"></i>Download PDF

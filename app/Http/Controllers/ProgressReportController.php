@@ -34,7 +34,7 @@ class ProgressReportController extends Controller
     {
         $user = Auth::user();
         $project = Project::where('project_id', $projectId)
-            ->with(['milestoneReports', 'pi', 'members.user'])
+            ->with(['milestoneReports', 'pi', 'members.user', 'budgetRequests'])
             ->firstOrFail();
 
         if ($user->role === 'pi' && (int) $project->pi_id !== (int) $user->id) {
