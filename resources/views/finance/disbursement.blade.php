@@ -178,77 +178,22 @@
 
                     {{-- Disbursement Modal --}}
                     <div class="modal fade" id="disburseModal{{ $req->request_id }}" tabindex="-1">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <form action="{{ route('finance.process-disbursement', $req->request_id) }}" method="POST">
                                     @csrf
-                                    <div class="modal-header bg-dark bg-opacity-10 border-bottom">
-                                        <h6 class="modal-title fw-bold text-dark">
+                                    <div class="modal-header bg-dark text-white border-bottom">
+                                        <h6 class="modal-title fw-bold text-white">
                                             <i class="bi bi-cash me-2"></i> Process Disbursement
                                         </h6>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="alert alert-info small mb-3">
                                             <strong>Project:</strong> {{ $req->project->title ?? 'N/A' }}<br>
                                             <strong>PI:</strong> {{ $req->project->pi->name ?? 'N/A' }}<br>
-                                            <strong>Approved Amount:</strong> {{ number_format($req->approved_amount ?? 0, 2) }} ETB
-                                        </div>
-
-                                        {{-- Tranche Breakdown for this request --}}
-                                        @php
-                                            $approvedAmt = $req->approved_amount ?? 0;
-                                            $disbursedAmt = $req->disbursed_amount ?? 0;
-                                            $tranche1 = round($approvedAmt * 0.30, 2);
-                                            $tranche2 = round($approvedAmt * 0.40, 2);
-                                            $tranche3 = round($approvedAmt * 0.30, 2);
-                                            $currentTranche = 1;
-                                            if ($disbursedAmt >= $tranche1) { $currentTranche = 2; }
-                                            if ($disbursedAmt >= ($tranche1 + $tranche2)) { $currentTranche = 3; }
-                                        @endphp
-
-                                        <div class="bg-light rounded p-3 mb-3">
-                                            <div class="fw-bold small mb-2"><i class="bi bi-layers me-1"></i> Tranche Breakdown</div>
-                                            <div class="d-flex justify-content-between small mb-1">
-                                                <span>Tranche 1 (30%):</span>
-                                                <span class="fw-bold">{{ number_format($tranche1, 2) }} ETB
-                                                    @if($disbursedAmt >= $tranche1)
-                                                        <span class="badge bg-dark ms-1">Released</span>
-                                                    @elseif($currentTranche == 1)
-                                                        <span class="badge bg-warning text-dark ms-1">Current</span>
-                                                    @else
-                                                        <span class="badge bg-secondary ms-1">Pending</span>
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="d-flex justify-content-between small mb-1">
-                                                <span>Tranche 2 (40%):</span>
-                                                <span class="fw-bold">{{ number_format($tranche2, 2) }} ETB
-                                                    @if($disbursedAmt >= ($tranche1 + $tranche2))
-                                                        <span class="badge bg-dark ms-1">Released</span>
-                                                    @elseif($currentTranche == 2)
-                                                        <span class="badge bg-warning text-dark ms-1">Current</span>
-                                                    @else
-                                                        <span class="badge bg-secondary ms-1">Pending</span>
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="d-flex justify-content-between small">
-                                                <span>Tranche 3 (30%):</span>
-                                                <span class="fw-bold">{{ number_format($tranche3, 2) }} ETB
-                                                    @if($disbursedAmt >= $approvedAmt)
-                                                        <span class="badge bg-dark ms-1">Released</span>
-                                                    @elseif($currentTranche == 3)
-                                                        <span class="badge bg-warning text-dark ms-1">Current</span>
-                                                    @else
-                                                        <span class="badge bg-secondary ms-1">Pending</span>
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="progress mt-2" style="height: 8px;">
-                                                <div class="progress-bar bg-dark" style="width: {{ $approvedAmt > 0 ? min(($disbursedAmt / $approvedAmt) * 100, 100) : 0 }}%"></div>
-                                            </div>
-                                            <small class="text-muted">Disbursed: {{ number_format($disbursedAmt, 2) }} ETB of {{ number_format($approvedAmt, 2) }} ETB</small>
+                                            <strong>Phase:</strong> {{ $req->milestone_phase ?? 'Tranche 1' }}<br>
+                                            <strong>Approved Tranche Amount:</strong> {{ number_format($req->approved_amount ?? 0, 2) }} ETB
                                         </div>
 
                                         <div class="mb-3">
@@ -261,25 +206,24 @@
                                         <div class="mb-3">
                                             <label class="form-label fw-bold">Payment Method <span class="text-danger">*</span></label>
                                             <select name="payment_method" class="form-select @error('payment_method') is-invalid @enderror" required>
-                                                <option value="">-- Select Method --</option>
-                                                <option value="Cash">Cash</option>
+                                                <option value="Bank Transfer" selected>Bank Transfer (CBE / Direct Deposit)</option>
                                                 <option value="Check">Check</option>
-                                                <option value="Bank Transfer">Bank Transfer</option>
+                                                <option value="Cash">Cash</option>
                                             </select>
                                             @error('payment_method')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label fw-bold">Notes</label>
-                                            <textarea name="notes" rows="3" class="form-control @error('notes') is-invalid @enderror"
-                                                      placeholder="Optional: reference number, bank details, etc.">{{ old('notes') }}</textarea>
+                                            <label class="form-label fw-bold">Notes / Transaction Reference</label>
+                                            <textarea name="notes" rows="2" class="form-control @error('notes') is-invalid @enderror"
+                                                      placeholder="e.g. CBE Ref #GMU-2026-9812, Account credited">{{ old('notes') }}</textarea>
                                             @error('notes')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="modal-footer bg-light">
                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-success fw-bold confirm-btn" data-confirm-title="Confirm Disbursement" data-confirm-message="Confirm disbursement for this tranche? This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Confirm" data-confirm-btn-class="btn-success">
-                                            <i class="bi bi-check-lg me-1"></i> Confirm Disbursement
+                                        <button type="submit" class="btn btn-success fw-bold px-4">
+                                            <i class="bi bi-check-lg me-1"></i> Release Funds
                                         </button>
                                     </div>
                                 </form>
