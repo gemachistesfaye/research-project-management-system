@@ -89,18 +89,29 @@ class ProgressReportController extends Controller
         }
 
         $request->validate([
-            'milestone_name'         => 'required|string|max:255',
-            'progress_percentage'    => 'required|numeric|min:0|max:100',
-            'summary_text'           => 'required|string',
-            'deliverable_document_url' => 'nullable|string|max:500',
+            'milestone_name'          => 'required|string|max:255',
+            'progress_percentage'     => 'required|numeric|min:0|max:100',
+            'summary_text'            => 'required|string',
+            'deliverable_file'        => 'nullable|file|mimes:pdf,doc,docx,zip,rar,txt,xlsx,csv|max:20480',
+            'deliverable_link_url'    => 'nullable|url|max:500',
+            'deliverable_document_url'=> 'nullable|string|max:500',
         ]);
+
+        $filePath = null;
+        if ($request->hasFile('deliverable_file')) {
+            $filePath = $request->file('deliverable_file')->store('progress_deliverables', 'public');
+        }
+
+        $linkUrl = $request->deliverable_link_url ?: $request->deliverable_document_url;
 
         MilestoneReport::create([
             'project_id'              => $projectId,
             'milestone_name'          => $request->milestone_name,
             'progress_percentage'     => $request->progress_percentage,
             'summary_text'            => $request->summary_text,
-            'deliverable_document_url'=> $request->deliverable_document_url,
+            'deliverable_file_path'   => $filePath,
+            'deliverable_link_url'    => $linkUrl,
+            'deliverable_document_url'=> $linkUrl ?: ($filePath ? \Illuminate\Support\Facades\Storage::url($filePath) : null),
             'status'                  => 'Submitted',
         ]);
 

@@ -32,11 +32,11 @@
         </div>
     @else
         {{-- Approval Rules Info Box --}}
-        <div class="alert alert-light border-start border-primary border-4 mb-4">
+        <div class="alert alert-light border-start border-dark border-4 mb-4">
             <div class="d-flex align-items-start">
-                <i class="bi bi-info-circle-fill text-primary fs-4 me-3 mt-1"></i>
+                <i class="bi bi-info-circle-fill text-dark fs-4 me-3 mt-1"></i>
                 <div>
-                    <h6 class="fw-bold mb-2">Extension & Amendment Rules</h6>
+                    <h6 class="fw-bold mb-2">Extension &amp; Amendment Rules</h6>
                     <ul class="small mb-0">
                         <li><strong>Extensions 1 &amp; 2:</strong> Approved by Department Coordinator (max 6 months each).</li>
                         <li><strong>Extension 3:</strong> Requires RCSC (Research and Community Service Council) approval.</li>
@@ -61,19 +61,19 @@
                     <div class="card-body">
                         {{-- Extension Section --}}
                         <div class="mb-4">
-                            <h6 class="fw-bold text-primary mb-3"><i class="bi bi-clock-history me-1"></i> Time Extensions</h6>
+                            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-clock-history me-1"></i> Time Extensions</h6>
 
                             @php
                                 $extCount = $project->extensions->count();
                                 $extPercentage = ($extCount / 3) * 100;
-                                $extBarColor = $extCount >= 3 ? 'bg-danger' : ($extCount >= 2 ? 'bg-warning' : 'bg-primary');
+                                $extBarColor = $extCount >= 3 ? 'bg-danger' : ($extCount >= 2 ? 'bg-warning' : 'bg-dark');
                             @endphp
 
                             {{-- Progress Bar --}}
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <small class="fw-bold text-muted">Extensions Used</small>
-                                    <small class="fw-bold {{ $extCount >= 3 ? 'text-danger' : ($extCount >= 2 ? 'text-warning' : 'text-primary') }}">{{ $extCount }}/3</small>
+                                    <small class="fw-bold {{ $extCount >= 3 ? 'text-danger' : ($extCount >= 2 ? 'text-warning' : 'text-dark') }}">{{ $extCount }}/3</small>
                                 </div>
                                 <div class="progress" style="height: 8px;">
                                     <div class="progress-bar {{ $extBarColor }}" style="width: {{ $extPercentage }}%"></div>
@@ -276,7 +276,7 @@
     <div class="row g-4">
         <div class="col-md-6">
             <div class="card card-custom">
-                <div class="card-header bg-primary text-white fw-bold">
+                <div class="card-header bg-dark text-white fw-bold">
                     <i class="bi bi-clock-history me-2"></i> Pending Time Extensions ({{ $pendingExtensions->count() }})
                 </div>
                 <div class="card-body p-0">
@@ -316,7 +316,7 @@
 
         <div class="col-md-6">
             <div class="card card-custom">
-                <div class="card-header bg-success text-white fw-bold">
+                <div class="card-header bg-dark text-white fw-bold">
                     <i class="bi bi-cash-stack me-2"></i> Pending Budget Amendments ({{ $pendingAmendments->count() }})
                 </div>
                 <div class="card-body p-0">
@@ -371,7 +371,7 @@
         <div class="col-12">
             <div class="card card-custom">
                 <div class="card-header bg-white border-bottom fw-bold d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-clock-history me-2 text-primary"></i> Decision &amp; Ratification History</span>
+                    <span><i class="bi bi-clock-history me-2 text-dark"></i> Decision &amp; Ratification History</span>
                     <span class="badge bg-light text-dark border">{{ $completedExtensions->count() + $completedAmendments->count() }} Decisions</span>
                 </div>
                 <div class="card-body p-0">

@@ -14,6 +14,8 @@ class MilestoneReport extends Model
         'milestone_name',
         'progress_percentage',
         'summary_text',
+        'deliverable_file_path',
+        'deliverable_link_url',
         'deliverable_document_url',
         'status',
         'coordinator_feedback'

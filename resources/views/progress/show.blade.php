@@ -125,7 +125,7 @@
                 <i class="bi bi-plus-circle me-2"></i> Submit Progress Report
             </div>
             <div class="card-body">
-                <form action="{{ route('progress.store', $project->project_id) }}" method="POST">
+                <form action="{{ route('progress.store', $project->project_id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted text-uppercase">Milestone Name *</label>
@@ -159,12 +159,25 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold small text-muted text-uppercase">Deliverable Document URL (Optional)</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                            <input type="url" name="deliverable_document_url" class="form-control"
-                                   placeholder="https://...">
+                        <label class="form-label fw-bold small text-muted text-uppercase">
+                            <i class="bi bi-file-earmark-arrow-up me-1 text-dark"></i>Deliverable Document File (Optional)
+                        </label>
+                        <input type="file" name="deliverable_file" class="form-control form-control-sm @error('deliverable_file') is-invalid @enderror" accept=".pdf,.doc,.docx,.zip,.rar,.xlsx,.csv,.txt">
+                        <div class="form-text small text-muted">Upload PDF, Word document, datasets, or ZIP archive (max 20MB)</div>
+                        @error('deliverable_file') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted text-uppercase">
+                            <i class="bi bi-link-45deg me-1 text-dark"></i>Deliverable / Repository URL Link (Optional)
+                        </label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text"><i class="bi bi-link"></i></span>
+                            <input type="url" name="deliverable_link_url" class="form-control @error('deliverable_link_url') is-invalid @enderror"
+                                   placeholder="https://github.com/... or https://drive.google.com/..." value="{{ old('deliverable_link_url') }}">
                         </div>
+                        <div class="form-text small text-muted">Link to external repository, cloud drive, or published paper</div>
+                        @error('deliverable_link_url') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     </div>
 
                     <button type="submit" class="btn btn-dark fw-bold w-100 confirm-btn py-2" data-confirm-title="Submit Report" data-confirm-message="Submit this progress report?" data-confirm-icon="bi-send" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
@@ -294,13 +307,23 @@
                                             </div>
                                         </div>
 
-                                        @if($report->deliverable_document_url)
-                                            <div class="mb-3">
+                                        <div class="d-flex flex-wrap gap-2 mb-3">
+                                            @if($report->deliverable_file_path)
+                                                <a href="{{ Storage::url($report->deliverable_file_path) }}" class="btn btn-dark btn-sm" target="_blank">
+                                                    <i class="bi bi-file-earmark-arrow-down me-1"></i>Download Attached File
+                                                </a>
+                                            @endif
+
+                                            @if($report->deliverable_link_url)
+                                                <a href="{{ $report->deliverable_link_url }}" class="btn btn-outline-dark btn-sm" target="_blank">
+                                                    <i class="bi bi-box-arrow-up-right me-1"></i>Open External Link
+                                                </a>
+                                            @elseif($report->deliverable_document_url && !$report->deliverable_file_path)
                                                 <a href="{{ $report->deliverable_document_url }}" class="btn btn-outline-dark btn-sm" target="_blank">
                                                     <i class="bi bi-link-45deg me-1"></i>View Deliverable
                                                 </a>
-                                            </div>
-                                        @endif
+                                            @endif
+                                        </div>
 
                                         @if($report->coordinator_feedback)
                                             <div class="alert alert-light border mb-3 py-2 px-3">
