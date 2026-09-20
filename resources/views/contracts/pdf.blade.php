@@ -81,17 +81,45 @@
         <div class="sig-col">
             <div class="sig-line"></div>
             <strong>{{ $project->pi->name ?? 'Principal Investigator' }}</strong><br>
-            <span>Principal Investigator</span><br>
-            <small>{{ $project->pi_signature_date ? 'Signed on ' . \Carbon\Carbon::parse($project->pi_signature_date)->format('M d, Y H:i') : 'Signature Pending' }}</small>
+            <span>Principal Investigator (Grantee)</span><br>
+            @if($project->pi_signature_date)
+                <div style="margin-top: 6px; color: #1a5632; font-weight: bold; font-size: 11px;">
+                    &#10003; DIGITALLY SIGNED<br>
+                    <span style="font-weight: normal; color: #555;">{{ \Carbon\Carbon::parse($project->pi_signature_date)->format('M d, Y \a\t H:i') }}</span>
+                </div>
+            @else
+                <div style="margin-top: 6px; color: #c67a00; font-style: italic; font-size: 11px;">
+                    [ Signature Pending ]
+                </div>
+            @endif
         </div>
         <div class="sig-col">
             <div class="sig-line"></div>
             <strong>Prof. Kassahun Zewdie</strong><br>
-            <span>Vice President for ARTTCS</span><br>
-            <small>{{ $project->vp_signature_date ? 'Signed on ' . \Carbon\Carbon::parse($project->vp_signature_date)->format('M d, Y H:i') : 'Signature Pending' }}</small>
+            <span>Vice President for ARTTCS (Grantor)</span><br>
+            @if($project->vp_signature_date)
+                <div style="margin-top: 6px; color: #1a5632; font-weight: bold; font-size: 11px;">
+                    &#10003; COUNTERSIGNED &amp; APPROVED<br>
+                    <span style="font-weight: normal; color: #555;">{{ \Carbon\Carbon::parse($project->vp_signature_date)->format('M d, Y \a\t H:i') }}</span>
+                </div>
+            @else
+                <div style="margin-top: 6px; color: #c67a00; font-style: italic; font-size: 11px;">
+                    [ Awaiting VP Countersignature ]
+                </div>
+            @endif
         </div>
         <div class="clear"></div>
     </div>
+
+    @if($project->pi_signature_date && $project->vp_signature_date)
+    <div style="margin-top: 25px; padding: 10px; background: #e8f5e9; border: 1px solid #2e7d32; text-align: center; color: #1b5e20; font-size: 11px; font-weight: bold; letter-spacing: 0.5px;">
+        &#10003; FULLY EXECUTED &amp; ACTIVE INSTITUTIONAL RESEARCH CONTRACT &mdash; GAMBELLA UNIVERSITY
+    </div>
+    @elseif($project->pi_signature_date)
+    <div style="margin-top: 25px; padding: 8px; background: #fff8e1; border: 1px dashed #f57f17; text-align: center; color: #b78103; font-size: 11px; font-weight: bold;">
+        PARTIALLY EXECUTED &mdash; Signed by PI &bull; Awaiting VP-ARTTCS Countersignature to Activate
+    </div>
+    @endif
 </div>
 </body>
 </html>
