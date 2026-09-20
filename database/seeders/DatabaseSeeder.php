@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
                 'abstract_text' => 'Evaluation and propagation of NERICA rice varieties across trial plots in Lare and Gambella Zuria districts.',
                 'thematic_id' => $t1->id,
                 'pi_id' => $pi->id,
-                'dept_id' => $d3->id,
+                'dept_id' => $d1->id,
                 'requested_budget' => 1200000.00,
                 'status' => 'Draft',
                 'current_stage' => 0,
