@@ -269,7 +269,6 @@ Route::middleware(['auth'])->group(function () {
         })->name('finance.disbursement');
         Route::post('/finance/disbursement/{id}/process', function ($id) {
             request()->validate([
-                'amount' => 'required|numeric|min:0',
                 'payment_method' => 'required|in:Cash,Check,Bank Transfer',
                 'notes' => 'nullable|string',
             ]);
@@ -285,12 +284,12 @@ Route::middleware(['auth'])->group(function () {
                 return back()->with('error', 'Associated project not found.');
             }
 
-            $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved', 'Active'];
+            $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved', 'Active', 'Completed'];
             if (!in_array($project->status, $eligibleStatuses)) {
                 return back()->with('error', 'This project is not eligible for disbursement at its current status.');
             }
 
-            $amount = request('amount');
+            $amount = $req->approved_amount;
             if ($req->approved_amount && $amount > $req->approved_amount) {
                 return back()->with('error', 'Disbursement amount cannot exceed the approved amount of ETB ' . number_format($req->approved_amount, 2) . '.');
             }

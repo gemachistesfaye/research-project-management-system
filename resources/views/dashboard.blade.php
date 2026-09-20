@@ -939,10 +939,13 @@
 
                                     <div class="row g-2 mb-2">
                                         <div class="col-6">
-                                            <label class="form-label small fw-bold mb-1">Amount (ETB) <span class="text-danger">*</span></label>
-                                            <input type="number" step="0.01" min="0" name="amount" class="form-control form-control-sm fw-bold @error('amount') is-invalid @enderror"
-                                                   required max="{{ $req->approved_amount }}" value="{{ $req->approved_amount }}">
-                                            @error('amount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                            <label class="form-label small fw-bold mb-1">Approved Amount (ETB)</label>
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" class="form-control form-control-sm fw-bold bg-light"
+                                                       value="{{ number_format($req->approved_amount, 2) }} ETB" readonly tabindex="-1">
+                                                <span class="input-group-text bg-light text-muted"><i class="bi bi-lock-fill"></i></span>
+                                            </div>
+                                            <small class="text-muted" style="font-size:0.7rem;">Locked to ratified tranche budget</small>
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label small fw-bold mb-1">Method <span class="text-danger">*</span></label>
