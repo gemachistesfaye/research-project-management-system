@@ -234,8 +234,8 @@ Route::middleware(['auth'])->group(function () {
                     ]);
                 }
 
-                // Check if project has an approved milestone report and Tranche 2 is not yet created
-                $hasApprovedMilestone = $p->milestoneReports->whereIn('status', ['Approved', 'Coordinator_Audited'])->count() > 0;
+                // Check if project has an approved milestone report with >= 40% and Tranche 2 is not yet created
+                $hasApprovedMilestone = $p->milestoneReports->whereIn('status', ['Approved', 'Coordinator_Audited'])->where('progress_percentage', '>=', 40)->count() > 0;
                 $hasTranche2 = \App\Models\BudgetRequest::where('project_id', $p->project_id)
                     ->where('milestone_phase', 'Tranche 2')
                     ->exists();
