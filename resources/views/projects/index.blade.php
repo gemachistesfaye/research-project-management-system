@@ -85,12 +85,32 @@
                             <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-arrow-return-left me-1"></i>Returned</span>
                         @elseif($p->status === 'Withdrawn')
                             <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-x-circle me-1"></i>Withdrawn</span>
-                        @elseif($p->status === 'Approved' || $p->status === 'Completed')
-                            <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-check-circle me-1"></i>{{ $p->status }}</span>
+                        @elseif($p->status === 'Approved')
+                            <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-check-circle me-1"></i>Approved</span>
+                            @if($p->irercClearance)
+                                @if($p->irercClearance->status === 'Approved')
+                                    <div class="mt-1"><span class="badge bg-success text-white px-2 py-1" style="font-size: 0.72rem;"><i class="bi bi-shield-check me-1"></i>Ethics Cleared</span></div>
+                                @elseif($p->irercClearance->status === 'Rejected')
+                                    <div class="mt-1"><span class="badge bg-danger text-white px-2 py-1" style="font-size: 0.72rem;"><i class="bi bi-shield-x me-1"></i>Ethics Rejected</span></div>
+                                @else
+                                    <div class="mt-1"><span class="badge bg-warning text-dark px-2 py-1" style="font-size: 0.72rem;"><i class="bi bi-shield-exclamation me-1"></i>Ethics Pending</span></div>
+                                @endif
+                            @endif
+                        @elseif($p->status === 'Completed')
+                            <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-check-circle me-1"></i>Completed</span>
                         @elseif($p->status === 'Active')
                             <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-play-circle me-1"></i>Active</span>
                         @elseif(in_array($p->status, ['Submitted', 'DH_Screened', 'UnderReview']))
                             <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>{{ $p->status }}</span>
+                            @if($p->irercClearance)
+                                @if($p->irercClearance->status === 'Approved')
+                                    <div class="mt-1"><span class="badge bg-success text-white px-2 py-1" style="font-size: 0.72rem;"><i class="bi bi-shield-check me-1"></i>Ethics Cleared</span></div>
+                                @elseif($p->irercClearance->status === 'Rejected')
+                                    <div class="mt-1"><span class="badge bg-danger text-white px-2 py-1" style="font-size: 0.72rem;"><i class="bi bi-shield-x me-1"></i>Ethics Rejected</span></div>
+                                @else
+                                    <div class="mt-1"><span class="badge bg-warning text-dark px-2 py-1" style="font-size: 0.72rem;"><i class="bi bi-shield-exclamation me-1"></i>Ethics Pending</span></div>
+                                @endif
+                            @endif
                         @elseif($p->status === 'Rejected' || $p->status === 'Terminated')
                             <span class="badge bg-danger text-white px-2 py-1"><i class="bi bi-x-circle me-1"></i>{{ $p->status }}</span>
                         @elseif($p->status === 'PendingCancellation')

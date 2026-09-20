@@ -25,7 +25,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $query = Project::with(['pi', 'thematicArea', 'department']);
+        $query = Project::with(['pi', 'thematicArea', 'department', 'irercClearance']);
 
         if ($user->role === 'pi') {
             $query->where('pi_id', $user->id);

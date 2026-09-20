@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $teamProjects = collect();
 
         if ($role === 'pi') {
-            $myProjects = Project::where('pi_id', $user->id)->with('thematicArea')->get();
+            $myProjects = Project::where('pi_id', $user->id)->with(['thematicArea', 'irercClearance'])->get();
         } elseif ($role === 'reviewer') {
             $assignedReviews = Evaluation::where('examiner_id', $user->id)
                 ->with('project')
