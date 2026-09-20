@@ -121,7 +121,7 @@ class RPMSWorkflowTest extends TestCase
 
         // 3. VP signs successfully
         $response = $this->actingAs($vp)->post(route('contracts.sign-vp', $project->project_id));
-        $response->assertSessionHas('success', 'VP signature recorded. Project is now Active.');
+        $response->assertSessionHas('success', 'VP signature recorded. Project is now Active and Tranche 1 (30% Advance) is queued for finance disbursement.');
         $project->refresh();
         $this->assertNotNull($project->vp_signature_date);
         $this->assertNotNull($project->contract_signed_at);
