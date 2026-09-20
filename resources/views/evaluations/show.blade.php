@@ -49,28 +49,28 @@
             @else
             <form action="{{ route('evaluations.submit', $evaluation->eval_id) }}" method="POST">
                 @csrf
-                <div class="row g-3 mb-4">
+                <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Evaluation Score (0 - 100) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" min="0" max="100" name="score" class="form-control form-control-lg fw-bold" required placeholder="e.g. 85.00">
+                        <label class="form-label small fw-bold">Score (0 - 100) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" min="0" max="100" name="score" class="form-control fw-bold" required placeholder="e.g. 85.00">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label small fw-bold">Recommendation Verdict <span class="text-danger">*</span></label>
-                        <select name="decision" class="form-select form-select-lg" required>
-                            <option value="Accepted">Accepted (Recommended for Funding)</option>
-                            <option value="AcceptedWithMinorMods">Accepted with Minor Modifications</option>
-                            <option value="AcceptedWithMajorMods">Accepted with Major Modifications</option>
-                            <option value="Rejected">Rejected (Does Not Meet Standards)</option>
+                        <select name="decision" class="form-select" required>
+                            <option value="Accepted">Accepted (Fund)</option>
+                            <option value="AcceptedWithMinorMods">Accepted (Minor Mods)</option>
+                            <option value="AcceptedWithMajorMods">Accepted (Major Mods)</option>
+                            <option value="Rejected">Rejected</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-3">
                     <label class="form-label small fw-bold">Constructive Comments & Critique <span class="text-danger">*</span></label>
-                    <textarea name="comments" rows="5" class="form-control" required placeholder="Provide technical feedback, strengths, and areas of improvement..."></textarea>
+                    <textarea name="comments" rows="4" class="form-control" required placeholder="Provide technical feedback, strengths, and areas of improvement..."></textarea>
                 </div>
 
-                <button type="button" class="btn btn-dark btn-lg w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
+                <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
                     <i class="bi bi-send-check me-1"></i> Submit Evaluation Score
                 </button>
             </form>
