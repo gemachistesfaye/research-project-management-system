@@ -223,6 +223,18 @@
                 <i class="bi bi-check-circle-fill me-2"></i>
                 <strong>Contract Fully Signed</strong> &mdash; Signed on {{ $project->contract_signed_at->format('M d, Y \a\t h:i A') }}
             </div>
+        @elseif($project->irercClearance && $project->irercClearance->status !== 'Approved')
+            <div class="alert alert-warning border-start border-4 border-warning mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-shield-exclamation fs-3 text-warning me-3"></i>
+                    <div>
+                        <h6 class="fw-bold mb-1">Ethics Clearance Pending (IRERC)</h6>
+                        <p class="small text-muted mb-0">
+                            This project was routed for Institutional Research Ethics Review. The contract cannot be signed or activated until the IRERC panel grants formal approval.
+                        </p>
+                    </div>
+                </div>
+            </div>
         @else
             {{-- Agreement Checkbox --}}
             <div class="mb-4 p-3 bg-light rounded">
