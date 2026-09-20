@@ -115,17 +115,17 @@
     <div class="card-body">
         <div class="border rounded p-3 mb-4" style="max-height: 400px; overflow-y: auto; background-color: #fafbfc;">
             <div class="text-center mb-4">
-                <h5 class="fw-bold">ADDIS ABABA SCIENCE AND TECHNOLOGY UNIVERSITY</h5>
-                <h6 class="text-muted">Research and Technology Transfer Directorate</h6>
+                <h5 class="fw-bold">GAMBELLA UNIVERSITY</h5>
+                <h6 class="text-muted">Office of the Vice President for ARTTCS</h6>
                 <hr class="my-3">
-                <h6 class="fw-bold">RESEARCH COLLABORATION AGREEMENT</h6>
+                <h6 class="fw-bold">INSTITUTIONAL RESEARCH GRANT AGREEMENT</h6>
                 <p class="text-muted small">Contract Reference: SCR-{{ $project->project_id }}</p>
             </div>
 
             <div class="mb-4">
                 <h6 class="fw-bold text-primary"><i class="bi bi-bullseye me-2"></i>1. Research Objectives</h6>
                 <p>
-                    This Research Collaboration Agreement ("Agreement") is entered into for the research project titled 
+                    This Research Grant Agreement ("Agreement") is entered into for the research project titled 
                     <strong>"{{ $project->title }}"</strong>. The primary objectives of this research are to advance 
                     scientific knowledge in the thematic area of <strong>{{ $project->thematicArea->title ?? 'N/A' }}</strong>, 
                     develop innovative solutions, and contribute to the academic and technological advancement of the University. 
@@ -167,7 +167,7 @@
                 <p>
                     All intellectual property rights arising from this research, including but not limited to inventions, 
                     discoveries, software, publications, and other scholarly works, shall be jointly owned by the 
-                    Principal Investigator and Addis Ababa Science and Technology University, in accordance with the 
+                    Principal Investigator and Gambella University, in accordance with the 
                     University's Intellectual Property Policy. Neither party shall commercialize or license any 
                     intellectual property without the prior written consent of the other party. The University reserves 
                     the right to use research findings for academic and non-commercial purposes.
@@ -196,7 +196,7 @@
                 <h6 class="fw-bold text-primary"><i class="bi bi-building me-2"></i>6. General Provisions</h6>
                 <p>
                     This Agreement shall be governed by the laws of the Federal Democratic Republic of Ethiopia and 
-                    the regulations of Addis Ababa Science and Technology University. Any disputes arising from this 
+                    the regulations of Gambella University. Any disputes arising from this 
                     Agreement shall be resolved through the University's conflict resolution mechanisms. The parties 
                     agree to act in good faith and cooperate fully to achieve the objectives of this research project.
                 </p>
