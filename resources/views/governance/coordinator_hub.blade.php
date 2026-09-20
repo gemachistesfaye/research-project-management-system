@@ -25,7 +25,7 @@
 
 <div class="row g-4">
     {{-- Main Content: Projects Table --}}
-    <div class="col-lg-8">
+    <div class="col-12">
         <div class="card card-custom">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 fw-bold"><i class="bi bi-list-ul me-2"></i>Projects Awaiting Assignment</h6>
@@ -113,53 +113,48 @@
         </div>
     </div>
 
-    {{-- Sidebar: Available Reviewers --}}
-    <div class="col-lg-4">
+    {{-- Bottom Section: Available Reviewers Grid --}}
+    <div class="col-12">
         <div class="card card-custom">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 fw-bold"><i class="bi bi-people me-2"></i>Available Reviewers</h6>
-                <span class="badge bg-primary">{{ $reviewers->count() }}</span>
+                <span class="badge bg-primary">{{ $reviewers->count() }} Reviewers</span>
             </div>
-            <div class="card-body p-0 sidebar-section">
-                @forelse($reviewers as $r)
-                <div class="p-3 border-bottom reviewer-card">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div>
-                            <h6 class="mb-0 fw-bold">{{ $r['user']->name }}</h6>
-                            <small class="text-muted">{{ $r['user']->department->name ?? 'N/A' }}</small>
+            <div class="card-body p-3">
+                <div class="row g-3">
+                    @forelse($reviewers as $r)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="p-3 border rounded-3 bg-light reviewer-card h-100">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">{{ $r['user']->name }}</h6>
+                                    <small class="text-muted">{{ $r['user']->department->name ?? 'Faculty' }}</small>
+                                </div>
+                                <span class="badge bg-white text-dark border">{{ $r['user']->staff_id }}</span>
+                            </div>
+                            <div class="d-flex gap-3 mb-2 small">
+                                <span><i class="bi bi-clipboard-check text-primary me-1"></i><strong>{{ $r['active_reviews'] }}</strong> Active</span>
+                                <span><i class="bi bi-check2-all text-success me-1"></i><strong>{{ $r['total_evaluations'] }}</strong> Done</span>
+                                <span><i class="bi bi-star text-warning me-1"></i><strong>{{ $r['avg_score'] }}</strong> Avg</span>
+                            </div>
+                            <div class="workload-bar">
+                                @php
+                                    $workloadClass = 'workload-low';
+                                    if ($r['workload_percent'] > 60) $workloadClass = 'workload-high';
+                                    elseif ($r['workload_percent'] > 30) $workloadClass = 'workload-medium';
+                                @endphp
+                                <div class="workload-fill {{ $workloadClass }}" style="width: {{ $r['workload_percent'] }}%"></div>
+                            </div>
+                            <small class="text-muted mt-1 d-block">Workload: {{ number_format($r['workload_percent'], 0) }}%</small>
                         </div>
-                        <span class="badge bg-light text-dark border">{{ $r['user']->staff_id }}</span>
                     </div>
-                    <div class="d-flex gap-3 mb-2">
-                        <small>
-                            <i class="bi bi-clipboard-check text-primary me-1"></i>
-                            <strong>{{ $r['active_reviews'] }}</strong> Active
-                        </small>
-                        <small>
-                            <i class="bi bi-check2-all text-success me-1"></i>
-                            <strong>{{ $r['total_evaluations'] }}</strong> Completed
-                        </small>
-                        <small>
-                            <i class="bi bi-star text-warning me-1"></i>
-                            <strong>{{ $r['avg_score'] }}</strong> Avg
-                        </small>
+                    @empty
+                    <div class="col-12 text-center py-4">
+                        <i class="bi bi-person-x empty-state-icon mb-2"></i>
+                        <p class="text-muted mb-0">No reviewers available for assignment.</p>
                     </div>
-                    <div class="workload-bar">
-                        @php
-                            $workloadClass = 'workload-low';
-                            if ($r['workload_percent'] > 60) $workloadClass = 'workload-high';
-                            elseif ($r['workload_percent'] > 30) $workloadClass = 'workload-medium';
-                        @endphp
-                        <div class="workload-fill {{ $workloadClass }}" style="width: {{ $r['workload_percent'] }}%"></div>
-                    </div>
-                    <small class="text-muted mt-1 d-block">Workload: {{ number_format($r['workload_percent'], 0) }}%</small>
+                    @endforelse
                 </div>
-                @empty
-                <div class="p-4 text-center">
-                    <i class="bi bi-person-x empty-state-icon mb-2"></i>
-                    <p class="text-muted mb-0">No reviewers available for assignment.</p>
-                </div>
-                @endforelse
             </div>
         </div>
     </div>

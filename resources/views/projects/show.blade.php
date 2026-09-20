@@ -206,18 +206,6 @@
                 </button>
                 @endif
 
-                {{-- Coordinator-only: Send to Ethics Review (IRERC) --}}
-                @if(Auth::user()->role === 'coordinator' && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active']))
-                    @if(!$project->irercClearance)
-                    <form action="{{ route('projects.create-irerc-clearance', $project->project_id) }}" method="POST" class="mb-2">
-                        @csrf
-                        <button type="button" class="btn w-100 text-start confirm-btn fw-bold" style="background:#fff;color:#0d6efd;border:1.5px solid #0d6efd;" onmouseover="this.style.background='#0d6efd';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#0d6efd'" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to the Institutional Research Ethics Review Committee (IRERC) for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Request" data-confirm-btn-class="btn-primary">
-                            <i class="bi bi-shield-plus me-2"></i>Send to Ethics (IRERC)
-                        </button>
-                    </form>
-                    @endif
-                @endif
-
                 {{-- Mark Complete --}}
                 @if($project->status === 'Active' && in_array(Auth::user()->role, ['coordinator', 'admin']))
                 <form action="{{ route('projects.complete', $project->project_id) }}" method="POST" class="mb-2">
@@ -537,8 +525,18 @@
 
         {{-- Blind Peer Review Evaluations --}}
         <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white border-bottom py-3">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-eye-slash me-2 text-primary"></i>Blind Peer Review Evaluations</h5>
+                @if(Auth::user()->role === 'coordinator' && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active']))
+                    @if(!$project->irercClearance)
+                    <form action="{{ route('projects.create-irerc-clearance', $project->project_id) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="button" class="btn btn-sm btn-outline-primary fw-bold confirm-btn" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to the Institutional Research Ethics Review Committee (IRERC) for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Request" data-confirm-btn-class="btn-primary">
+                            <i class="bi bi-shield-plus me-1"></i>Send to Ethics (IRERC)
+                        </button>
+                    </form>
+                    @endif
+                @endif
             </div>
             <div class="card-body p-4">
                 @if(Auth::user()->role === 'coordinator' && in_array($project->status, ['DH_Screened', 'UnderReview']) && $project->evaluations->where('decision', 'Pending')->count() < 2 && $project->evaluations->count() < 2)
