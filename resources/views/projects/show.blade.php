@@ -24,8 +24,15 @@
                     <button type="button" class="btn btn-success btn-sm fw-bold confirm-btn" data-confirm-title="Submit Proposal" data-confirm-message="This proposal will be sent to the Department Head for initial screening. You won't be able to edit it after submission." data-confirm-icon="bi-send" data-confirm-color="text-success" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success"><i class="bi bi-send me-1"></i>Submit for Review</button>
                 </form>
                 @endif
-            @elseif($project->status === 'Approved' || $project->status === 'Completed')
+            @elseif($project->status === 'Approved')
                 <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>{{ $project->status }}</span>
+                @if(in_array(Auth::user()->role, ['pi', 'vparttcs']))
+                <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary btn-sm fw-bold shadow-sm">
+                    <i class="bi bi-pen me-1"></i>View & Sign Contract
+                </a>
+                @endif
+            @elseif($project->status === 'Completed')
+                <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>Completed</span>
             @elseif($project->status === 'Active')
                 <span class="badge bg-primary fs-6"><i class="bi bi-play-circle me-1"></i>{{ $project->status }}</span>
             @elseif(in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview']))
@@ -127,6 +134,13 @@
                 <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-lightning me-2 text-warning"></i>Quick Actions</h6>
             </div>
             <div class="card-body p-3">
+                {{-- Sign Contract --}}
+                @if($project->status === 'Approved' && in_array(Auth::user()->role, ['pi', 'vparttcs']))
+                <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary w-100 mb-2 text-start fw-bold shadow-sm">
+                    <i class="bi bi-pen me-2"></i>View & Sign Contract
+                </a>
+                @endif
+
                 {{-- Submit --}}
                 @if($project->status === 'Draft' && Auth::user()->role === 'pi')
                 <form action="{{ route('projects.submit', $project->project_id) }}" method="POST" class="mb-2">
