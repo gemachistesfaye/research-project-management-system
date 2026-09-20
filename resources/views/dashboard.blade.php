@@ -642,6 +642,8 @@
                     <td>
                         @if($p->status === 'Draft')
                             <span class="badge bg-secondary text-white px-2 py-1"><i class="bi bi-pencil me-1"></i>Draft</span>
+                        @elseif($p->status === 'Returned')
+                            <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-arrow-return-left me-1"></i>Returned</span>
                         @elseif($p->status === 'Approved' || $p->status === 'Completed')
                             <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-check-circle me-1"></i>{{ $p->status }}</span>
                         @elseif($p->status === 'Active')
@@ -655,7 +657,7 @@
                         @endif
                     </td>
                     <td>
-                        @if($p->status === 'Draft')
+                        @if(in_array($p->status, ['Draft', 'Returned']))
                             <form action="{{ route('projects.submit', $p->project_id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="button" class="btn btn-sm btn-success fw-bold confirm-btn" data-confirm-title="Submit Proposal" data-confirm-message="This proposal will be sent to the Department Head for initial screening. You won't be able to edit it after submission." data-confirm-icon="bi-send" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success"><i class="bi bi-send me-1"></i>Submit</button>

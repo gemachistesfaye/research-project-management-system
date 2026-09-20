@@ -16,7 +16,7 @@
         <h2 class="fw-bold mb-1 text-dark">{{ $project->title }}</h2>
         <div class="d-flex align-items-center flex-wrap gap-2">
             <span class="text-muted small">ID: {{ $project->project_id }}</span>
-            @if(in_array($project->status, ['Draft', 'Withdrawn', 'Returned', 'Rejected']))
+            @if(in_array($project->status, ['Draft', 'Returned']))
                 <span class="badge bg-secondary fs-6"><i class="bi bi-pencil me-1"></i>{{ $project->status }}</span>
                 @if(Auth::user()->role === 'pi')
                 <form action="{{ route('projects.submit', $project->project_id) }}" method="POST" class="d-inline">

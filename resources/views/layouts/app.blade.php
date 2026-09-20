@@ -979,6 +979,18 @@
             </div>
         @endif
 
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i>Please correct the following errors:</div>
+                <ul class="mb-0 ps-3">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
         @yield('content')
     </main>
 
@@ -1083,8 +1095,12 @@
 
             document.querySelectorAll('button.confirm-btn').forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
-                    e.preventDefault();
                     var form = btn.closest('form');
+                    if (form && !form.checkValidity()) {
+                        form.reportValidity();
+                        return;
+                    }
+                    e.preventDefault();
                     if (!form) return;
                     confirmForm = form;
 
