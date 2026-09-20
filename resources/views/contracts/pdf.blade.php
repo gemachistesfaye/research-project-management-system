@@ -79,34 +79,44 @@
     <div class="section-title">4. Contract Execution Signatures</div>
     <div class="signatures">
         <div class="sig-col">
+            <div style="height: 35px; text-align: center; vertical-align: bottom;">
+                @if($project->pi_signature_date)
+                    <div style="font-size: 16px; font-weight: bold; color: #1a5632; font-style: italic; font-family: 'Georgia', serif;">
+                        &#10003; {{ $project->pi->name ?? 'Dr. Abebe Bikila' }}
+                    </div>
+                    <small style="color: #1a5632; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px;">[ Verified Digital Signature ]</small>
+                @else
+                    <div style="color: #999; font-style: italic; font-size: 11px; padding-top: 15px;">
+                        ( Signature Pending )
+                    </div>
+                @endif
+            </div>
             <div class="sig-line"></div>
             <strong>{{ $project->pi->name ?? 'Principal Investigator' }}</strong><br>
-            <span>Principal Investigator (Grantee)</span><br>
-            @if($project->pi_signature_date)
-                <div style="margin-top: 6px; color: #1a5632; font-weight: bold; font-size: 11px;">
-                    &#10003; DIGITALLY SIGNED<br>
-                    <span style="font-weight: normal; color: #555;">{{ \Carbon\Carbon::parse($project->pi_signature_date)->format('M d, Y \a\t H:i') }}</span>
-                </div>
-            @else
-                <div style="margin-top: 6px; color: #c67a00; font-style: italic; font-size: 11px;">
-                    [ Signature Pending ]
-                </div>
-            @endif
+            <span style="color: #444;">Principal Investigator (Grantee)</span><br>
+            <small style="color: #666;">
+                {{ $project->pi_signature_date ? 'Signed: ' . \Carbon\Carbon::parse($project->pi_signature_date)->format('M d, Y H:i') : 'Date: Pending' }}
+            </small>
         </div>
         <div class="sig-col">
+            <div style="height: 35px; text-align: center; vertical-align: bottom;">
+                @if($project->vp_signature_date)
+                    <div style="font-size: 16px; font-weight: bold; color: #1a5632; font-style: italic; font-family: 'Georgia', serif;">
+                        &#10003; Prof. Kassahun Zewdie
+                    </div>
+                    <small style="color: #1a5632; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px;">[ Institutional Seal &amp; Countersignature ]</small>
+                @else
+                    <div style="color: #999; font-style: italic; font-size: 11px; padding-top: 15px;">
+                        ( Awaiting Countersignature )
+                    </div>
+                @endif
+            </div>
             <div class="sig-line"></div>
             <strong>Prof. Kassahun Zewdie</strong><br>
-            <span>Vice President for ARTTCS (Grantor)</span><br>
-            @if($project->vp_signature_date)
-                <div style="margin-top: 6px; color: #1a5632; font-weight: bold; font-size: 11px;">
-                    &#10003; COUNTERSIGNED &amp; APPROVED<br>
-                    <span style="font-weight: normal; color: #555;">{{ \Carbon\Carbon::parse($project->vp_signature_date)->format('M d, Y \a\t H:i') }}</span>
-                </div>
-            @else
-                <div style="margin-top: 6px; color: #c67a00; font-style: italic; font-size: 11px;">
-                    [ Awaiting VP Countersignature ]
-                </div>
-            @endif
+            <span style="color: #444;">Vice President for ARTTCS (Grantor)</span><br>
+            <small style="color: #666;">
+                {{ $project->vp_signature_date ? 'Signed: ' . \Carbon\Carbon::parse($project->vp_signature_date)->format('M d, Y H:i') : 'Date: Pending' }}
+            </small>
         </div>
         <div class="clear"></div>
     </div>
