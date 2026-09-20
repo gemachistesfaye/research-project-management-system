@@ -153,7 +153,7 @@
                         <th>Request ID</th>
                         <th>Project Name</th>
                         <th>PI</th>
-                        <th>Requested Amount</th>
+                        <th>Tranche Phase</th>
                         <th>Approved Amount</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -165,7 +165,17 @@
                         <td>#REQ-{{ $req->request_id }}</td>
                         <td class="fw-bold">{{ $req->project->title ?? 'N/A' }}</td>
                         <td>{{ $req->project->pi->name ?? 'N/A' }}</td>
-                        <td>{{ number_format($req->requested_amount, 2) }} ETB</td>
+                        <td>
+                            @if($req->milestone_phase === 'Tranche 1')
+                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1 (30%)</span>
+                            @elseif($req->milestone_phase === 'Tranche 2')
+                                <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40%)</span>
+                            @elseif($req->milestone_phase === 'Tranche 3')
+                                <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30%)</span>
+                            @else
+                                <span class="badge bg-secondary text-white px-2 py-1">{{ $req->milestone_phase }}</span>
+                            @endif
+                        </td>
                         <td class="fw-bold text-dark">{{ number_format($req->approved_amount ?? 0, 2) }} ETB</td>
                         <td><span class="badge bg-dark">{{ $req->status }}</span></td>
                         <td>

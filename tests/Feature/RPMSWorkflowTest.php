@@ -206,5 +206,75 @@ class RPMSWorkflowTest extends TestCase
         $project->refresh();
         $this->assertTrue((bool)$project->ethical_cleared);
     }
+
+    public function test_milestone_approval_triggers_tranche_2_and_tranche_3_generation()
+    {
+        $pi = User::factory()->create(['role' => 'pi']);
+        \App\Services\RbacService::syncUserRole($pi);
+
+        $coordinator = User::factory()->create(['role' => 'coordinator']);
+        \App\Services\RbacService::syncUserRole($coordinator);
+
+        $thematic = ThematicArea::create(['title' => 'Agronomy']);
+
+        $project = Project::create([
+            'title' => 'Soil Nutrition Analysis Gambella',
+            'abstract_text' => 'Soil quality assessment',
+            'thematic_id' => $thematic->id,
+            'pi_id' => $pi->id,
+            'requested_budget' => 600000.00,
+            'approved_budget' => 600000.00,
+            'status' => 'Active',
+        ]);
+
+        // 1. PI submits 50% milestone report
+        $report1 = \App\Models\MilestoneReport::create([
+            'project_id' => $project->project_id,
+            'milestone_name' => 'Mid-term Lab Analysis',
+            'progress_percentage' => 50,
+            'summary_text' => '50% of soil samples collected and analyzed in lab.',
+            'status' => 'Submitted',
+        ]);
+
+        // Coordinator approves the report
+        $response = $this->actingAs($coordinator)->put(route('progress.update', $report1->id), [
+            'coordinator_feedback' => 'Satisfactory lab results verified.',
+            'status' => 'Approved',
+        ]);
+        $response->assertSessionHas('success');
+
+        // Verify Tranche 2 (40% = 240,000 ETB) was auto-generated
+        $tranche2 = \App\Models\BudgetRequest::where('project_id', $project->project_id)
+            ->where('milestone_phase', 'Tranche 2')
+            ->first();
+        $this->assertNotNull($tranche2);
+        $this->assertEquals(240000.00, (float)$tranche2->approved_amount);
+        $this->assertEquals('Approved', $tranche2->status);
+        $this->assertEquals('RCSC_VP', $tranche2->approval_tier);
+
+        // 2. PI submits 100% final milestone report
+        $report2 = \App\Models\MilestoneReport::create([
+            'project_id' => $project->project_id,
+            'milestone_name' => 'Final Project Publication & Report',
+            'progress_percentage' => 100,
+            'summary_text' => 'Final field work completed and published.',
+            'status' => 'Submitted',
+        ]);
+
+        // Coordinator approves the 100% report
+        $response2 = $this->actingAs($coordinator)->put(route('progress.update', $report2->id), [
+            'coordinator_feedback' => 'Final deliverables fully accepted.',
+            'status' => 'Approved',
+        ]);
+        $response2->assertSessionHas('success');
+
+        // Verify Tranche 3 (30% = 180,000 ETB) was auto-generated
+        $tranche3 = \App\Models\BudgetRequest::where('project_id', $project->project_id)
+            ->where('milestone_phase', 'Tranche 3')
+            ->first();
+        $this->assertNotNull($tranche3);
+        $this->assertEquals(180000.00, (float)$tranche3->approved_amount);
+        $this->assertEquals('Approved', $tranche3->status);
+    }
 }
 

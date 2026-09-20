@@ -48,6 +48,10 @@ class ProgressReportController extends Controller
             }
         }
 
+        if ($user->role === 'dh' && (int) $project->dept_id !== (int) $user->dept_id) {
+            abort(403, 'You can only view progress reports for projects in your department.');
+        }
+
         $reports = MilestoneReport::where('project_id', $projectId)
             ->latest()
             ->get();
@@ -109,6 +113,52 @@ class ProgressReportController extends Controller
             'coordinator_feedback' => $request->coordinator_feedback,
             'status'               => $request->status,
         ]);
+
+        // Auto-generate Tranche 2 and Tranche 3 Budget Requests on Progress Approval
+        if (in_array($request->status, ['Approved', 'Coordinator_Audited'])) {
+            $approvedBudget = $project->approved_budget ?: $project->requested_budget;
+            $tier = ($approvedBudget >= 500000) ? 'RCSC_VP' : 'Dean';
+
+            // Tranche 2 (40% Mid-Term Release): Triggered when milestone progress is >= 40%
+            if ($report->progress_percentage >= 40) {
+                $existingTranche2 = \App\Models\BudgetRequest::where('project_id', $project->project_id)
+                    ->where('milestone_phase', 'Tranche 2')
+                    ->first();
+
+                if (!$existingTranche2) {
+                    $tranche2Amount = round($approvedBudget * 0.40, 2);
+                    \App\Models\BudgetRequest::create([
+                        'project_id'       => $project->project_id,
+                        'milestone_phase'  => 'Tranche 2',
+                        'requested_amount' => $tranche2Amount,
+                        'approved_amount'  => $tranche2Amount,
+                        'approval_tier'    => $tier,
+                        'status'           => 'Approved',
+                        'approved_by'      => $user->id,
+                    ]);
+                }
+            }
+
+            // Tranche 3 (30% Final Release): Triggered when milestone progress is 100% or project is completed
+            if ($report->progress_percentage >= 100) {
+                $existingTranche3 = \App\Models\BudgetRequest::where('project_id', $project->project_id)
+                    ->where('milestone_phase', 'Tranche 3')
+                    ->first();
+
+                if (!$existingTranche3) {
+                    $tranche3Amount = round($approvedBudget * 0.30, 2);
+                    \App\Models\BudgetRequest::create([
+                        'project_id'       => $project->project_id,
+                        'milestone_phase'  => 'Tranche 3',
+                        'requested_amount' => $tranche3Amount,
+                        'approved_amount'  => $tranche3Amount,
+                        'approval_tier'    => $tier,
+                        'status'           => 'Approved',
+                        'approved_by'      => $user->id,
+                    ]);
+                }
+            }
+        }
 
         return back()->with('success', 'Progress report review updated.');
     }

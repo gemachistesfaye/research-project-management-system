@@ -697,20 +697,27 @@
                         @endif
                     </td>
                     <td>
-                        @if(in_array($p->status, ['Draft', 'Returned']))
-                            <form action="{{ route('projects.submit', $p->project_id) }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="button" class="btn btn-sm btn-success fw-bold confirm-btn" data-confirm-title="Submit Proposal" data-confirm-message="This proposal will be sent to the Department Head for initial screening. You won't be able to edit it after submission." data-confirm-icon="bi-send" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success"><i class="bi bi-send me-1"></i>Submit</button>
-                            </form>
-                        @endif
-                        <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-outline-secondary">
-                            <i class="bi bi-arrow-right-circle me-1"></i> View Details
-                        </a>
-                        @if($p->proposal_document_url)
-                        <a href="{{ Storage::url($p->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-danger" title="View Document">
-                            <i class="bi bi-file-pdf"></i>
-                        </a>
-                        @endif
+                        <div class="d-flex gap-2 align-items-center flex-wrap">
+                            @if(in_array($p->status, ['Draft', 'Returned']))
+                                <form action="{{ route('projects.submit', $p->project_id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="button" class="btn btn-sm btn-success fw-bold confirm-btn" data-confirm-title="Submit Proposal" data-confirm-message="This proposal will be sent to the Department Head for initial screening. You won't be able to edit it after submission." data-confirm-icon="bi-send" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success"><i class="bi bi-send me-1"></i>Submit</button>
+                                </form>
+                            @endif
+                            @if($p->status === 'Approved' && (!$p->irercClearance || $p->irercClearance->status === 'Approved') && (!$p->pi_signature_date || !$p->vp_signature_date))
+                            <a href="{{ route('contracts.show', $p->project_id) }}" class="btn btn-sm btn-primary fw-bold text-white shadow-sm">
+                                <i class="bi bi-pen me-1"></i> Sign Contract
+                            </a>
+                            @endif
+                            <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-arrow-right-circle me-1"></i> View Details
+                            </a>
+                            @if($p->proposal_document_url)
+                            <a href="{{ Storage::url($p->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-danger" title="View Document">
+                                <i class="bi bi-file-pdf"></i>
+                            </a>
+                            @endif
+                        </div>
                     </td>
                 </tr>
                 @empty
@@ -813,9 +820,23 @@
                         <span class="badge bg-light text-dark border px-2 py-1">{{ $p->status }}</span>
                     </td>
                     <td>
+                        @if($p->status === 'Dean_Review' && in_array($role, ['dean', 'vparttcs', 'admin']))
+                        <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-success text-white fw-bold">
+                            <i class="bi bi-bank me-1"></i> Ratify Budget
+                        </a>
+                        @elseif($p->status === 'RCSC_Review' && in_array($role, ['rcsc', 'vparttcs', 'admin']))
+                        <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-danger text-white fw-bold">
+                            <i class="bi bi-bank me-1"></i> Ratify Budget
+                        </a>
+                        @endif
                         @if($p->status === 'Approved' && in_array($role, ['vparttcs', 'admin']) && (!$p->irercClearance || $p->irercClearance->status === 'Approved'))
                         <a href="{{ route('contracts.show', $p->project_id) }}" class="btn btn-sm btn-danger text-white fw-bold">
                             <i class="bi bi-pen me-1"></i> Sign Contract
+                        </a>
+                        @endif
+                        @if(in_array($p->status, ['Active', 'Approved', 'Completed']) && in_array($role, ['coordinator', 'dh', 'admin']))
+                        <a href="{{ route('progress.show', $p->project_id) }}" class="btn btn-sm btn-outline-dark fw-semibold">
+                            <i class="bi bi-graph-up me-1"></i> Progress
                         </a>
                         @endif
                         <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-outline-secondary">
@@ -840,6 +861,167 @@
         </table>
     </div>
 </div>
+@endif
+
+@if($role === 'finance')
+{{-- Pending Tranche Disbursements Queue --}}
+<div class="card card-custom p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0"><i class="bi bi-cash-stack me-2 text-dark"></i>Pending Tranche Disbursements ({{ $pendingDisbursements->count() }})</h5>
+        <a href="{{ route('finance.disbursement') }}" class="btn btn-sm btn-outline-dark fw-semibold">
+            <i class="bi bi-box-arrow-up-right me-1"></i> Full Finance Portal
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Request ID</th>
+                    <th>Project</th>
+                    <th>PI Name</th>
+                    <th>Tranche Phase</th>
+                    <th>Approved Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($pendingDisbursements as $req)
+                <tr>
+                    <td class="font-monospace text-muted">#REQ-{{ $req->request_id }}</td>
+                    <td class="fw-bold text-dark">{{ $req->project->title ?? 'N/A' }}</td>
+                    <td>
+                        <span class="d-inline-flex align-items-center"><i class="bi bi-person-circle me-1 text-secondary"></i> {{ preg_replace('/\s*\([^)]*\)/', '', $req->project->pi->name ?? 'N/A') }}</span>
+                    </td>
+                    <td>
+                        @if($req->milestone_phase === 'Tranche 1')
+                            <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1 (30% Advance)</span>
+                        @elseif($req->milestone_phase === 'Tranche 2')
+                            <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40% Mid-Term)</span>
+                        @elseif($req->milestone_phase === 'Tranche 3')
+                            <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30% Final)</span>
+                        @else
+                            <span class="badge bg-secondary text-white px-2 py-1">{{ $req->milestone_phase }}</span>
+                        @endif
+                    </td>
+                    <td class="fw-bold text-dark">{{ number_format($req->approved_amount ?? 0, 2) }} ETB</td>
+                    <td><span class="badge bg-light text-dark border px-2 py-1">{{ $req->status }}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-success fw-bold text-white shadow-sm" data-bs-toggle="modal"
+                                data-bs-target="#dashDisburseModal{{ $req->request_id }}">
+                            <i class="bi bi-cash me-1"></i> Disburse
+                        </button>
+                    </td>
+                </tr>
+
+                {{-- Dashboard Disbursement Modal --}}
+                <div class="modal fade" id="dashDisburseModal{{ $req->request_id }}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+                        <div class="modal-content border-0 shadow">
+                            <form action="{{ route('finance.process-disbursement', $req->request_id) }}" method="POST">
+                                @csrf
+                                <div class="modal-header py-2 px-3 bg-dark text-white border-bottom">
+                                    <h6 class="modal-title fw-bold text-white small mb-0">
+                                        <i class="bi bi-cash me-1 text-success"></i> Release Disbursement &bull; {{ $req->milestone_phase ?? 'Tranche' }}
+                                    </h6>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body p-3">
+                                    {{-- Project Summary Snippet --}}
+                                    <div class="p-2 mb-2 bg-light rounded border small">
+                                        <div class="fw-bold text-dark text-truncate">{{ $req->project->title ?? 'N/A' }}</div>
+                                        <div class="d-flex justify-content-between text-muted mt-1" style="font-size: 0.78rem;">
+                                            <span><i class="bi bi-person me-1"></i>{{ $req->project->pi->name ?? 'N/A' }}</span>
+                                            <span class="fw-bold text-dark">{{ number_format($req->approved_amount ?? 0, 2) }} ETB</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <label class="form-label small fw-bold mb-1">Amount (ETB) <span class="text-danger">*</span></label>
+                                            <input type="number" step="0.01" min="0" name="amount" class="form-control form-control-sm fw-bold @error('amount') is-invalid @enderror"
+                                                   required max="{{ $req->approved_amount }}" value="{{ $req->approved_amount }}">
+                                            @error('amount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small fw-bold mb-1">Method <span class="text-danger">*</span></label>
+                                            <select name="payment_method" class="form-select form-select-sm @error('payment_method') is-invalid @enderror" required>
+                                                <option value="Bank Transfer" selected>Bank Transfer</option>
+                                                <option value="Check">Check</option>
+                                                <option value="Cash">Cash</option>
+                                            </select>
+                                            @error('payment_method')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-bold mb-1">Reference / Note</label>
+                                        <input type="text" name="notes" class="form-control form-control-sm @error('notes') is-invalid @enderror"
+                                               placeholder="e.g. CBE Ref #GMU-2026-9812" value="{{ old('notes') }}">
+                                        @error('notes')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                </div>
+                                <div class="modal-footer py-2 px-3 bg-light border-top d-flex justify-content-between">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-sm btn-success fw-bold px-3">
+                                        <i class="bi bi-check-lg me-1"></i> Release Funds
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">
+                        <i class="bi bi-check2-circle fs-3 d-block text-secondary mb-2"></i>
+                        No pending tranche disbursements. All approved tranches are currently released.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{-- Recent Disbursement History --}}
+@if($disbursedHistory->count() > 0)
+<div class="card card-custom p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0"><i class="bi bi-clock-history me-2 text-dark"></i>Recent Disbursement Transactions</h5>
+        <a href="{{ route('finance.disbursement') }}" class="btn btn-sm btn-link text-decoration-none">View All History &rarr;</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Request ID</th>
+                    <th>Project</th>
+                    <th>PI</th>
+                    <th>Tranche Phase</th>
+                    <th>Released Amount</th>
+                    <th>Method</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($disbursedHistory as $hist)
+                <tr>
+                    <td class="font-monospace text-muted">#REQ-{{ $hist->request_id }}</td>
+                    <td class="fw-bold text-dark">{{ $hist->project->title ?? 'N/A' }}</td>
+                    <td>{{ $hist->project->pi->name ?? 'N/A' }}</td>
+                    <td><span class="badge bg-light text-dark border">{{ $hist->milestone_phase ?? 'Tranche' }}</span></td>
+                    <td class="fw-bold text-dark">{{ number_format($hist->approved_amount ?? 0, 2) }} ETB</td>
+                    <td><span class="badge bg-info text-dark">{{ $hist->payment_method ?? 'N/A' }}</span></td>
+                    <td>{{ $hist->disbursed_at ? $hist->disbursed_at->format('M d, Y') : 'N/A' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+@endif
 @endif
 
 @if($role === 'tm')
