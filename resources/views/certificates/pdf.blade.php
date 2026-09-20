@@ -149,8 +149,12 @@
     </div>
     <div class="divider"></div>
 
-    <div class="cert-title">{{ $type === 'Award' ? 'Award of Excellence' : 'Certificate of Completion' }}</div>
-    <div class="cert-subtitle">{{ $type === 'Award' ? 'Journal Publication Award' : 'Research Project Completion' }}</div>
+    @php
+        $isAward = in_array($type, ['Award', 'PublicationAward']);
+    @endphp
+
+    <div class="cert-title">{{ $isAward ? 'Award of Excellence' : 'Certificate of Completion' }}</div>
+    <div class="cert-subtitle">{{ $isAward ? 'Journal Publication Award' : 'Research Project Completion' }}</div>
 
     <div class="body">
         <div class="body-text">
@@ -158,12 +162,12 @@
         </div>
         <div class="recipient-name">{{ $issued_to_name }}</div>
         <div class="body-text">
-            has successfully {{ $type === 'Award' ? 'published a research work in a reputable journal and is hereby recognized with this award of excellence' : 'completed the research project hereunder described and is awarded this certificate of completion in recognition of the successful fulfillment of all project requirements' }}:
+            has successfully {{ $isAward ? 'published peer-reviewed research work in a reputable journal and is hereby recognized with this official award of excellence' : 'completed the research project hereunder described and is awarded this certificate of completion in recognition of the successful fulfillment of all project requirements' }}:
         </div>
         <div class="project-title">"{{ $project->title }}"</div>
         <div class="body-text" style="font-size: 12px; margin-top: 10px;">
             Project ID: #{{ $project->project_id }} &nbsp;|&nbsp;
-            Budget: {{ number_format($project->requested_budget ?? 0, 2) }} ETB &nbsp;|&nbsp;
+            Budget: {{ number_format($project->approved_budget ?: ($project->requested_budget ?? 0), 2) }} ETB &nbsp;|&nbsp;
             Status: {{ $project->status }}
         </div>
     </div>
