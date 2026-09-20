@@ -20,7 +20,7 @@
     {{-- Overall Project Progress --}}
     <div class="col-12">
         @php
-            $overallProgress = $reports->count() > 0 ? round($reports->avg('progress_percentage')) : 0;
+            $overallProgress = $reports->count() > 0 ? (int) $reports->max('progress_percentage') : 0;
             $approvedCount = $reports->where('status', 'Approved')->count();
             $pendingCount = $reports->where('status', 'Submitted')->count();
             $revisionCount = $reports->where('status', 'Needs_Revision')->count();

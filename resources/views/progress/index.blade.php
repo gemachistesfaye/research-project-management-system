@@ -23,8 +23,7 @@
         @foreach($projects as $project)
         @php
             $pendingReportsCount = $project->milestoneReports->where('status', 'Submitted')->count();
-            $latestReport = $project->milestoneReports->first();
-            $progress = $latestReport ? $latestReport->progress_percentage : 0;
+            $progress = $project->milestoneReports->count() > 0 ? (int) $project->milestoneReports->max('progress_percentage') : 0;
             $reportCount = $project->milestoneReports->count();
         @endphp
         <div class="col-md-6">
