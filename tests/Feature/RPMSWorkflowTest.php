@@ -85,5 +85,41 @@ class RPMSWorkflowTest extends TestCase
         $this->expectException(Exception::class);
         $service->requestExtension($project, 'Reason 4');
     }
+
+    public function test_contract_signing_pi_and_vp_lifecycle()
+    {
+        $pi = User::factory()->create(['role' => 'pi']);
+        $vp = User::factory()->create(['role' => 'vparttcs']);
+        $thematic = ThematicArea::create(['title' => 'Health & Technology']);
+
+        $project = Project::create([
+            'title' => 'Malaria Detection AI',
+            'abstract_text' => 'AI based diagnostics',
+            'thematic_id' => $thematic->id,
+            'pi_id' => $pi->id,
+            'requested_budget' => 450000.00,
+            'status' => 'Approved',
+        ]);
+
+        // 1. VP tries to sign before PI -> Must fail
+        $response = $this->actingAs($vp)->post(route('contracts.sign-vp', $project->project_id));
+        $response->assertSessionHas('error', 'PI must sign first before VP can sign.');
+        $project->refresh();
+        $this->assertNull($project->vp_signature_date);
+
+        // 2. PI signs successfully
+        $response = $this->actingAs($pi)->post(route('contracts.sign-pi', $project->project_id));
+        $response->assertSessionHas('success', 'PI signature recorded successfully.');
+        $project->refresh();
+        $this->assertNotNull($project->pi_signature_date);
+
+        // 3. VP signs successfully
+        $response = $this->actingAs($vp)->post(route('contracts.sign-vp', $project->project_id));
+        $response->assertSessionHas('success', 'VP signature recorded. Project is now Active.');
+        $project->refresh();
+        $this->assertNotNull($project->vp_signature_date);
+        $this->assertNotNull($project->contract_signed_at);
+        $this->assertEquals('Active', $project->status);
+    }
 }
 

@@ -152,7 +152,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('contracts.download');
         Route::post('/contracts/{id}/sign-pi', function ($id) {
             $project = \App\Models\Project::findOrFail($id);
-            if ((int) \Auth::id() !== (int) $project->pi_id) {
+            if ((int) \Auth::id() !== (int) $project->pi_id && \Auth::user()->role !== 'admin') {
                 return back()->with('error', 'Only the PI can sign as PI.');
             }
             if ($project->status !== 'Approved') {
@@ -163,6 +163,9 @@ Route::middleware(['auth'])->group(function () {
         })->name('contracts.sign-pi');
         Route::post('/contracts/{id}/sign-vp', function ($id) {
             $project = \App\Models\Project::findOrFail($id);
+            if (!in_array(\Auth::user()->role, ['vparttcs', 'admin'])) {
+                return back()->with('error', 'Only the Vice President (ARTTCS) or System Admin can sign this contract as VP.');
+            }
             if (!$project->pi_signature_date) {
                 return back()->with('error', 'PI must sign first before VP can sign.');
             }
