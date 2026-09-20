@@ -187,12 +187,12 @@
                     <div class="modal-content">
                         <form action="{{ route('projects.request-extension', $project->project_id) }}" method="POST">
                             @csrf
-                            <div class="modal-header bg-primary text-white">
+                            <div class="modal-header bg-dark text-white">
                                 <h6 class="modal-title fw-bold"><i class="bi bi-clock me-2"></i>Request Time Extension</h6>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="alert alert-info small mb-3">
+                                <div class="alert alert-secondary small mb-3">
                                     <i class="bi bi-info-circle me-1"></i>
                                     <strong>Extension #{{ $extCount + 1 }}:</strong>
                                     @if($extCount < 2)
@@ -217,7 +217,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Submit Extension" data-confirm-message="Submit this extension request for approval?" data-confirm-icon="bi-clock-history" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-primary">Submit Request</button>
+                                <button type="button" class="btn btn-dark fw-bold confirm-btn" data-confirm-title="Submit Extension" data-confirm-message="Submit this extension request for approval?" data-confirm-icon="bi-clock-history" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">Submit Request</button>
                             </div>
                         </form>
                     </div>
@@ -390,7 +390,7 @@
                             <tbody>
                                 @forelse($completedExtensions as $ext)
                                 <tr>
-                                    <td><span class="badge bg-primary text-white"><i class="bi bi-clock-history me-1"></i>Time Extension</span></td>
+                                    <td><span class="badge bg-dark text-white"><i class="bi bi-clock-history me-1"></i>Time Extension</span></td>
                                     <td class="fw-bold">{{ $ext->project->title ?? 'Project #' . $ext->project_id }}</td>
                                     <td>{{ $ext->project->pi->name ?? 'N/A' }}</td>
                                     <td>Extension #{{ $ext->extension_number }} (+{{ $ext->requested_months }} months)</td>

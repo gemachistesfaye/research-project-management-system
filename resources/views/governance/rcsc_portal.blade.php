@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-award me-2 text-danger"></i>RCSC High Budget (&ge;500k ETB) & Defense Portal</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-award me-2 text-dark"></i>RCSC High Budget (&ge;500k ETB) & Defense Portal</h3>
 
 <h5 class="fw-bold mb-3"><i class="bi bi-hourglass-split me-2 text-warning"></i>Pending RCSC Budget Requests ({{ $pending->count() }})</h5>
 <div class="card card-custom p-4 mb-4">
@@ -29,12 +29,12 @@
                         </a>
                         @endif
                     </td>
-                    <td><span class="fw-bold text-danger">{{ number_format($r->project->requested_budget ?? 0, 2) }} ETB</span></td>
+                    <td><span class="fw-bold text-dark">{{ number_format($r->project->requested_budget ?? 0, 2) }} ETB</span></td>
                     <td>Phase {{ $r->milestone_phase }}</td>
                     <td>{{ number_format($r->requested_amount, 2) }} ETB</td>
                     <td><span class="badge bg-warning text-dark">{{ $r->status }}</span></td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rcscDecisionModal{{ $r->request_id }}">
+                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#rcscDecisionModal{{ $r->request_id }}">
                             <i class="bi bi-check2-square"></i> Review
                         </button>
                     </td>
@@ -101,11 +101,11 @@
         <div class="modal-content">
             <form method="POST" action="{{ route('rcsc.decision', $r->request_id) }}">
                 @csrf
-                <div class="modal-header bg-danger-subtle py-2">
+                <div class="modal-header bg-dark text-white py-2">
                     <h5 class="modal-title fw-bold" style="white-space:normal;">
                         <i class="bi bi-award me-2"></i>RCSC Budget Decision — {{ $r->project->title ?? 'N/A' }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body py-2">
                     <div class="row g-2 mb-2">
@@ -115,7 +115,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1">Project Budget</label>
-                            <input type="text" class="form-control form-control-sm fw-bold text-danger" value="{{ number_format($r->project->requested_budget ?? 0, 2) }} ETB" disabled>
+                            <input type="text" class="form-control form-control-sm fw-bold text-dark" value="{{ number_format($r->project->requested_budget ?? 0, 2) }} ETB" disabled>
                         </div>
                     </div>
                     <div class="row g-2 mb-2">
@@ -151,7 +151,7 @@
                 </div>
                 <div class="modal-footer py-2">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger fw-bold px-3 btn-sm confirm-btn" id="rcscSubmitBtn{{ $r->request_id }}" data-confirm-title="Submit RCSC Decision" data-confirm-message="Submit your RCSC budget decision? This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-danger">
+                    <button type="button" class="btn btn-dark fw-bold px-3 btn-sm confirm-btn" id="rcscSubmitBtn{{ $r->request_id }}" data-confirm-title="Submit RCSC Decision" data-confirm-message="Submit your RCSC budget decision? This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
                         <i class="bi bi-check-circle me-1"></i> Submit RCSC Decision
                     </button>
                 </div>
@@ -170,7 +170,7 @@ function toggleRcscSubmitBtn(id) {
     } else if (sel.value === 'Rejected') {
         btn.className = 'btn btn-danger fw-bold px-4 confirm-btn';
     } else {
-        btn.className = 'btn btn-danger fw-bold px-4 confirm-btn';
+        btn.className = 'btn btn-dark fw-bold px-4 confirm-btn';
     }
 }
 </script>

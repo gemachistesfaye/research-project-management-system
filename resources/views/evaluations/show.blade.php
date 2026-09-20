@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-clipboard-check me-2 text-primary"></i>Blind Peer Review</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-clipboard-check me-2 text-dark"></i>Blind Peer Review</h3>
 
 @if($evaluation->is_blind_masked)
-<div class="alert alert-info mb-4">
-    <i class="bi bi-eye-slash me-2"></i>
+<div class="alert alert-secondary border-start border-4 border-dark mb-4">
+    <i class="bi bi-eye-slash me-2 text-dark"></i>
     <strong>Double-Blind Review Active:</strong> PI identity is hidden to ensure impartial evaluation.
 </div>
 @endif
@@ -19,7 +19,7 @@
             <p><strong>Abstract:</strong></p>
             <div class="bg-light p-3 rounded">{{ $evaluation->project->abstract_text ?? 'N/A' }}</div>
             @if($evaluation->project->proposal_document_url)
-            <p class="mt-3"><a href="{{ Storage::url($evaluation->project->proposal_document_url) }}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="bi bi-file-pdf me-1"></i>View Proposal PDF</a></p>
+            <p class="mt-3"><a href="{{ Storage::url($evaluation->project->proposal_document_url) }}" target="_blank" class="btn btn-outline-dark btn-sm"><i class="bi bi-file-pdf me-1"></i>View Proposal PDF</a></p>
             @endif
         </div>
     </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span class="small text-muted">Decision:</span>
-                    <span class="badge bg-info text-dark">{{ $evaluation->decision }}</span>
+                    <span class="badge bg-secondary">{{ $evaluation->decision }}</span>
                 </div>
                 <div class="mb-2">
                     <span class="small text-muted d-block mb-1">Comments:</span>
@@ -70,7 +70,7 @@
                     <textarea name="comments" rows="4" class="form-control" required placeholder="Provide technical feedback, strengths, and areas of improvement..."></textarea>
                 </div>
 
-                <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
+                <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
                     <i class="bi bi-send-check me-1"></i> Submit Evaluation Score
                 </button>
             </form>

@@ -88,15 +88,15 @@
                                 <div class="col-md-6">
                                     <div class="card h-100 border-0 shadow-sm">
                                         <div class="card-body">
-                                            <h6 class="card-title text-primary mb-3">
-                                                <i class="bi bi-info-circle me-2"></i>Project Details
+                                            <h6 class="card-title text-dark fw-bold mb-3">
+                                                <i class="bi bi-info-circle me-2 text-dark"></i>Project Details
                                             </h6>
                                             <ul class="list-unstyled mb-0">
                                                 <li class="mb-2">
                                                     <strong class="text-muted">Budget Requested:</strong>
                                                     <span class="fw-bold text-success">{{ number_format($p->requested_budget, 2) }} ETB</span>
                                                     @if($p->requested_budget <= 500000)
-                                                        <span class="badge bg-info ms-2">Tier 1 - Small</span>
+                                                        <span class="badge bg-secondary ms-2">Tier 1 - Small</span>
                                                     @elseif($p->requested_budget <= 2000000)
                                                         <span class="badge bg-warning text-dark ms-2">Tier 2 - Medium</span>
                                                     @else
@@ -113,12 +113,12 @@
                                                 </li>
                                                 <li>
                                                     <strong class="text-muted">Thematic Area:</strong>
-                                                    <span class="badge bg-primary-subtle text-primary">{{ $p->thematic_area ?? 'N/A' }}</span>
+                                                    <span class="badge bg-secondary">{{ $p->thematic_area ?? 'N/A' }}</span>
                                                 </li>
                                             </ul>
                                             @if($p->proposal_document_url)
                                             <div class="mt-3">
-                                                <a href="{{ Storage::url($p->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-primary fw-bold">
+                                                <a href="{{ Storage::url($p->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-dark fw-bold">
                                                     <i class="bi bi-file-pdf me-1"></i>View Proposal PDF
                                                 </a>
                                             </div>

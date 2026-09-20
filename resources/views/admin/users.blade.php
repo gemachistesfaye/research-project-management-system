@@ -7,10 +7,10 @@
         <span class="badge bg-secondary">System Administration Console</span>
     </div>
     <div>
-        <button type="button" class="btn btn-outline-success fw-bold me-2" id="exportCsvBtn">
+        <button type="button" class="btn btn-outline-dark fw-bold me-2" id="exportCsvBtn">
             <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
         </button>
-        <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#createUserModal">
+        <button type="button" class="btn btn-dark fw-bold" data-bs-toggle="modal" data-bs-target="#createUserModal">
             <i class="bi bi-person-plus-fill me-1"></i> Create New User Account
         </button>
     </div>
@@ -82,7 +82,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="alert alert-info small py-2 mb-3" style="white-space:normal; word-wrap:break-word;">
+                                            <div class="alert alert-secondary border-start border-4 border-dark small py-2 mb-3" style="white-space:normal; word-wrap:break-word;">
                                                 <i class="bi bi-info-circle me-1"></i>
                                                 This is the <strong>only</strong> password reset path. Verify the user's identity in person before proceeding.
                                             </div>
@@ -131,9 +131,9 @@
         <div class="modal-content">
             <form method="POST" action="{{ route('admin.users.store') }}">
                 @csrf
-                <div class="modal-header py-2">
-                    <h5 class="modal-title fw-bold" style="white-space:normal;"><i class="bi bi-person-plus me-2 text-success"></i>Create New User Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header bg-dark text-white py-2">
+                    <h5 class="modal-title fw-bold" style="white-space:normal;"><i class="bi bi-person-plus me-2"></i>Create New User Account</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body py-2">
                     <div class="row g-2 mb-2">
@@ -196,7 +196,7 @@
                 </div>
                 <div class="modal-footer py-2">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success fw-bold px-3 btn-sm confirm-btn" data-confirm-title="Create User" data-confirm-message="Create this new user account?" data-confirm-icon="bi-person-plus" data-confirm-color="text-success" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-success">
+                    <button type="button" class="btn btn-dark fw-bold px-3 btn-sm confirm-btn" data-confirm-title="Create User" data-confirm-message="Create this new user account?" data-confirm-icon="bi-person-plus" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-dark">
                         <i class="bi bi-person-plus me-1"></i> Create User Account
                     </button>
                 </div>

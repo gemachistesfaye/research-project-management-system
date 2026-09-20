@@ -699,7 +699,7 @@
                         <ul class="dropdown-menu dropdown-menu-end p-2 shadow-lg" style="width: 320px; max-height: 380px; overflow-y: auto;">
                             <li class="dropdown-header fw-bold d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                                 <span><i class="bi bi-bell me-1 text-warning"></i> Notifications Center (SCR-17)</span>
-                                <span class="badge bg-primary rounded-pill">{{ $notifCount }}</span>
+                                <span class="badge bg-dark rounded-pill">{{ $notifCount }}</span>
                             </li>
                             @forelse($notifItems as $item)
                                 <li class="mb-2">

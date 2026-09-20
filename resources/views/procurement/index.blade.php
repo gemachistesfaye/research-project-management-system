@@ -166,8 +166,8 @@
         <div class="card card-custom">
             <div class="card-header bg-white border-bottom fw-bold">
                 <div class="d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-list-check me-2 text-primary"></i> Purchase Requests</span>
-                    <span class="badge bg-primary rounded-pill">{{ $requests->count() }}</span>
+                    <span><i class="bi bi-list-check me-2 text-dark"></i> Purchase Requests</span>
+                    <span class="badge bg-dark rounded-pill">{{ $requests->count() }}</span>
                 </div>
                 <div class="mt-2 d-flex flex-wrap gap-2">
                     @php $currentCategory = request('category', 'All'); @endphp
@@ -182,73 +182,63 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>ID</th>
-                                <th>Item</th>
+                                <th>#</th>
+                                <th>Item Details</th>
                                 <th>Category</th>
-                                <th>Est. Cost</th>
-                                <th>Project</th>
-                                <th>Status Timeline</th>
-                                @if(Auth::user()->role === 'coordinator')
-                                <th>Action</th>
-                                @endif
+                                <th>Qty</th>
+                                <th>Total Cost</th>
+                                <th>Status</th>
+                                @if(Auth::user()->role === 'coordinator')<th>Action</th>@endif
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($requests as $req)
                             <tr>
-                                <td><span class="text-muted">#PR-{{ $req->id }}</span></td>
+                                <td><span class="badge bg-light text-dark border">#{{ $req->id }}</span></td>
                                 <td>
-                                    <div class="fw-bold">{{ $req->item_name }}</div>
-                                    @if($req->description)
-                                        <small class="text-muted">{{ Str::limit($req->description, 50) }}</small>
+                                    <div class="fw-bold text-dark">{{ $req->item_name }}</div>
+                                    <small class="text-muted">{{ Str::limit($req->specification, 50) }}</small>
+                                    @if(Auth::user()->role === 'coordinator')
+                                        <div class="text-muted" style="font-size:11px">
+                                            <i class="bi bi-folder2 me-1"></i>{{ Str::limit($req->project->title ?? 'N/A', 35) }}
+                                            &bull; PI: {{ $req->requester->name ?? 'N/A' }}
+                                        </div>
                                     @endif
                                 </td>
                                 <td>
                                     @php
-                                        $catColors = ['Equipment' => 'info', 'Reagents' => 'purple', 'Consumables' => 'success', 'Other' => 'secondary'];
-                                        $catColor = $catColors[$req->category] ?? 'secondary';
+                                        $catIcons = ['Equipment' => 'bi-cpu', 'Reagents' => 'bi-eyedropper', 'Consumables' => 'bi-box-seam', 'Other' => 'bi-tag'];
+                                        $icon = $catIcons[$req->category] ?? 'bi-tag';
                                     @endphp
-                                    <span class="badge bg-{{ $catColor }}">{{ $req->category }}</span>
+                                    <span class="badge bg-light text-dark border">
+                                        <i class="bi {{ $icon }} me-1"></i>{{ $req->category }}
+                                    </span>
                                 </td>
-                                <td class="fw-bold">{{ number_format($req->estimated_cost, 2) }} ETB</td>
-                                <td><span class="text-muted">{{ Str::limit($req->project->title ?? 'N/A', 25) }}</span>
-                                    @if($req->project && $req->project->proposal_document_url)
-                                    <a href="{{ Storage::url($req->project->proposal_document_url) }}" target="_blank" class="text-decoration-none ms-1" title="View Proposal Document">
-                                        <i class="bi bi-file-pdf text-danger small"></i>
-                                    </a>
+                                <td>{{ $req->quantity }}</td>
+                                <td>
+                                    <span class="fw-bold text-dark">{{ number_format($req->total_cost, 2) }} ETB</span>
+                                    <div class="text-muted" style="font-size:11px">@ {{ number_format($req->estimated_unit_cost, 2) }} ETB</div>
+                                </td>
+                                <td>
+                                    @if($req->status === 'Pending')
+                                        <span class="badge bg-warning-subtle text-dark border border-warning-subtle"><i class="bi bi-clock me-1"></i>Pending</span>
+                                    @elseif($req->status === 'Approved')
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check-circle me-1"></i>Approved</span>
+                                    @elseif($req->status === 'Rejected')
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                                    @elseif($req->status === 'Purchased')
+                                        <span class="badge bg-success text-white"><i class="bi bi-bag-check me-1"></i>Purchased</span>
+                                    @else
+                                        <span class="badge bg-secondary text-white">{{ $req->status }}</span>
                                     @endif
                                 </td>
-                                <td style="min-width: 220px;">
-                                    @php
-                                        $statuses = ['Pending', 'Approved', 'Purchased'];
-                                        $currentIdx = array_search($req->status, $statuses);
-                                        if ($currentIdx === false && $req->status === 'Rejected') $currentIdx = -1;
-                                    @endphp
-                                    <div class="d-flex align-items-center">
-                                        @foreach($statuses as $idx => $s)
-                                            <div class="timeline-step {{ $idx < $currentIdx ? 'completed' : '' }} {{ $idx === $currentIdx ? 'active' : '' }}">
-                                                <span class="step-circle">
-                                                    @if($idx < $currentIdx)
-                                                        <i class="bi bi-check-lg"></i>
-                                                    @else
-                                                        {{ $idx + 1 }}
-                                                    @endif
-                                                </span>
-                                                <span class="step-label">{{ $s }}</span>
-                                            </div>
-                                        @endforeach
-                                        @if($req->status === 'Rejected')
-                                            <span class="badge bg-danger ms-2">Rejected</span>
-                                        @endif
-                                    </div>
-                                </td>
-                                @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
+                                @if(Auth::user()->role === 'coordinator')
                                 <td>
                                     @if($req->status === 'Pending')
                                         <div class="btn-group btn-group-sm">
                                             <form action="{{ route('procurement.approve', $req->id) }}" method="POST" class="d-inline">
                                                 @csrf
-                                                <button type="button" class="btn btn-success btn-sm confirm-btn" title="Approve Request" data-confirm-title="Approve Purchase Request" data-confirm-message="Approve this purchase request?" data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Approve" data-confirm-btn-class="btn-success">
+                                                <button type="button" class="btn btn-success btn-sm confirm-btn" title="Approve Request" data-confirm-title="Approve Purchase Request" data-confirm-message="Approve purchase of '{{ $req->item_name }}' for {{ number_format($req->total_cost, 2) }} ETB?" data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Approve" data-confirm-btn-class="btn-success">
                                                     <i class="bi bi-check-lg me-1"></i> Approve
                                                 </button>
                                             </form>
@@ -262,7 +252,7 @@
                                     @elseif($req->status === 'Approved')
                                         <form action="{{ route('procurement.mark-purchased', $req->id) }}" method="POST" class="d-inline">
                                             @csrf
-                                            <button type="button" class="btn btn-primary btn-sm confirm-btn" title="Record Delivery / Purchase Complete" data-confirm-title="Confirm Purchase Complete" data-confirm-message="Mark this item as purchased and received?" data-confirm-icon="bi-bag-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Mark Purchased" data-confirm-btn-class="btn-primary">
+                                            <button type="button" class="btn btn-dark btn-sm confirm-btn" title="Record Delivery / Purchase Complete" data-confirm-title="Confirm Purchase Complete" data-confirm-message="Mark this item as purchased and received?" data-confirm-icon="bi-bag-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Mark Purchased" data-confirm-btn-class="btn-dark">
                                                 <i class="bi bi-bag-check me-1"></i> Mark Purchased
                                             </button>
                                         </form>

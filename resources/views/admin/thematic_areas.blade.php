@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-diagram-3 me-2 text-primary"></i>Thematic Priority Area Configuration</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-diagram-3 me-2 text-dark"></i>Thematic Priority Area Configuration</h3>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <span class="text-muted small">Manage institutional thematic priority areas for research proposals</span>
-    <button type="button" class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#createThematicModal">
+    <button type="button" class="btn btn-dark fw-bold" data-bs-toggle="modal" data-bs-target="#createThematicModal">
         <i class="bi bi-plus-circle me-1"></i> Create New
     </button>
 </div>
@@ -31,7 +31,7 @@
                     <td><span class="badge {{ $t->is_active ? 'bg-success' : 'bg-secondary' }}">{{ $t->is_active ? 'Active' : 'Inactive' }}</span></td>
                     <td>
                         <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editThematicModal{{ $t->id }}">
+                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#editThematicModal{{ $t->id }}">
                                 <i class="bi bi-pencil"></i> Edit
                             </button>
                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteThematicModal{{ $t->id }}">
@@ -60,11 +60,11 @@
             <form method="POST" action="{{ route('admin.thematic-areas.store') }}">
                 @csrf
                 @method('POST')
-                <div class="modal-header bg-primary-subtle">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title fw-bold" id="createThematicModalLabel">
-                        <i class="bi bi-plus-circle me-2 text-primary"></i>Create New Thematic Area
+                        <i class="bi bi-plus-circle me-2"></i>Create New Thematic Area
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -92,7 +92,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary fw-bold px-4 confirm-btn" data-confirm-title="Create Thematic Area" data-confirm-message="Create this thematic area?" data-confirm-icon="bi-plus-circle" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-primary">
+                    <button type="button" class="btn btn-dark fw-bold px-4 confirm-btn" data-confirm-title="Create Thematic Area" data-confirm-message="Create this thematic area?" data-confirm-icon="bi-plus-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-dark">
                         <i class="bi bi-check-lg me-1"></i> Create Thematic Area
                     </button>
                 </div>
@@ -110,11 +110,11 @@
             <form method="POST" action="{{ route('admin.thematic-areas.update', $t->id) }}">
                 @csrf
                 @method('PUT')
-                <div class="modal-header bg-primary-subtle">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title fw-bold" id="editThematicModalLabel{{ $t->id }}">
-                        <i class="bi bi-pencil me-2 text-primary"></i>Edit Thematic Area — {{ $t->title }}
+                        <i class="bi bi-pencil me-2"></i>Edit Thematic Area — {{ $t->title }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -141,7 +141,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold px-4 confirm-btn" data-confirm-title="Save Changes" data-confirm-message="Save changes to this thematic area?" data-confirm-icon="bi-check-circle" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Save" data-confirm-btn-class="btn-primary">
+                    <button type="submit" class="btn btn-dark fw-bold px-4 confirm-btn" data-confirm-title="Save Changes" data-confirm-message="Save changes to this thematic area?" data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Save" data-confirm-btn-class="btn-dark">
                         <i class="bi bi-check-lg me-1"></i> Save Changes
                     </button>
                 </div>

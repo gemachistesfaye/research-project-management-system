@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-bank me-2 text-primary"></i>Dean Budget Approvals (&lt;500k ETB)</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-bank me-2 text-dark"></i>Dean Budget Approvals (&lt;500k ETB)</h3>
 
 <h5 class="fw-bold mb-3"><i class="bi bi-hourglass-split me-2 text-warning"></i>Pending Budget Requests ({{ $pending->count() }})</h5>
 <div class="card card-custom p-4 mb-4">
@@ -34,7 +34,7 @@
                     <td>{{ number_format($r->requested_amount, 2) }} ETB</td>
                     <td><span class="badge bg-warning text-dark">{{ $r->status }}</span></td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#deanDecisionModal{{ $r->request_id }}">
+                        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#deanDecisionModal{{ $r->request_id }}">
                             <i class="bi bi-check2-square"></i> Review
                         </button>
                     </td>
@@ -101,11 +101,11 @@
         <div class="modal-content">
             <form method="POST" action="{{ route('dean.decision', $r->request_id) }}">
                 @csrf
-                <div class="modal-header bg-primary-subtle py-2">
+                <div class="modal-header bg-dark text-white py-2">
                     <h5 class="modal-title fw-bold" style="white-space:normal;">
                         <i class="bi bi-bank me-2"></i>Dean Budget Decision — {{ $r->project->title ?? 'N/A' }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body py-2">
                     <div class="row g-2 mb-2">
@@ -151,7 +151,7 @@
                 </div>
                 <div class="modal-footer py-2">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary fw-bold px-3 btn-sm confirm-btn" id="deanSubmitBtn{{ $r->request_id }}" data-confirm-title="Submit Dean Decision" data-confirm-message="Submit your Dean budget decision? This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-primary">
+                    <button type="button" class="btn btn-dark fw-bold px-3 btn-sm confirm-btn" id="deanSubmitBtn{{ $r->request_id }}" data-confirm-title="Submit Dean Decision" data-confirm-message="Submit your Dean budget decision? This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
                         <i class="bi bi-check-circle me-1"></i> Submit Dean Decision
                     </button>
                 </div>
@@ -170,7 +170,7 @@ function toggleDeanSubmitBtn(id) {
     } else if (sel.value === 'Rejected') {
         btn.className = 'btn btn-danger fw-bold px-4 confirm-btn';
     } else {
-        btn.className = 'btn btn-primary fw-bold px-4 confirm-btn';
+        btn.className = 'btn btn-dark fw-bold px-4 confirm-btn';
     }
 }
 </script>

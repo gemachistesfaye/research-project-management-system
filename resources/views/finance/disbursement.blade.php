@@ -105,7 +105,7 @@
             <div class="col-md-4">
                 <div class="card border-dark h-100">
                     <div class="card-body text-center">
-                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                        <div class="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
                             <span class="fs-5 fw-bold">2</span>
                         </div>
                         <h6 class="fw-bold mb-1">Tranche 2</h6>
@@ -117,7 +117,7 @@
             <div class="col-md-4">
                 <div class="card border-dark h-100">
                     <div class="card-body text-center">
-                        <div class="rounded-circle bg-info text-white d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                        <div class="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
                             <span class="fs-5 fw-bold">3</span>
                         </div>
                         <h6 class="fw-bold mb-1">Tranche 3</h6>
@@ -208,9 +208,9 @@
                             @if($req->milestone_phase === 'Tranche 1')
                                 <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1 (30% Advance)</span>
                             @elseif($req->milestone_phase === 'Tranche 2')
-                                <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40% Mid-Term)</span>
+                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40% Mid-Term)</span>
                             @elseif($req->milestone_phase === 'Tranche 3')
-                                <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30% Final)</span>
+                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30% Final)</span>
                             @else
                                 <span class="badge bg-secondary text-white px-2 py-1">{{ $req->milestone_phase }}</span>
                             @endif
@@ -372,7 +372,7 @@
                         <td class="text-end">
                             <div class="fw-bold text-dark">{{ number_format($hist->approved_amount ?? 0, 2) }} ETB</div>
                         </td>
-                        <td><span class="badge bg-info text-dark">{{ $hist->payment_method ?? 'N/A' }}</span></td>
+                        <td><span class="badge bg-light text-dark border">{{ $hist->payment_method ?? 'N/A' }}</span></td>
                         <td>
                             <div class="small fw-semibold text-dark">{{ $hist->disbursed_at ? $hist->disbursed_at->format('M d, Y') : 'N/A' }}</div>
                             <small class="text-muted" style="font-size: 0.72rem;">{{ $hist->disbursed_at ? $hist->disbursed_at->format('h:i A') : '' }}</small>

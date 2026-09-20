@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-shield-check me-2 text-danger"></i>Audit Trail & Security Logs</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-shield-check me-2 text-dark"></i>Audit Trail & Security Logs</h3>
 <div class="card card-custom p-4">
-    <div class="alert alert-info small mb-3">
+    <div class="alert alert-secondary border-start border-4 border-dark small mb-3">
         <i class="bi bi-lock-fill me-1"></i>Immutable system audit log trail recording all logins, evaluation scoring, and budget approvals.
     </div>
 
@@ -36,7 +36,7 @@
     </form>
 
     <div class="d-flex justify-content-end mb-3">
-        <a href="#" class="btn btn-outline-success" onclick="alert('Export functionality coming soon!'); return false;">
+        <a href="#" class="btn btn-outline-dark" onclick="alert('Export functionality coming soon!'); return false;">
             <i class="bi bi-download me-1"></i>Export CSV
         </a>
     </div>
@@ -62,7 +62,7 @@
                             $action = strtolower($log->action ?? '');
                             $badgeClass = 'bg-dark';
                             if (str_contains($action, 'login') || str_contains($action, 'logout')) {
-                                $badgeClass = 'bg-info text-dark';
+                                $badgeClass = 'bg-secondary';
                             } elseif (str_contains($action, 'create') || str_contains($action, 'submit')) {
                                 $badgeClass = 'bg-success';
                             } elseif (str_contains($action, 'update') || str_contains($action, 'edit')) {
@@ -70,7 +70,7 @@
                             } elseif (str_contains($action, 'delete') || str_contains($action, 'reject') || str_contains($action, 'terminate')) {
                                 $badgeClass = 'bg-danger';
                             } elseif (str_contains($action, 'approve') || str_contains($action, 'release')) {
-                                $badgeClass = 'bg-primary';
+                                $badgeClass = 'bg-success';
                             }
                         @endphp
                         <span class="badge {{ $badgeClass }}">{{ $log->action }}</span>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-hdd-network me-2 text-info"></i>HRMS & External Integration Monitor</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-hdd-network me-2 text-dark"></i>HRMS & External Integration Monitor</h3>
 <div class="card card-custom p-4">
     <div class="row g-3">
         <div class="col-md-6">

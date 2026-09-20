@@ -7,7 +7,7 @@
     .workload-low { background: #198754; }
     .workload-medium { background: #ffc107; }
     .workload-high { background: #dc3545; }
-    .reviewer-card { border-left: 4px solid #0d6efd; transition: transform 0.15s ease; }
+    .reviewer-card { border-left: 4px solid #212529; transition: transform 0.15s ease; }
     .reviewer-card:hover { transform: translateX(4px); }
     .empty-state-icon { font-size: 3rem; color: #adb5bd; }
     .sidebar-section { max-height: 500px; overflow-y: auto; }
@@ -15,10 +15,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-1"><i class="bi bi-briefcase me-2 text-success"></i>Coordinator Management Hub</h3>
+        <h3 class="fw-bold mb-1"><i class="bi bi-briefcase me-2 text-dark"></i>Coordinator Management Hub</h3>
         <p class="text-muted mb-0">Manage blind peer reviewer assignments for DH-screened proposals.</p>
     </div>
-    <a href="{{ route('certificates') }}" class="btn btn-outline-success fw-bold">
+    <a href="{{ route('certificates') }}" class="btn btn-outline-dark fw-bold">
         <i class="bi bi-award me-1"></i> Certificates
     </a>
 </div>
@@ -29,7 +29,7 @@
         <div class="card card-custom">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 fw-bold"><i class="bi bi-list-ul me-2"></i>Projects Awaiting Assignment</h6>
-                <span class="badge bg-primary">{{ $projects->count() }} Projects</span>
+                <span class="badge bg-dark">{{ $projects->count() }} Projects</span>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -61,7 +61,7 @@
                                     @if($count === 0)
                                         <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i>0 Reviewers</span>
                                     @elseif($count < 3)
-                                        <span class="badge bg-info text-dark"><i class="bi bi-person-check me-1"></i>{{ $count }} Reviewer{{ $count > 1 ? 's' : '' }}</span>
+                                        <span class="badge bg-secondary text-white"><i class="bi bi-person-check me-1"></i>{{ $count }} Reviewer{{ $count > 1 ? 's' : '' }}</span>
                                     @else
                                         <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>{{ $count }} Reviewers</span>
                                     @endif
@@ -79,13 +79,13 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center gap-1 flex-wrap">
-                                        <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-success py-1 px-2" style="font-size: 0.78rem;">
+                                        <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-dark py-1 px-2" style="font-size: 0.78rem;">
                                             <i class="bi bi-pencil-square me-1"></i>Manage
                                         </a>
                                         <a href="{{ route('progress.show', $p->project_id) }}" class="btn btn-sm btn-outline-dark py-1 px-2" style="font-size: 0.78rem;" title="View & Audit Progress Reports">
                                             <i class="bi bi-graph-up me-1"></i>Progress
                                         </a>
-                                        <button class="btn btn-sm btn-outline-primary py-1 px-2 quick-assign-btn"
+                                        <button class="btn btn-sm btn-outline-dark py-1 px-2 quick-assign-btn"
                                                 data-project-id="{{ $p->project_id }}"
                                                 data-project-title="{{ $p->title }}"
                                                 style="font-size: 0.78rem;">
@@ -94,7 +94,7 @@
                                         @if(!$p->irercClearance)
                                         <form action="{{ route('projects.create-irerc-clearance', $p->project_id) }}" method="POST" class="d-inline mb-0">
                                             @csrf
-                                            <button type="button" class="btn btn-sm btn-outline-info py-1 px-2 fw-semibold confirm-btn" style="font-size: 0.78rem;" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to IRERC for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-info" data-confirm-btn-text="Yes, Send" data-confirm-btn-class="btn-info text-white">
+                                            <button type="button" class="btn btn-sm btn-outline-dark py-1 px-2 fw-semibold confirm-btn" style="font-size: 0.78rem;" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to IRERC for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Send" data-confirm-btn-class="btn-dark">
                                                 <i class="bi bi-shield-plus me-1"></i>Send to Ethics
                                             </button>
                                         </form>
@@ -140,7 +140,7 @@
         <div class="card card-custom">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 fw-bold"><i class="bi bi-people me-2"></i>Available Reviewers</h6>
-                <span class="badge bg-primary">{{ $reviewers->count() }} Reviewers</span>
+                <span class="badge bg-dark">{{ $reviewers->count() }} Reviewers</span>
             </div>
             <div class="card-body p-3">
                 <div class="row g-3">
@@ -155,7 +155,7 @@
                                 <span class="badge bg-white text-dark border">{{ $r['user']->staff_id }}</span>
                             </div>
                             <div class="d-flex gap-3 mb-2 small">
-                                <span><i class="bi bi-clipboard-check text-primary me-1"></i><strong>{{ $r['active_reviews'] }}</strong> Active</span>
+                                <span><i class="bi bi-clipboard-check text-dark me-1"></i><strong>{{ $r['active_reviews'] }}</strong> Active</span>
                                 <span><i class="bi bi-check2-all text-success me-1"></i><strong>{{ $r['total_evaluations'] }}</strong> Done</span>
                                 <span><i class="bi bi-star text-warning me-1"></i><strong>{{ $r['avg_score'] }}</strong> Avg</span>
                             </div>
@@ -186,7 +186,7 @@
 <div class="modal fade" id="quickAssignModal" tabindex="-1" aria-labelledby="quickAssignModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-dark text-white">
                 <h5 class="modal-title" id="quickAssignModalLabel">
                     <i class="bi bi-lightning me-2"></i>Quick Assign Reviewer
                 </h5>
@@ -213,7 +213,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div id="reviewer-workload-info" class="alert alert-info d-none">
+                <div id="reviewer-workload-info" class="alert alert-secondary d-none">
                     <small>
                         <i class="bi bi-info-circle me-1"></i>
                         This reviewer currently has <strong id="info-active"></strong> active reviews.
@@ -223,7 +223,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirm-assign-btn">
+                <button type="button" class="btn btn-dark" id="confirm-assign-btn">
                     <i class="bi bi-check-circle me-1"></i>Assign Reviewer
                 </button>
             </div>

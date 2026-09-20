@@ -45,7 +45,7 @@
                             </div>
                             <div class="d-flex justify-content-between mb-1">
                                 <span class="small text-muted">Status</span>
-                                <span class="badge bg-{{ $project->status === 'Approved' ? 'success' : 'primary' }}">{{ $project->status }}</span>
+                                <span class="badge bg-{{ $project->status === 'Approved' ? 'success' : 'dark' }}">{{ $project->status }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-1">
                                 <span class="small text-muted">Days Active</span>

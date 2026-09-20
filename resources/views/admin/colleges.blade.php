@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-bank me-2 text-primary"></i>College Management</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-bank me-2 text-dark"></i>College Management</h3>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <span class="text-muted small">Manage academic colleges and view their departments</span>
-    <button type="button" class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#createCollegeModal">
+    <button type="button" class="btn btn-dark fw-bold" data-bs-toggle="modal" data-bs-target="#createCollegeModal">
         <i class="bi bi-plus-circle me-1"></i> Create New College
     </button>
 </div>
@@ -44,7 +44,7 @@
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editCollegeModal{{ $c->id }}">
+                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#editCollegeModal{{ $c->id }}">
                                 <i class="bi bi-pencil"></i> Edit
                             </button>
                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteCollegeModal{{ $c->id }}">
@@ -72,7 +72,7 @@
         <div class="modal-content">
             <form method="POST" action="{{ route('admin.colleges.store') }}">
                 @csrf
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title fw-bold"><i class="bi bi-bank me-2"></i>Create New College</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Create College" data-confirm-message="Create this new college?" data-confirm-icon="bi-bank" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-primary">Create College</button>
+                    <button type="submit" class="btn btn-dark fw-bold confirm-btn" data-confirm-title="Create College" data-confirm-message="Create this new college?" data-confirm-icon="bi-bank" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Create" data-confirm-btn-class="btn-dark">Create College</button>
                 </div>
             </form>
         </div>
@@ -104,7 +104,7 @@
             <form method="POST" action="{{ route('admin.colleges.update', $c->id) }}">
                 @csrf
                 @method('PUT')
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title fw-bold"><i class="bi bi-pencil me-2"></i>Edit College</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold confirm-btn" data-confirm-title="Update College" data-confirm-message="Save changes to this college?" data-confirm-icon="bi-check-circle" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Save" data-confirm-btn-class="btn-primary">Update College</button>
+                    <button type="submit" class="btn btn-dark fw-bold confirm-btn" data-confirm-title="Update College" data-confirm-message="Save changes to this college?" data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Save" data-confirm-btn-class="btn-dark">Update College</button>
                 </div>
             </form>
         </div>

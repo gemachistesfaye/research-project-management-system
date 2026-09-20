@@ -213,7 +213,7 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-success fw-bold">
+                        <button type="submit" class="btn btn-dark fw-bold">
                             <i class="bi bi-check-lg me-1"></i> Save Changes
                         </button>
                     </div>
@@ -224,7 +224,7 @@
         {{-- Change Password Card --}}
         <div class="card card-custom mb-4">
             <div class="card-header bg-white border-bottom fw-bold">
-                <i class="bi bi-lock me-2 text-warning"></i> Change Password
+                <i class="bi bi-lock me-2 text-dark"></i> Change Password
             </div>
             <div class="card-body">
                 <form action="{{ route('profile.change-password') }}" method="POST" id="passwordForm">
@@ -257,7 +257,7 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-warning fw-bold text-dark">
+                        <button type="submit" class="btn btn-dark fw-bold">
                             <i class="bi bi-shield-lock me-1"></i> Update Password
                         </button>
                     </div>
@@ -268,7 +268,7 @@
         {{-- Activity History Card --}}
         <div class="card card-custom mb-4">
             <div class="card-header bg-white border-bottom fw-bold">
-                <i class="bi bi-clock-history me-2 text-info"></i> Recent Activity
+                <i class="bi bi-clock-history me-2 text-dark"></i> Recent Activity
             </div>
             <div class="card-body p-0">
                 @if($recentLogs->isEmpty())
@@ -303,7 +303,7 @@
         </div>
 
         {{-- Back to Dashboard --}}
-        <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">
+        <a href="{{ route('dashboard') }}" class="btn btn-outline-dark">
             <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
         </a>
 
