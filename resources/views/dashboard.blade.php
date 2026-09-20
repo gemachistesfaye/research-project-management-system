@@ -773,6 +773,11 @@
                         <span class="badge bg-light text-dark border px-2 py-1">{{ $p->status }}</span>
                     </td>
                     <td>
+                        @if($p->status === 'Approved')
+                        <a href="{{ route('contracts.show', $p->project_id) }}" class="btn btn-sm btn-danger text-white fw-bold">
+                            <i class="bi bi-pen me-1"></i> Sign Contract
+                        </a>
+                        @endif
                         <a href="{{ route('projects.show', $p->project_id) }}" class="btn btn-sm btn-outline-secondary">
                             <i class="bi bi-sliders me-1"></i> Review &amp; Governance
                         </a>
