@@ -77,9 +77,9 @@ class DashboardController extends Controller
             ];
         } elseif ($role === 'dean') {
             return [
-                'pending_approval' => BudgetRequest::where('approval_tier', 'Dean')->where('status', 'Pending')->count(),
-                'approved' => BudgetRequest::where('approval_tier', 'Dean')->where('status', 'Approved')->count(),
-                'total_value' => BudgetRequest::where('approval_tier', 'Dean')->sum('requested_amount'),
+                'pending_approval' => Project::where('requested_budget', '<', 500000)->whereIn('status', ['DH_Screened', 'UnderReview', 'Reviewed'])->count(),
+                'approved' => Project::where('requested_budget', '<', 500000)->whereIn('status', ['Approved', 'Active', 'Completed'])->count(),
+                'total_value' => Project::where('requested_budget', '<', 500000)->where('status', '!=', 'Draft')->sum('requested_budget'),
             ];
         } elseif ($role === 'irerc') {
             return [
@@ -89,8 +89,9 @@ class DashboardController extends Controller
             ];
         } elseif (in_array($role, ['rcsc', 'vparttcs'])) {
             return [
-                'rcsc_pending' => BudgetRequest::where('approval_tier', 'RCSC_VP')->where('status', 'Pending')->count(),
-                'approved' => BudgetRequest::where('approval_tier', 'RCSC_VP')->where('status', 'Approved')->count(),
+                'rcsc_pending' => Project::where('requested_budget', '>=', 500000)->whereIn('status', ['DH_Screened', 'UnderReview', 'Reviewed'])->count(),
+                'pending_contracts' => Project::where('status', 'Approved')->whereNull('vp_signature_date')->count(),
+                'approved' => Project::whereIn('status', ['Approved', 'Active', 'Completed'])->count(),
                 'high_budget' => Project::where('requested_budget', '>=', 500000)->where('status', '!=', 'Draft')->count(),
             ];
         } elseif ($role === 'finance') {

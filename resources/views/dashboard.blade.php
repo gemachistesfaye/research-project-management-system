@@ -394,9 +394,9 @@
         <div class="card card-custom p-3 bg-white h-100">
             <div class="d-flex align-items-center justify-content-between">
                 <div>
-                    <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">RCSC Pending</div>
+                    <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Pending Governance</div>
                     <div class="fs-2 fw-bold text-dark mt-1">{{ $stats['rcsc_pending'] ?? 0 }}</div>
-                    <div class="small text-muted" style="font-size: 0.75rem;">High-value review</div>
+                    <div class="small text-muted" style="font-size: 0.75rem;">Under review (&ge;500k)</div>
                 </div>
                 <div class="stat-bubble">
                     <i class="bi bi-shield-lock text-dark" style="font-size: 1.35rem;"></i>
@@ -408,9 +408,23 @@
         <div class="card card-custom p-3 bg-white h-100">
             <div class="d-flex align-items-center justify-content-between">
                 <div>
-                    <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Approved</div>
+                    <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Pending Contracts</div>
+                    <div class="fs-2 fw-bold text-dark mt-1">{{ $stats['pending_contracts'] ?? 0 }}</div>
+                    <div class="small text-muted" style="font-size: 0.75rem;">Awaiting VP signature</div>
+                </div>
+                <div class="stat-bubble">
+                    <i class="bi bi-pen text-dark" style="font-size: 1.35rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-custom p-3 bg-white h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Approved / Active</div>
                     <div class="fs-2 fw-bold text-dark mt-1">{{ $stats['approved'] ?? 0 }}</div>
-                    <div class="small text-muted" style="font-size: 0.75rem;">Approved projects</div>
+                    <div class="small text-muted" style="font-size: 0.75rem;">Approved proposals</div>
                 </div>
                 <div class="stat-bubble">
                     <i class="bi bi-check-circle text-dark" style="font-size: 1.35rem;"></i>
