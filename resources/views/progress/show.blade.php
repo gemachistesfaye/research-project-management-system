@@ -236,101 +236,118 @@
                         <span class="badge bg-dark rounded-pill">{{ $reports->count() }}</span>
                     </div>
                     <div class="card-body p-0">
-                        @forelse($reports as $report)
-                        <div class="border-bottom p-3 {{ $loop->last ? 'border-0' : '' }}">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="fw-bold mb-1">{{ $report->milestone_name }}</h6>
-                                    <small class="text-muted">
-                                        <i class="bi bi-calendar me-1"></i>{{ $report->created_at ? $report->created_at->diffForHumans() : 'N/A' }}
-                                    </small>
-                                </div>
-                                @if($report->status === 'Approved')
-                                    <span class="badge bg-success text-white"><i class="bi bi-check-circle me-1"></i>Approved</span>
-                                @elseif($report->status === 'Needs_Revision')
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i>Revision</span>
-                                @else
-                                    <span class="badge bg-secondary text-white">{{ str_replace('_', ' ', $report->status) }}</span>
-                                @endif
-                            </div>
-
-                            <p class="small mb-3 text-secondary">{{ $report->summary_text }}</p>
-
-                            <div class="card bg-light border-0 mb-3">
-                                <div class="card-body py-2 px-3">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <span class="small fw-semibold text-muted">Progress Completion</span>
-                                        <span class="badge bg-dark rounded-pill">
-                                            {{ $report->progress_percentage }}%
-                                        </span>
-                                    </div>
-                                    <div class="progress" style="height: 8px; border-radius: 4px;">
-                                        <div class="progress-bar bg-dark" 
-                                             style="width: {{ $report->progress_percentage }}%; border-radius: 4px;"
-                                             role="progressbar" 
-                                             aria-valuenow="{{ $report->progress_percentage }}" 
-                                             aria-valuemin="0" 
-                                             aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if($report->deliverable_document_url)
-                                <div class="mb-2">
-                                    <a href="{{ $report->deliverable_document_url }}" class="btn btn-outline-dark btn-sm" target="_blank">
-                                        <i class="bi bi-link-45deg me-1"></i>View Deliverable
-                                    </a>
-                                </div>
-                            @endif
-
-                            @if($report->coordinator_feedback)
-                                <div class="alert alert-light border mt-2 mb-0 py-2 px-3">
-                                    <strong class="small text-muted"><i class="bi bi-chat-dots me-1"></i>Coordinator Feedback:</strong>
-                                    <p class="small mb-0 mt-1">{{ $report->coordinator_feedback }}</p>
-                                </div>
-                            @endif
-
-                            {{-- Coordinator Review Form (strictly coordinator and admin) --}}
-                            @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
-                            <div class="card border-dark border-opacity-25 mt-3">
-                                <div class="card-header bg-dark bg-opacity-10 py-2">
-                                    <small class="fw-bold text-dark"><i class="bi bi-pencil-square me-1"></i>Coordinator Milestone Audit &amp; Review</small>
-                                </div>
-                                <div class="card-body py-3">
-                                    <form action="{{ route('progress.update', $report->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="mb-3">
-                                            <label class="form-label small fw-bold">Coordinator Feedback</label>
-                                            <textarea name="coordinator_feedback" class="form-control form-control-sm" rows="2"
-                                                      placeholder="Add coordinator feedback...">{{ $report->coordinator_feedback }}</textarea>
-                                        </div>
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <select name="status" class="form-select form-select-sm" style="width: auto;">
-                                                <option value="Coordinator_Audited" {{ $report->status === 'Coordinator_Audited' ? 'selected' : '' }}>Audited</option>
-                                                <option value="Approved" {{ $report->status === 'Approved' ? 'selected' : '' }}>Approved</option>
-                                                <option value="Needs_Revision" {{ $report->status === 'Needs_Revision' ? 'selected' : '' }}>Needs Revision</option>
-                                            </select>
-                                            <button type="button" class="btn btn-sm btn-dark confirm-btn" data-confirm-title="Update Report" data-confirm-message="Update this progress report status?" data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Update" data-confirm-btn-class="btn-dark">
-                                                <i class="bi bi-check-lg me-1"></i> Update &amp; Ratify
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            @elseif(Auth::user()->role === 'dh')
-                            <div class="mt-3 p-2 bg-light rounded border text-muted small">
-                                <i class="bi bi-eye me-1"></i><strong>Department Head Read-Only:</strong> Milestone review, audit and status updates are managed by the Research Coordinator.
-                            </div>
-                            @endif
-                        </div>
-                        @empty
+                        @if($reports->isEmpty())
                         <div class="text-center py-5 text-muted">
                             <i class="bi bi-inbox fs-1 d-block mb-2"></i>
                             No reports submitted yet. Use the form to submit your first progress report.
                         </div>
-                        @endforelse
+                        @else
+                        <div class="accordion accordion-flush" id="reportHistoryAccordion">
+                            @foreach($reports as $report)
+                            <div class="accordion-item border-bottom {{ $loop->last ? 'border-0' : '' }}">
+                                <h2 class="accordion-header" id="headingReport_{{ $report->id }}">
+                                    <button class="accordion-button collapsed py-3 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReport_{{ $report->id }}" aria-expanded="false" aria-controls="collapseReport_{{ $report->id }}">
+                                        <div class="d-flex justify-content-between align-items-center w-100 me-3 flex-wrap gap-2">
+                                            <div>
+                                                <span class="fw-bold text-dark me-2">{{ $report->milestone_name }}</span>
+                                                <small class="text-muted">
+                                                    <i class="bi bi-calendar me-1"></i>{{ $report->created_at ? $report->created_at->diffForHumans() : 'N/A' }}
+                                                </small>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="badge bg-dark rounded-pill">{{ $report->progress_percentage }}%</span>
+                                                @if($report->status === 'Approved')
+                                                    <span class="badge bg-success text-white"><i class="bi bi-check-circle me-1"></i>Approved</span>
+                                                @elseif($report->status === 'Needs_Revision')
+                                                    <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i>Revision</span>
+                                                @else
+                                                    <span class="badge bg-secondary text-white">{{ str_replace('_', ' ', $report->status) }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="collapseReport_{{ $report->id }}" class="accordion-collapse collapse" aria-labelledby="headingReport_{{ $report->id }}" data-bs-parent="#reportHistoryAccordion">
+                                    <div class="accordion-body bg-light bg-opacity-25 p-3">
+                                        <div class="p-3 mb-3 bg-white border rounded">
+                                            <span class="small fw-bold text-muted text-uppercase d-block mb-1">Progress Summary</span>
+                                            <p class="small mb-0 text-secondary">{{ $report->summary_text }}</p>
+                                        </div>
+
+                                        <div class="card bg-white border mb-3">
+                                            <div class="card-body py-2 px-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="small fw-semibold text-muted">Progress Completion</span>
+                                                    <span class="badge bg-dark rounded-pill">
+                                                        {{ $report->progress_percentage }}%
+                                                    </span>
+                                                </div>
+                                                <div class="progress" style="height: 8px; border-radius: 4px;">
+                                                    <div class="progress-bar bg-dark" 
+                                                         style="width: {{ $report->progress_percentage }}%; border-radius: 4px;"
+                                                         role="progressbar" 
+                                                         aria-valuenow="{{ $report->progress_percentage }}" 
+                                                         aria-valuemin="0" 
+                                                         aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if($report->deliverable_document_url)
+                                            <div class="mb-3">
+                                                <a href="{{ $report->deliverable_document_url }}" class="btn btn-outline-dark btn-sm" target="_blank">
+                                                    <i class="bi bi-link-45deg me-1"></i>View Deliverable
+                                                </a>
+                                            </div>
+                                        @endif
+
+                                        @if($report->coordinator_feedback)
+                                            <div class="alert alert-light border mb-3 py-2 px-3">
+                                                <strong class="small text-muted"><i class="bi bi-chat-dots me-1"></i>Coordinator Feedback:</strong>
+                                                <p class="small mb-0 mt-1">{{ $report->coordinator_feedback }}</p>
+                                            </div>
+                                        @endif
+
+                                        {{-- Coordinator Review Form (strictly coordinator and admin) --}}
+                                        @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
+                                        <div class="card border-dark border-opacity-25 mt-2">
+                                            <div class="card-header bg-dark bg-opacity-10 py-2">
+                                                <small class="fw-bold text-dark"><i class="bi bi-pencil-square me-1"></i>Coordinator Milestone Audit &amp; Review</small>
+                                            </div>
+                                            <div class="card-body py-3">
+                                                <form action="{{ route('progress.update', $report->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="mb-3">
+                                                        <label class="form-label small fw-bold">Coordinator Feedback</label>
+                                                        <textarea name="coordinator_feedback" class="form-control form-control-sm" rows="2"
+                                                                  placeholder="Add coordinator feedback...">{{ $report->coordinator_feedback }}</textarea>
+                                                    </div>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <select name="status" class="form-select form-select-sm" style="width: auto;">
+                                                            <option value="Coordinator_Audited" {{ $report->status === 'Coordinator_Audited' ? 'selected' : '' }}>Audited</option>
+                                                            <option value="Approved" {{ $report->status === 'Approved' ? 'selected' : '' }}>Approved</option>
+                                                            <option value="Needs_Revision" {{ $report->status === 'Needs_Revision' ? 'selected' : '' }}>Needs Revision</option>
+                                                        </select>
+                                                        <button type="button" class="btn btn-sm btn-dark confirm-btn" data-confirm-title="Update Report" data-confirm-message="Update this progress report status?" data-confirm-icon="bi-check-circle" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Update" data-confirm-btn-class="btn-dark">
+                                                            <i class="bi bi-check-lg me-1"></i> Update &amp; Ratify
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        @elseif(Auth::user()->role === 'dh')
+                                        <div class="mt-2 p-2 bg-white rounded border text-muted small">
+                                            <i class="bi bi-eye me-1"></i><strong>Department Head Read-Only:</strong> Milestone review, audit and status updates are managed by the Research Coordinator.
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
