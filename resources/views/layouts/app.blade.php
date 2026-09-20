@@ -216,8 +216,11 @@
             .brand-sub {
                 font-size: 0.65rem !important;
             }
+            .navbar-brand {
+                max-width: 72vw;
+            }
             .navbar-brand i {
-                font-size: 1.4rem !important;
+                font-size: 1.35rem !important;
             }
             .card-custom {
                 border-radius: 8px;
@@ -227,10 +230,9 @@
                 border-radius: 8px;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
-                white-space: nowrap;
             }
             .table-responsive table {
-                min-width: 600px;
+                min-width: 560px;
             }
             .dropdown-menu {
                 max-width: 92vw !important;
@@ -253,105 +255,68 @@
             }
             /* Smaller headings on mobile */
             h3.fw-bold {
-                font-size: 1.1rem !important;
+                font-size: 1.15rem !important;
             }
             h5.fw-bold, h6.fw-bold {
                 font-size: 0.95rem !important;
             }
             /* Smaller badges on mobile */
             .badge {
-                font-size: 0.65rem !important;
-                padding: 0.25em 0.5em !important;
+                font-size: 0.7rem !important;
+                padding: 0.3em 0.55em !important;
             }
-            /* Hide subtitle text on mobile */
+            /* Hide subtitle text on mobile header */
             .navbar-gmu .d-flex .text-muted.small {
                 display: none !important;
             }
-            /* Compact KPI cards */
-            .fs-1 {
-                font-size: 1.5rem !important;
-            }
-            /* Stack buttons vertically on mobile */
+            /* Stack buttons cleanly with wrapping */
             .d-flex.gap-2 {
                 flex-wrap: wrap;
             }
-            .d-flex.gap-2 .btn {
-                flex: 0 0 auto;
-                min-width: 0;
-                font-size: 0.75rem !important;
-                padding: 0.3rem 0.5rem !important;
-            }
-            /* Compact dashboard header */
-            .d-flex.justify-content-between.align-items-center {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 0.5rem !important;
-            }
-            .d-flex.justify-content-between.align-items-center .btn {
-                width: 100% !important;
+            /* Page action headers wrap cleanly on mobile */
+            .page-header-actions,
+            .mb-4.d-flex.justify-content-between.align-items-center,
+            .mb-3.d-flex.justify-content-between.align-items-center {
+                flex-wrap: wrap !important;
+                gap: 0.75rem !important;
             }
             /* Compact KPI cards */
             .card-custom.p-4 {
-                padding: 0.75rem !important;
+                padding: 0.85rem !important;
             }
             /* Compact quick actions */
             .d-flex.flex-wrap.gap-2 .btn {
-                font-size: 0.78rem !important;
-                padding: 0.4rem 0.6rem !important;
+                font-size: 0.8rem !important;
+                padding: 0.4rem 0.65rem !important;
             }
             /* Smaller table text */
             .table td, .table th {
-                padding: 0.5rem !important;
-                font-size: 0.8rem !important;
+                padding: 0.6rem 0.5rem !important;
+                font-size: 0.82rem !important;
             }
             /* KPI cards 2x2 on mobile (dashboard only) */
             #kpi-cards > div[class*="col-"] {
                 flex: 0 0 50% !important;
                 max-width: 50% !important;
             }
-            /* Compact KPI card content */
-            .fs-2 {
-                font-size: 1rem !important;
-            }
             .stat-bubble {
-                width: 28px !important;
-                height: 28px !important;
+                width: 32px !important;
+                height: 32px !important;
                 border-radius: 6px !important;
             }
             .stat-bubble i {
-                font-size: 0.85rem !important;
+                font-size: 0.9rem !important;
             }
             .card-custom.p-3 {
-                padding: 0.5rem !important;
+                padding: 0.6rem !important;
             }
-            .text-muted.small.text-uppercase {
-                font-size: 0.6rem !important;
+            /* Modals: mobile friendly width */
+            .modal-dialog {
+                max-width: 95vw !important;
+                margin: 0.5rem auto !important;
             }
-            .small.text-muted {
-                font-size: 0.65rem !important;
-            }
-            /* Modal step indicators: wrap on narrow screens */
-            .modal-body .d-flex.align-items-center.gap-2 {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            /* Input groups: stack vertically on very narrow screens */
-            .input-group {
-                flex-wrap: wrap;
-            }
-            .input-group > .form-select,
-            .input-group > .form-control {
-                min-width: 0;
-            }
-            .input-group > .btn {
-                width: 100%;
-                margin-top: 0.25rem;
-            }
-            /* Project detail header: stack on mobile */
-            .d-flex.justify-content-between.align-items-start {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 0.5rem !important;
+            .modal-content {
+                border-radius: 10px !important;
             }
         }
 
@@ -362,6 +327,14 @@
             justify-content: space-between;
             position: relative;
             padding: 20px 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        @media (max-width: 767.98px) {
+            .timeline-container {
+                min-width: 520px;
+                padding-bottom: 12px;
+            }
         }
         .timeline-container::before {
             content: '';
