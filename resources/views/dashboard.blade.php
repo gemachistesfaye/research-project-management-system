@@ -807,7 +807,7 @@
                         <span class="badge bg-light text-dark border px-2 py-1">{{ $p->status }}</span>
                     </td>
                     <td>
-                        @if($p->status === 'Approved' && in_array($role, ['vparttcs', 'admin']))
+                        @if($p->status === 'Approved' && in_array($role, ['vparttcs', 'admin']) && (!$p->irercClearance || $p->irercClearance->status === 'Approved'))
                         <a href="{{ route('contracts.show', $p->project_id) }}" class="btn btn-sm btn-danger text-white fw-bold">
                             <i class="bi bi-pen me-1"></i> Sign Contract
                         </a>

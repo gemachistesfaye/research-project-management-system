@@ -26,7 +26,7 @@
                 @endif
             @elseif($project->status === 'Approved')
                 <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>{{ $project->status }}</span>
-                @if(in_array(Auth::user()->role, ['pi', 'vparttcs']))
+                @if(in_array(Auth::user()->role, ['pi', 'vparttcs']) && (!$project->irercClearance || $project->irercClearance->status === 'Approved'))
                 <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary btn-sm fw-bold shadow-sm">
                     <i class="bi bi-pen me-1"></i>View & Sign Contract
                 </a>
@@ -144,7 +144,7 @@
             </div>
             <div class="card-body p-3">
                 {{-- Sign Contract --}}
-                @if($project->status === 'Approved' && in_array(Auth::user()->role, ['pi', 'vparttcs']))
+                @if($project->status === 'Approved' && in_array(Auth::user()->role, ['pi', 'vparttcs']) && (!$project->irercClearance || $project->irercClearance->status === 'Approved'))
                 <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-primary w-100 mb-2 text-start fw-bold shadow-sm">
                     <i class="bi bi-pen me-2"></i>View & Sign Contract
                 </a>
