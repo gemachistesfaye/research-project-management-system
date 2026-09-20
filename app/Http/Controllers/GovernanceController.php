@@ -316,7 +316,7 @@ class GovernanceController extends Controller
     {
         $project = Project::findOrFail($id);
 
-        $eligibleStatuses = ['UnderReview', 'Dean_Review', 'Approved'];
+        $eligibleStatuses = ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active'];
         if (!in_array($project->status, $eligibleStatuses)) {
             return back()->with('error', 'This project is not eligible for ethics review at its current status.');
         }

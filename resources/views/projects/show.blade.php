@@ -206,8 +206,8 @@
                 </button>
                 @endif
 
-                {{-- Send to Ethics Review (IRERC) --}}
-                @if(in_array(Auth::user()->role, ['coordinator', 'admin']) && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active']))
+                {{-- Coordinator-only: Send to Ethics Review (IRERC) --}}
+                @if(Auth::user()->role === 'coordinator' && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'Approved', 'Active']))
                     @if(!$project->irercClearance)
                     <form action="{{ route('projects.create-irerc-clearance', $project->project_id) }}" method="POST" class="mb-2">
                         @csrf
