@@ -17,13 +17,26 @@ class ProgressReportController extends Controller
         if ($user->role === 'tm') {
             $teamProjectIds = ProjectMember::where('user_id', $user->id)->pluck('project_id')->toArray();
             $projects = Project::whereIn('project_id', $teamProjectIds)
-                ->whereIn('status', ['Active', 'Approved'])
-                ->with('milestoneReports')
+                ->whereIn('status', ['Active', 'Approved', 'Completed'])
+                ->with(['milestoneReports', 'pi'])
+                ->latest()
+                ->get();
+        } elseif (in_array($user->role, ['coordinator', 'admin', 'dean', 'vparttcs', 'rcsc'])) {
+            $projects = Project::whereIn('status', ['Active', 'Approved', 'Completed'])
+                ->with(['milestoneReports', 'pi'])
+                ->latest()
+                ->get();
+        } elseif ($user->role === 'dh') {
+            $projects = Project::where('dept_id', $user->dept_id)
+                ->whereIn('status', ['Active', 'Approved', 'Completed'])
+                ->with(['milestoneReports', 'pi'])
+                ->latest()
                 ->get();
         } else {
             $projects = Project::where('pi_id', $user->id)
-                ->whereIn('status', ['Active', 'Approved'])
-                ->with('milestoneReports')
+                ->whereIn('status', ['Active', 'Approved', 'Completed'])
+                ->with(['milestoneReports', 'pi'])
+                ->latest()
                 ->get();
         }
 

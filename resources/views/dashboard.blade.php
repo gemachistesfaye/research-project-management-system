@@ -15,9 +15,14 @@
             <i class="bi bi-ui-checks me-1"></i> Open Dept Screening Queue
         </a>
     @elseif($role === 'coordinator')
-        <a href="{{ route('coordinator.hub') }}" class="btn btn-success fw-bold shadow-sm">
-            <i class="bi bi-briefcase me-1"></i> Open Coordinator Hub
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('coordinator.hub') }}" class="btn btn-success fw-bold shadow-sm">
+                <i class="bi bi-briefcase me-1"></i> Coordinator Hub
+            </a>
+            <a href="{{ route('progress.index') }}" class="btn btn-dark fw-bold shadow-sm">
+                <i class="bi bi-graph-up me-1"></i> Progress Reports
+            </a>
+        </div>
     @elseif($role === 'dean')
         <a href="{{ route('dean.approvals') }}" class="btn btn-primary fw-bold shadow-sm">
             <i class="bi bi-bank me-1"></i> Open Dean Approvals
@@ -76,6 +81,30 @@
         </a>
         <a href="{{ route('projects.index') }}" class="btn btn-outline-dark fw-bold">
             <i class="bi bi-people me-1"></i> Manage Team
+        </a>
+    </div>
+</div>
+@endif
+
+{{-- Coordinator Quick Actions --}}
+@if($role === 'coordinator')
+<div class="card card-custom p-4 mb-4">
+    <h5 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-dark"></i>Coordinator Quick Actions</h5>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{{ route('progress.index') }}" class="btn btn-outline-dark fw-bold">
+            <i class="bi bi-graph-up me-1"></i> Milestone Progress &amp; Audit
+        </a>
+        <a href="{{ route('coordinator.hub') }}" class="btn btn-outline-success fw-bold">
+            <i class="bi bi-briefcase me-1"></i> Reviewer Assignments
+        </a>
+        <a href="{{ route('extensions.index') }}" class="btn btn-outline-primary fw-bold">
+            <i class="bi bi-clock-history me-1"></i> Extensions &amp; Amendments
+        </a>
+        <a href="{{ route('procurement.index') }}" class="btn btn-outline-secondary fw-bold">
+            <i class="bi bi-cart3 me-1"></i> Procurement Tracker
+        </a>
+        <a href="{{ route('certificates') }}" class="btn btn-outline-dark fw-bold">
+            <i class="bi bi-award me-1"></i> Completion Certificates
         </a>
     </div>
 </div>
