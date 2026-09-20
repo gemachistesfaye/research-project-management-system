@@ -178,51 +178,54 @@
 
                     {{-- Disbursement Modal --}}
                     <div class="modal fade" id="disburseModal{{ $req->request_id }}" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                            <div class="modal-content">
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+                            <div class="modal-content border-0 shadow">
                                 <form action="{{ route('finance.process-disbursement', $req->request_id) }}" method="POST">
                                     @csrf
-                                    <div class="modal-header bg-dark text-white border-bottom">
-                                        <h6 class="modal-title fw-bold text-white">
-                                            <i class="bi bi-cash me-2"></i> Process Disbursement
+                                    <div class="modal-header py-2 px-3 bg-dark text-white border-bottom">
+                                        <h6 class="modal-title fw-bold text-white small mb-0">
+                                            <i class="bi bi-cash me-1 text-success"></i> Release Disbursement &bull; {{ $req->milestone_phase ?? 'Tranche 1' }}
                                         </h6>
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="alert alert-info small mb-3">
-                                            <strong>Project:</strong> {{ $req->project->title ?? 'N/A' }}<br>
-                                            <strong>PI:</strong> {{ $req->project->pi->name ?? 'N/A' }}<br>
-                                            <strong>Phase:</strong> {{ $req->milestone_phase ?? 'Tranche 1' }}<br>
-                                            <strong>Approved Tranche Amount:</strong> {{ number_format($req->approved_amount ?? 0, 2) }} ETB
+                                    <div class="modal-body p-3">
+                                        {{-- Project Summary Snippet --}}
+                                        <div class="p-2 mb-2 bg-light rounded border small">
+                                            <div class="fw-bold text-dark text-truncate">{{ $req->project->title ?? 'N/A' }}</div>
+                                            <div class="d-flex justify-content-between text-muted mt-1" style="font-size: 0.78rem;">
+                                                <span><i class="bi bi-person me-1"></i>{{ $req->project->pi->name ?? 'N/A' }}</span>
+                                                <span class="fw-bold text-dark">{{ number_format($req->approved_amount ?? 0, 2) }} ETB</span>
+                                            </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Disbursement Amount (ETB) <span class="text-danger">*</span></label>
-                                            <input type="number" step="0.01" min="0" name="amount" class="form-control @error('amount') is-invalid @enderror"
-                                                   required max="{{ $req->approved_amount }}" value="{{ $req->approved_amount }}">
-                                            @error('amount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold mb-1">Amount (ETB) <span class="text-danger">*</span></label>
+                                                <input type="number" step="0.01" min="0" name="amount" class="form-control form-control-sm fw-bold @error('amount') is-invalid @enderror"
+                                                       required max="{{ $req->approved_amount }}" value="{{ $req->approved_amount }}">
+                                                @error('amount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold mb-1">Method <span class="text-danger">*</span></label>
+                                                <select name="payment_method" class="form-select form-select-sm @error('payment_method') is-invalid @enderror" required>
+                                                    <option value="Bank Transfer" selected>Bank Transfer</option>
+                                                    <option value="Check">Check</option>
+                                                    <option value="Cash">Cash</option>
+                                                </select>
+                                                @error('payment_method')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                            </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Payment Method <span class="text-danger">*</span></label>
-                                            <select name="payment_method" class="form-select @error('payment_method') is-invalid @enderror" required>
-                                                <option value="Bank Transfer" selected>Bank Transfer (CBE / Direct Deposit)</option>
-                                                <option value="Check">Check</option>
-                                                <option value="Cash">Cash</option>
-                                            </select>
-                                            @error('payment_method')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Notes / Transaction Reference</label>
-                                            <textarea name="notes" rows="2" class="form-control @error('notes') is-invalid @enderror"
-                                                      placeholder="e.g. CBE Ref #GMU-2026-9812, Account credited">{{ old('notes') }}</textarea>
+                                        <div class="mb-2">
+                                            <label class="form-label small fw-bold mb-1">Reference / Note</label>
+                                            <input type="text" name="notes" class="form-control form-control-sm @error('notes') is-invalid @enderror"
+                                                   placeholder="e.g. CBE Ref #GMU-2026-9812" value="{{ old('notes') }}">
                                             @error('notes')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                         </div>
                                     </div>
-                                    <div class="modal-footer bg-light">
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-success fw-bold px-4">
+                                    <div class="modal-footer py-2 px-3 bg-light border-top d-flex justify-content-between">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-sm btn-success fw-bold px-3">
                                             <i class="bi bi-check-lg me-1"></i> Release Funds
                                         </button>
                                     </div>
