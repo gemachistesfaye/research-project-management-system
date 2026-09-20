@@ -91,9 +91,9 @@
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-4">
-                <div class="card border-dark h-100">
-                    <div class="card-body text-center">
-                        <div class="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                <div class="card border-dark h-100 shadow-sm">
+                    <div class="card-body text-center p-3 d-flex flex-column align-items-center justify-content-center">
+                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center mb-2" style="width: 46px; height: 46px; min-width: 46px; min-height: 46px; border-radius: 50%;">
                             <span class="fs-5 fw-bold">1</span>
                         </div>
                         <h6 class="fw-bold mb-1">Tranche 1</h6>
@@ -103,9 +103,9 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-dark h-100">
-                    <div class="card-body text-center">
-                        <div class="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                <div class="card border-dark h-100 shadow-sm">
+                    <div class="card-body text-center p-3 d-flex flex-column align-items-center justify-content-center">
+                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center mb-2" style="width: 46px; height: 46px; min-width: 46px; min-height: 46px; border-radius: 50%;">
                             <span class="fs-5 fw-bold">2</span>
                         </div>
                         <h6 class="fw-bold mb-1">Tranche 2</h6>
@@ -115,9 +115,9 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-dark h-100">
-                    <div class="card-body text-center">
-                        <div class="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                <div class="card border-dark h-100 shadow-sm">
+                    <div class="card-body text-center p-3 d-flex flex-column align-items-center justify-content-center">
+                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center mb-2" style="width: 46px; height: 46px; min-width: 46px; min-height: 46px; border-radius: 50%;">
                             <span class="fs-5 fw-bold">3</span>
                         </div>
                         <h6 class="fw-bold mb-1">Tranche 3</h6>

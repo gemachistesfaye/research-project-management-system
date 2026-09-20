@@ -67,26 +67,50 @@ class DatabaseSeeder extends Seeder
         // 4. Seed Sample Projects (only if none exist)
         if (Project::count() === 0) {
             Project::create([
-                'title' => 'Development of IoT-Based Early Flood Warning System for Anywaa and Nuer Zones',
-                'abstract_text' => 'This project aims to deploy solar-powered sensor nodes along Baro River tributaries to provide real-time water level data and SMS warnings to agricultural communities.',
+                'title' => 'Development of IoT-Based Early Flood Warning System for Anywaa and Nuer Lowland Zones',
+                'abstract_text' => 'This research deploys solar-powered telemetry sensor nodes along Baro and Akobo river tributaries to transmit real-time water stage metrics and SMS alerts to vulnerable agrarian communities.',
                 'thematic_id' => $t2->id,
                 'pi_id' => $pi->id,
                 'dept_id' => $d1->id,
-                'requested_budget' => 450000.00,
+                'requested_budget' => 480000.00,
                 'status' => 'Draft',
-                'current_stage' => 0,
+                'current_stage' => 1,
                 'ethical_cleared' => false,
             ]);
 
             Project::create([
-                'title' => 'High-Yield Flood-Tolerant Rice Seed Propagation in Gambella Lowlands',
-                'abstract_text' => 'Evaluation and propagation of NERICA rice varieties across trial plots in Lare and Gambella Zuria districts.',
+                'title' => 'Sustainable Agro-Forestry and Soil Carbon Sequestration Modeling in Gambella National Park Buffer Zones',
+                'abstract_text' => 'An empirical investigation into indigenous agro-forestry practices, measuring soil organic carbon dynamics and evaluating community-led reforestation strategies across protected buffer corridors.',
                 'thematic_id' => $t1->id,
                 'pi_id' => $pi->id,
                 'dept_id' => $d1->id,
-                'requested_budget' => 1200000.00,
+                'requested_budget' => 750000.00,
                 'status' => 'Draft',
-                'current_stage' => 0,
+                'current_stage' => 1,
+                'ethical_cleared' => false,
+            ]);
+
+            Project::create([
+                'title' => 'Epidemiological Surveillance and Vector-Borne Disease Mapping Using GIS in Itang Special Woreda',
+                'abstract_text' => 'Spatial-temporal modeling of seasonal malaria and neglected tropical disease transmission patterns in riparian ecosystems using high-resolution satellite imagery and localized health post telemetry.',
+                'thematic_id' => $t3->id,
+                'pi_id' => $pi->id,
+                'dept_id' => $d1->id,
+                'requested_budget' => 395000.00,
+                'status' => 'Draft',
+                'current_stage' => 1,
+                'ethical_cleared' => false,
+            ]);
+
+            Project::create([
+                'title' => 'Solar-Powered Off-Grid Cold Chain Network for Indigenous Fishery Post-Harvest Preservation in Openo Basin',
+                'abstract_text' => 'Design, prototyping, and community field testing of decentralized solar thermal cooling units to minimize post-harvest fish spoilage along Baro-Akobo river landing sites.',
+                'thematic_id' => $t2->id,
+                'pi_id' => $pi->id,
+                'dept_id' => $d1->id,
+                'requested_budget' => 920000.00,
+                'status' => 'Draft',
+                'current_stage' => 1,
                 'ethical_cleared' => false,
             ]);
         }
