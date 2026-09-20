@@ -85,9 +85,12 @@ class EvaluationController extends Controller
                     ->whereIn('decision', ['Accepted', 'AcceptedWithMinorMods'])
                     ->pluck('comments')
                     ->implode('; ');
+
+                // Dual-Threshold Financial Routing: < 500k ETB -> Dean_Review, >= 500k ETB -> RCSC_Review
+                $targetStatus = ($project->requested_budget >= 500000.00) ? 'RCSC_Review' : 'Dean_Review';
+
                 $project->update([
-                    'status' => 'Approved',
-                    'approved_at' => $project->approved_at ?? now(),
+                    'status' => $targetStatus,
                     'feedback' => $feedback ?: $project->feedback,
                 ]);
             }

@@ -486,37 +486,61 @@
         </div>
         @endif
 
-        {{-- Budget Ratification Card --}}
-        @if(in_array(Auth::user()->role, ['dean', 'vparttcs', 'rcsc', 'admin']) && in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview']))
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white border-bottom py-3">
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-bank me-2 text-success"></i>Financial Budget Approval</h5>
+        {{-- Financial Budget Approval & Ratification Card (SDD SCR-08 Dual-Threshold) --}}
+        @php
+            $canApproveBudget = false;
+            $userRole = Auth::user()->role;
+            if ($userRole === 'admin') {
+                $canApproveBudget = true;
+            } elseif ($project->status === 'Dean_Review' && in_array($userRole, ['dean', 'vparttcs'])) {
+                $canApproveBudget = true;
+            } elseif ($project->status === 'RCSC_Review' && in_array($userRole, ['rcsc', 'vparttcs'])) {
+                $canApproveBudget = true;
+            }
+        @endphp
+
+        @if(in_array($project->status, ['Dean_Review', 'RCSC_Review', 'UnderReview']))
+        <div class="card shadow-sm border-0 mb-4 border-top border-4 {{ $project->requested_budget >= 500000 ? 'border-danger' : 'border-info' }}">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-bank me-2 text-success"></i>Financial Budget Approval (SCR-08)</h5>
+                @if($project->requested_budget >= 500000)
+                    <span class="badge bg-danger fs-6">RCSC / VP Tier (&ge;500k ETB)</span>
+                @else
+                    <span class="badge bg-info text-dark fs-6">College Dean Tier (&lt;500k ETB)</span>
+                @endif
             </div>
             <div class="card-body p-4">
                 @if($project->requested_budget >= 500000)
                     <div class="alert alert-danger small mb-3 rounded-3">
-                        <i class="bi bi-shield-exclamation me-1"></i>Requires <strong>RCSC / Vice President</strong> approval threshold.
+                        <i class="bi bi-shield-exclamation me-1"></i>Scientific review complete. Requires formal ratification by <strong>RCSC Committee / Vice President</strong> threshold.
                     </div>
                 @else
                     <div class="alert alert-info small mb-3 rounded-3">
-                        <i class="bi bi-check-circle me-1"></i>Approved at <strong>College Dean</strong> level.
+                        <i class="bi bi-check-circle me-1"></i>Scientific review complete. Requires financial review & approval by <strong>College Dean</strong>.
                     </div>
                 @endif
 
+                @if($canApproveBudget)
                 <form method="POST" action="{{ route('projects.approve-budget', $project->project_id) }}">
                     @csrf
                     <div class="row g-3 align-items-end">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold small">Approved Amount (ETB)</label>
-                            <input type="number" step="0.01" min="0" name="approved_budget" class="form-control form-control-lg" value="{{ $project->requested_budget }}" required>
+                            <label class="form-label fw-bold small">Approved Amount (ETB) <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" min="0" name="approved_budget" class="form-control form-control-lg fw-bold" value="{{ $project->requested_budget }}" required>
                         </div>
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-success btn-lg fw-bold w-100 confirm-btn" data-confirm-title="Ratify Budget" data-confirm-message="This will approve the budget for disbursement. This action cannot be undone." data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Approve" data-confirm-btn-class="btn-success">
+                            <button type="button" class="btn {{ $project->requested_budget >= 500000 ? 'btn-danger' : 'btn-success' }} btn-lg fw-bold w-100 confirm-btn" data-confirm-title="Ratify Budget" data-confirm-message="This will ratify the approved grant budget and advance this proposal for contract signing. This action is final." data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Approve Budget" data-confirm-btn-class="btn-success">
                                 <i class="bi bi-check-circle me-1"></i> Ratify & Approve Budget
                             </button>
                         </div>
                     </div>
                 </form>
+                @else
+                <div class="p-3 bg-light rounded-3 text-muted text-center">
+                    <i class="bi bi-hourglass-split me-1"></i>
+                    Awaiting financial budget ratification by <strong>{{ $project->requested_budget >= 500000 ? 'RCSC Committee / Vice President' : 'College Dean' }}</strong>.
+                </div>
+                @endif
             </div>
         </div>
         @endif

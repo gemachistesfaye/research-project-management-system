@@ -33,6 +33,10 @@ class BudgetController extends Controller
             return back()->withErrors(['error' => 'Proposals with budget >= 500,000 ETB require RCSC / Vice President ratification.']);
         }
 
+        if ($tier === 'Dean' && !in_array($userRole, ['dean', 'vparttcs', 'admin'])) {
+            return back()->withErrors(['error' => 'Proposals with budget < 500,000 ETB require College Dean approval.']);
+        }
+
         $project->update([
             'approved_budget' => $request->approved_budget,
             'status' => 'Approved',

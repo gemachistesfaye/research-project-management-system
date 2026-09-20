@@ -100,8 +100,14 @@
                             <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-check-circle me-1"></i>Completed</span>
                         @elseif($p->status === 'Active')
                             <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-play-circle me-1"></i>Active</span>
-                        @elseif(in_array($p->status, ['Submitted', 'DH_Screened', 'UnderReview']))
-                            <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>{{ $p->status }}</span>
+                        @elseif(in_array($p->status, ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'RCSC_Review']))
+                            @if($p->status === 'Dean_Review')
+                                <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-bank me-1"></i>Dean Review</span>
+                            @elseif($p->status === 'RCSC_Review')
+                                <span class="badge bg-danger text-white px-2 py-1"><i class="bi bi-bank me-1"></i>RCSC Review</span>
+                            @else
+                                <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>{{ $p->status }}</span>
+                            @endif
                             @if($p->irercClearance)
                                 @if($p->irercClearance->status === 'Approved')
                                     <div class="mt-1"><span class="badge bg-success text-white px-2 py-1" style="font-size: 0.72rem;"><i class="bi bi-shield-check me-1"></i>Ethics Cleared</span></div>
