@@ -6,6 +6,11 @@
         <h3 class="fw-bold mb-0"><i class="bi bi-calendar-range me-2 text-warning"></i> Extensions & Amendments (SCR-10)</h3>
         <span class="text-muted">Request time extensions or budget adjustments for your projects</span>
     </div>
+    @if(in_array(Auth::user()->role, ['coordinator', 'pi', 'admin', 'dh', 'vparttcs']))
+    <a href="{{ route('procurement.index') }}" class="btn btn-outline-dark fw-bold">
+        <i class="bi bi-cart-check me-1"></i> Procurement Tracker
+    </a>
+    @endif
 </div>
 
 @if(Auth::user()->role === 'pi')
@@ -345,6 +350,91 @@
                         <p class="small mb-0">No pending budget amendment requests to review at this time.</p>
                     </div>
                     @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Completed / Ratified Decisions History --}}
+    @php
+        $completedExtensions = \App\Models\ProjectExtension::where('status', '!=', 'Pending')
+            ->with('project.pi')
+            ->latest('updated_at')
+            ->get();
+        $completedAmendments = \App\Models\BudgetAmendment::where('status', '!=', 'Pending')
+            ->with('project.pi')
+            ->latest('updated_at')
+            ->get();
+    @endphp
+
+    <div class="row g-4 mt-2">
+        <div class="col-12">
+            <div class="card card-custom">
+                <div class="card-header bg-white border-bottom fw-bold d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clock-history me-2 text-primary"></i> Decision &amp; Ratification History</span>
+                    <span class="badge bg-light text-dark border">{{ $completedExtensions->count() + $completedAmendments->count() }} Decisions</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Project</th>
+                                    <th>Principal Investigator</th>
+                                    <th>Request Details</th>
+                                    <th>Decision Status</th>
+                                    <th>Decision Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($completedExtensions as $ext)
+                                <tr>
+                                    <td><span class="badge bg-primary text-white"><i class="bi bi-clock-history me-1"></i>Time Extension</span></td>
+                                    <td class="fw-bold">{{ $ext->project->title ?? 'Project #' . $ext->project_id }}</td>
+                                    <td>{{ $ext->project->pi->name ?? 'N/A' }}</td>
+                                    <td>Extension #{{ $ext->extension_number }} (+{{ $ext->requested_months }} months)</td>
+                                    <td>
+                                        @if($ext->status === 'Approved')
+                                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Approved</span>
+                                        @else
+                                            <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                                        @endif
+                                    </td>
+                                    <td class="small text-muted">{{ $ext->updated_at ? $ext->updated_at->format('M d, Y') : '-' }}</td>
+                                </tr>
+                                @empty
+                                @endforelse
+
+                                @forelse($completedAmendments as $amend)
+                                <tr>
+                                    <td><span class="badge bg-success text-white"><i class="bi bi-cash-stack me-1"></i>Budget Amendment</span></td>
+                                    <td class="fw-bold">{{ $amend->project->title ?? 'Project #' . $amend->project_id }}</td>
+                                    <td>{{ $amend->project->pi->name ?? 'N/A' }}</td>
+                                    <td>+ETB {{ number_format($amend->delta_amount, 2) }} (<em>"{{ Str::limit($amend->justification, 35) }}"</em>)</td>
+                                    <td>
+                                        @if($amend->status === 'Approved')
+                                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Approved &amp; Queued to Finance</span>
+                                        @else
+                                            <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                                        @endif
+                                    </td>
+                                    <td class="small text-muted">{{ $amend->updated_at ? $amend->updated_at->format('M d, Y') : '-' }}</td>
+                                </tr>
+                                @empty
+                                @endforelse
+
+                                @if($completedExtensions->isEmpty() && $completedAmendments->isEmpty())
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">
+                                        <i class="bi bi-folder2-open fs-3 d-block mb-1"></i>
+                                        No historical decisions found.
+                                    </td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

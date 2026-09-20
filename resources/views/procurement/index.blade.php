@@ -30,12 +30,12 @@
         background: #fff; color: #495057; transition: all .2s;
     }
     .category-chip:hover { background: #f8f9fa; }
-    .category-chip.active { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+    .category-chip.active { background: #212529; color: #fff; border-color: #212529; }
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-cart-check me-2 text-primary"></i> Procurement Tracker (SCR-20)</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-cart-check me-2 text-dark"></i> Procurement Tracker (SCR-20)</h3>
         <span class="text-muted">Submit and track purchase requests for active projects</span>
     </div>
 </div>
@@ -43,7 +43,7 @@
 @if($budgetInfo->isNotEmpty())
 <div class="card card-custom mb-4">
     <div class="card-header bg-white border-bottom fw-bold">
-        <i class="bi bi-wallet2 me-2 text-warning"></i> Budget Overview
+        <i class="bi bi-wallet2 me-2 text-dark"></i> Budget Overview
     </div>
     <div class="card-body">
         <div class="row g-3">
@@ -82,7 +82,8 @@
 @endif
 
 <div class="row g-4">
-    {{-- New Purchase Request Form --}}
+    @if(Auth::user()->role === 'pi')
+    {{-- New Purchase Request Form (PI only) --}}
     <div class="col-lg-4">
         <div class="card card-custom">
             <div class="card-header bg-success text-white fw-bold">
@@ -158,9 +159,10 @@
             </div>
         </div>
     </div>
+    @endif
 
     {{-- Procurement Requests Table --}}
-    <div class="col-lg-8">
+    <div class="{{ Auth::user()->role === 'pi' ? 'col-lg-8' : 'col-12' }}">
         <div class="card card-custom">
             <div class="card-header bg-white border-bottom fw-bold">
                 <div class="d-flex justify-content-between align-items-center">
@@ -240,23 +242,32 @@
                                         @endif
                                     </div>
                                 </td>
-                                @if(Auth::user()->role === 'coordinator')
+                                @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
                                 <td>
                                     @if($req->status === 'Pending')
                                         <div class="btn-group btn-group-sm">
                                             <form action="{{ route('procurement.approve', $req->id) }}" method="POST" class="d-inline">
                                                 @csrf
-                                                <button type="button" class="btn btn-success btn-sm confirm-btn" title="Approve" data-confirm-title="Approve Purchase" data-confirm-message="Approve this purchase request?" data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Approve" data-confirm-btn-class="btn-success">
-                                                    <i class="bi bi-check-lg"></i>
+                                                <button type="button" class="btn btn-success btn-sm confirm-btn" title="Approve Request" data-confirm-title="Approve Purchase Request" data-confirm-message="Approve this purchase request?" data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Approve" data-confirm-btn-class="btn-success">
+                                                    <i class="bi bi-check-lg me-1"></i> Approve
                                                 </button>
                                             </form>
-                                            <form action="{{ route('procurement.reject', $req->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('procurement.reject', $req->id) }}" method="POST" class="d-inline ms-1">
                                                 @csrf
-                                                <button type="button" class="btn btn-danger btn-sm confirm-btn" title="Reject" data-confirm-title="Reject Purchase" data-confirm-message="Reject this purchase request?" data-confirm-icon="bi-x-circle" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Reject" data-confirm-btn-class="btn-danger">
-                                                    <i class="bi bi-x-lg"></i>
+                                                <button type="button" class="btn btn-danger btn-sm confirm-btn" title="Reject Request" data-confirm-title="Reject Purchase Request" data-confirm-message="Reject this purchase request?" data-confirm-icon="bi-x-circle" data-confirm-color="text-danger" data-confirm-btn-text="Yes, Reject" data-confirm-btn-class="btn-danger">
+                                                    <i class="bi bi-x-lg me-1"></i> Reject
                                                 </button>
                                             </form>
                                         </div>
+                                    @elseif($req->status === 'Approved')
+                                        <form action="{{ route('procurement.mark-purchased', $req->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="button" class="btn btn-primary btn-sm confirm-btn" title="Record Delivery / Purchase Complete" data-confirm-title="Confirm Purchase Complete" data-confirm-message="Mark this item as purchased and received?" data-confirm-icon="bi-bag-check" data-confirm-color="text-primary" data-confirm-btn-text="Yes, Mark Purchased" data-confirm-btn-class="btn-primary">
+                                                <i class="bi bi-bag-check me-1"></i> Mark Purchased
+                                            </button>
+                                        </form>
+                                    @elseif($req->status === 'Purchased')
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-check-all me-1"></i>Completed</span>
                                     @else
                                         <span class="text-muted small">—</span>
                                     @endif
