@@ -257,12 +257,12 @@ Route::middleware(['auth'])->group(function () {
             $pendingRequests = \App\Models\BudgetRequest::where('status', 'Approved')
                 ->where('milestone_phase', 'like', 'Tranche%')
                 ->whereHas('project', function ($q) {
-                    $q->where('status', 'Active');
+                    $q->whereIn('status', ['Active', 'Approved', 'Completed']);
                 })
-                ->with('project.pi')
+                ->with(['project.pi', 'project.thematicArea', 'project.department'])
                 ->get();
             $disbursedHistory = \App\Models\BudgetRequest::where('status', 'Released')
-                ->with('project.pi')
+                ->with(['project.pi', 'project.thematicArea', 'project.department'])
                 ->latest()
                 ->get();
             return view('finance.disbursement', compact('pendingRequests', 'disbursedHistory'));
