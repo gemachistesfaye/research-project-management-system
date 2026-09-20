@@ -16,6 +16,7 @@ class ForgotPasswordTest extends TestCase
     {
         parent::setUp();
         RateLimiter::clear('login.127.0.0.1');
+        $this->seed(\Database\Seeders\RbacSeeder::class);
     }
 
     // ─── Public Password Reset DISABLED ─────────────────────────────────────
@@ -35,6 +36,7 @@ class ForgotPasswordTest extends TestCase
     public function test_admin_can_reset_user_password_via_admin_panel()
     {
         $admin = User::factory()->create(['role' => 'admin']);
+        \App\Services\RbacService::syncUserRole($admin);
         $user  = User::factory()->create([
             'email'    => 'target@gmu.edu.et',
             'password' => Hash::make('OldPass1!'),
@@ -53,6 +55,7 @@ class ForgotPasswordTest extends TestCase
     public function test_admin_reset_rejects_weak_password()
     {
         $admin = User::factory()->create(['role' => 'admin']);
+        \App\Services\RbacService::syncUserRole($admin);
         $user  = User::factory()->create([
             'password' => Hash::make('OldPass1!'),
         ]);
