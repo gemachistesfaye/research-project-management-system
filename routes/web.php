@@ -175,13 +175,54 @@ Route::middleware(['auth'])->group(function () {
                 'status' => 'Active',
                 'activated_at' => now(),
             ]);
-            return back()->with('success', 'VP signature recorded. Project is now Active.');
+
+            // Auto-queue Tranche 1 (30% Advance) for Finance Disbursement
+            $existingTranche1 = \App\Models\BudgetRequest::where('project_id', $project->project_id)
+                ->where('milestone_phase', 'Tranche 1')
+                ->first();
+            if (!$existingTranche1) {
+                $approvedBudget = $project->approved_budget ?: $project->requested_budget;
+                $tranche1Amount = round($approvedBudget * 0.30, 2);
+                $tier = ($approvedBudget >= 500000) ? 'RCSC_VP' : 'Dean';
+
+                \App\Models\BudgetRequest::create([
+                    'project_id' => $project->project_id,
+                    'milestone_phase' => 'Tranche 1',
+                    'requested_amount' => $tranche1Amount,
+                    'approved_amount' => $tranche1Amount,
+                    'approval_tier' => $tier,
+                    'status' => 'Approved',
+                    'approved_by' => \Auth::id(),
+                ]);
+            }
+
+            return back()->with('success', 'VP signature recorded. Project is now Active and Tranche 1 (30% Advance) is queued for finance disbursement.');
         })->name('contracts.sign-vp');
     });
 
     // SCR-14: Finance Disbursement (Finance only)
     Route::middleware(['role:finance', 'permission:process_disbursement'])->group(function () {
         Route::get('/finance/disbursement', function () {
+            // Ensure all Active projects have Tranche 1 queued if not already present
+            $activeProjects = \App\Models\Project::where('status', 'Active')->get();
+            foreach ($activeProjects as $p) {
+                $hasTranche = \App\Models\BudgetRequest::where('project_id', $p->project_id)->exists();
+                if (!$hasTranche) {
+                    $approvedBudget = $p->approved_budget ?: $p->requested_budget;
+                    $tranche1Amount = round($approvedBudget * 0.30, 2);
+                    $tier = ($approvedBudget >= 500000) ? 'RCSC_VP' : 'Dean';
+                    \App\Models\BudgetRequest::create([
+                        'project_id' => $p->project_id,
+                        'milestone_phase' => 'Tranche 1',
+                        'requested_amount' => $tranche1Amount,
+                        'approved_amount' => $tranche1Amount,
+                        'approval_tier' => $tier,
+                        'status' => 'Approved',
+                        'approved_by' => \Auth::id() ?? $p->pi_id,
+                    ]);
+                }
+            }
+
             $pendingRequests = \App\Models\BudgetRequest::where('status', 'Approved')
                 ->with('project.pi')
                 ->get();
