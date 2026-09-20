@@ -18,14 +18,9 @@
         <h3 class="fw-bold mb-1"><i class="bi bi-briefcase me-2 text-success"></i>Coordinator Management Hub</h3>
         <p class="text-muted mb-0">Manage blind peer reviewer assignments for DH-screened proposals.</p>
     </div>
-    <div class="d-flex gap-2">
-        <a href="{{ route('irerc.panel') }}" class="btn btn-outline-primary fw-bold">
-            <i class="bi bi-shield-check me-1"></i> Ethics (IRERC) Panel
-        </a>
-        <a href="{{ route('certificates') }}" class="btn btn-outline-success fw-bold">
-            <i class="bi bi-award me-1"></i> Certificates
-        </a>
-    </div>
+    <a href="{{ route('certificates') }}" class="btn btn-outline-success fw-bold">
+        <i class="bi bi-award me-1"></i> Certificates
+    </a>
 </div>
 
 <div class="row g-4">
