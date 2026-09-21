@@ -542,11 +542,11 @@
                     </li>
                     @endif
 
-                    {{-- 8. Extensions & Amendments --}}
+                    {{-- 8. Extensions --}}
                     @if(Auth::user()->hasAnyPermission(['approve_extensions', 'approve_amendments']))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('extensions.*') ? 'active-link' : '' }}" href="{{ route('extensions.index') }}">
-                            <i class="bi bi-clock-history me-1"></i> Extensions & Amendments
+                            <i class="bi bi-clock-history me-1"></i> Extensions
                         </a>
                     </li>
                     @endif
