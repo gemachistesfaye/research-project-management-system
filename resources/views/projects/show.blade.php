@@ -219,6 +219,13 @@
                 </form>
                 @endif
 
+                {{-- Procurement Tracker --}}
+                @if(in_array($project->status, ['Active', 'Approved']) && in_array(Auth::user()->role, ['pi', 'coordinator', 'admin']))
+                <a href="{{ route('procurement.index') }}" class="btn w-100 mb-2 text-start fw-bold" style="background:#fff;color:#0d6efd;border:1.5px solid #0d6efd;" onmouseover="this.style.background='#0d6efd';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#0d6efd'">
+                    <i class="bi bi-cart3 me-2"></i>Procurement Tracker
+                </a>
+                @endif
+
                 {{-- Extend --}}
                 @if(in_array($project->status, ['Active', 'Approved']) && Auth::user()->role === 'pi' && (int)$project->pi_id === (int)Auth::id())
                 <button class="btn w-100 mb-2 text-start fw-bold" style="background:#fff;color:#e67700;border:1.5px solid #e67700;" onmouseover="this.style.background='#e67700';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#e67700'" type="button" data-bs-toggle="collapse" data-bs-target="#extensionForm">

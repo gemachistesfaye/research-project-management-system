@@ -6,11 +6,6 @@
         <h3 class="fw-bold mb-0"><i class="bi bi-calendar-range me-2 text-warning"></i> Extensions & Amendments (SCR-10)</h3>
         <span class="text-muted">Request time extensions or budget adjustments for your projects</span>
     </div>
-    @if(in_array(Auth::user()->role, ['coordinator', 'pi', 'admin', 'dh', 'vparttcs']))
-    <a href="{{ route('procurement.index') }}" class="btn btn-outline-dark fw-bold">
-        <i class="bi bi-cart-check me-1"></i> Procurement Tracker
-    </a>
-    @endif
 </div>
 
 @if(Auth::user()->role === 'pi')
