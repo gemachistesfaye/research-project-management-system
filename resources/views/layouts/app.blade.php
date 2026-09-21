@@ -251,7 +251,7 @@
                 top: 0;
                 left: 0;
                 right: 0;
-                z-index: 1050 !important;
+                z-index: 1060 !important;
                 width: 100%;
             }
             /* Add padding below navbar for fixed position */
@@ -433,7 +433,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-lg navbar-gmu py-2 sticky-lg-top @yield('navbar-class')" style="z-index: 1040;">
+    <nav class="navbar navbar-expand-lg navbar-gmu py-2 sticky-lg-top @yield('navbar-class')" style="z-index: 1050;">
         <div class="container @yield('navbar-container-class')">
             <!-- Brand Identity -->
             <a class="navbar-brand d-flex align-items-center me-4" href="{{ route('dashboard') }}">
@@ -725,8 +725,8 @@
                     </div>
 
                     {{-- Academic Call Cycle Badge --}}
-                    <div class="d-none d-xl-flex align-items-center small rounded-pill px-3 py-1 me-3" style="font-size:0.75rem; cursor:pointer; transition: transform 0.2s; background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%); border: 1px solid #1ecbff33;" data-bs-toggle="modal" data-bs-target="#calendarModal" title="View Academic Calendar">
-                        <i class="bi bi-calendar2-check me-1 text-info"></i> <span class="text-white">AY 2026/2027</span> <span class="badge bg-success ms-2" style="font-size: 0.65rem; padding: 2px 6px;">Call #1 Active</span>
+                    <div class="d-none d-xl-flex align-items-center rounded-pill px-3 py-2 me-3" style="font-size:0.85rem; fw-semibold; cursor:pointer; transition: transform 0.2s; background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%); border: 1px solid #1ecbff33;" data-bs-toggle="modal" data-bs-target="#calendarModal" title="View Academic Calendar">
+                        <i class="bi bi-calendar2-check me-2 text-info"></i> <span class="text-white fw-semibold">AY 2026/2027</span>
                     </div>
 
                     {{-- User Profile & Demo Role Switcher Dropdown --}}
@@ -848,8 +848,8 @@
             </div>
 
             {{-- Mobile Academic Call Badge --}}
-            <div class="mb-3 p-2 rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%); border: 1px solid #1ecbff33; font-size: 0.8rem; font-weight: 600; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#calendarModal" data-bs-dismiss="offcanvas">
-                <i class="bi bi-calendar2-check me-2 text-info"></i> <span class="text-white">AY 2026/2027</span> <span class="badge bg-success ms-2" style="font-size: 0.65rem; padding: 2px 6px;">Call #1 Active</span>
+            <div class="mb-3 py-2 px-3 rounded-pill d-flex align-items-center justify-content-center shadow-sm mx-2" style="background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%); border: 1px solid #1ecbff33; font-size: 0.8rem; font-weight: 600; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#calendarModal" data-bs-dismiss="offcanvas">
+                <i class="bi bi-calendar2-check me-2 text-info"></i> <span class="text-white">AY 2026/2027</span>
             </div>
 
             {{-- Main Navigation Links --}}
@@ -1076,16 +1076,22 @@
 
             function lockScroll() {
                 scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+                document.documentElement.style.overflow = 'hidden';
                 document.body.style.overflow = 'hidden';
                 document.body.style.position = 'fixed';
-                document.body.style.top = '-' + scrollPos + 'px';
+                document.body.style.top = -scrollPos + 'px';
+                document.body.style.left = '0';
+                document.body.style.right = '0';
                 document.body.style.width = '100%';
             }
 
             function unlockScroll() {
+                document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
                 document.body.style.position = '';
                 document.body.style.top = '';
+                document.body.style.left = '';
+                document.body.style.right = '';
                 document.body.style.width = '';
                 window.scrollTo(0, scrollPos);
             }
@@ -1100,13 +1106,17 @@
             // Offcanvas sidebar
             var sidebar = document.getElementById('navbarOffcanvas');
             if (sidebar) {
-                sidebar.addEventListener('show.bs.offcanvas', lockScroll);
+                sidebar.addEventListener('show.bs.offcanvas', function() {
+                    if (!isAnyOverlayOpen()) lockScroll();
+                });
                 sidebar.addEventListener('hide.bs.offcanvas', function() {
-                    if (!document.querySelector('.modal.show')) unlockScroll();
+                    setTimeout(function() {
+                        if (!isAnyOverlayOpen()) unlockScroll();
+                    }, 150);
                 });
             }
 
-            // All Bootstrap modals (confirm, create, reset password, etc.)
+            // All Bootstrap modals
             document.querySelectorAll('.modal').forEach(function(modal) {
                 modal.addEventListener('show.bs.modal', function() {
                     if (!isAnyOverlayOpen()) lockScroll();
@@ -1114,20 +1124,18 @@
                 modal.addEventListener('hide.bs.modal', function() {
                     setTimeout(function() {
                         if (!isAnyOverlayOpen()) unlockScroll();
-                    }, 100);
+                    }, 150);
                 });
             });
 
             // Block touchmove on background when any overlay is open
             document.addEventListener('touchmove', function(e) {
                 if (!isAnyOverlayOpen()) return;
-                // Allow scroll inside sidebar body
                 var sidebar = document.getElementById('navbarOffcanvas');
                 if (sidebar && sidebar.classList.contains('show')) {
                     var offcanvasBody = sidebar.querySelector('.offcanvas-body');
                     if (offcanvasBody && offcanvasBody.contains(e.target)) return;
                 }
-                // Allow scroll inside modal body
                 var openModal = document.querySelector('.modal.show .modal-body');
                 if (openModal && openModal.contains(e.target)) return;
                 e.preventDefault();
@@ -1270,10 +1278,13 @@
                     <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
                         <button class="btn btn-sm btn-light py-0 px-2 text-muted" id="calPrevBtn"><i class="bi bi-chevron-left"></i></button>
                         <span class="fw-bold text-dark small" id="calendarMonthLabel" style="font-size:0.85rem;"></span>
                         <button class="btn btn-sm btn-light py-0 px-2 text-muted" id="calNextBtn"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                    <div class="text-center mb-2" style="height:12px;">
+                        <span id="calTodayBtn" class="text-dark fw-bold" style="font-size:0.65rem; cursor:pointer; display:none; text-transform:uppercase; letter-spacing:0.5px;"><i class="bi bi-arrow-return-left me-1"></i>Back to Today</span>
                     </div>
                     <!-- Days of week -->
                     <div class="d-flex justify-content-between text-muted fw-bold mb-2 text-center" style="font-size:0.7rem;">
@@ -1299,7 +1310,37 @@
         const monthLabel = document.getElementById('calendarMonthLabel');
         const prevBtn = document.getElementById('calPrevBtn');
         const nextBtn = document.getElementById('calNextBtn');
+        const todayBtn = document.getElementById('calTodayBtn');
         if(!calGrid || !monthLabel) return;
+
+        // Fix background scrolling bug when opening modal from offcanvas
+        const calModalEl = document.getElementById('calendarModal');
+        const calOffcanvasEl = document.getElementById('navbarOffcanvas');
+        if (calModalEl) {
+            calModalEl.addEventListener('show.bs.modal', function () {
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+            });
+            calModalEl.addEventListener('shown.bs.modal', function () {
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+                document.body.classList.add('modal-open');
+            });
+            calModalEl.addEventListener('hidden.bs.modal', function () {
+                document.body.classList.remove('modal-open');
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+            });
+        }
+        if (calOffcanvasEl && calModalEl) {
+            calOffcanvasEl.addEventListener('hidden.bs.offcanvas', function () {
+                if (calModalEl.classList.contains('show')) {
+                    document.documentElement.style.overflow = 'hidden';
+                    document.body.style.overflow = 'hidden';
+                    document.body.classList.add('modal-open');
+                }
+            });
+        }
         
         let currentDate = new Date(); // Date used for navigation
         const actualToday = new Date(); // Always strictly today
@@ -1309,6 +1350,15 @@
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
             monthLabel.textContent = monthNames[month] + " " + year;
+            
+            // Show today button if we are navigated away from current month
+            if (todayBtn) {
+                if (month !== actualToday.getMonth() || year !== actualToday.getFullYear()) {
+                    todayBtn.style.display = 'inline-block';
+                } else {
+                    todayBtn.style.display = 'none';
+                }
+            }
             
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -1342,6 +1392,13 @@
             currentDate.setMonth(currentDate.getMonth() + 1);
             renderCalendar();
         });
+        
+        if (todayBtn) {
+            todayBtn.addEventListener('click', function() {
+                currentDate = new Date(); // Reset to today
+                renderCalendar();
+            });
+        }
 
         // Initial render
         renderCalendar();
@@ -1349,6 +1406,40 @@
     </script>
     <style>
     .hover-cal-bg:hover { background-color: #f1f5f9 !important; color: #000 !important; }
+    
+    /* Bulletproof fix for offcanvas->modal scroll bug */
+    body:has(#calendarModal.show),
+    html:has(#calendarModal.show) {
+        overflow: hidden !important;
+    }
+    
+    /* Ensure profile dropdown doesn't cause scroll */
+    .profile-dropdown-menu.show {
+        position: fixed !important;
+        right: 1rem !important;
+        left: auto !important;
+        top: auto !important;
+    }
+    
+    /* Navbar always sticks at top - no scroll interference */
+    .navbar-gmu {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1050 !important;
+    }
+    @media (max-width: 991.98px) {
+        .navbar-gmu {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1060 !important;
+            width: 100% !important;
+        }
+        body {
+            padding-top: 70px !important;
+        }
+    }
     </style>
 
     @stack('scripts')
