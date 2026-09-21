@@ -724,91 +724,7 @@
                 <!-- User Profile & Action Controls -->
                 <div class="d-flex align-items-center text-white ms-auto gap-3">
                     {{-- Notifications Bell Dropdown (SCR-17) --}}
-                    @php
-                        $notifCount = 0;
-                        $notifItems = [];
-                        $userRole = Auth::user()->role;
-
-                        if ($userRole === 'reviewer') {
-                            $pendingEvals = \App\Models\Evaluation::where('examiner_id', Auth::id())->where('decision', 'Pending')->get();
-                            $notifCount = $pendingEvals->count();
-                            foreach($pendingEvals as $e) {
-                                $notifItems[] = [
-                                    'title' => 'Pending Review Assigned',
-                                    'desc'  => 'Project #' . $e->project_id . ' requires evaluation',
-                                    'time'  => $e->created_at ? $e->created_at->diffForHumans() : 'Recently',
-                                    'icon'  => 'bi-eye-fill text-primary'
-                                ];
-                            }
-                        } elseif (in_array($userRole, ['coordinator', 'dh'])) {
-                            $pendingProposals = \App\Models\Project::where('status', 'Submitted')->get();
-                            $notifCount = $pendingProposals->count();
-                            foreach($pendingProposals as $p) {
-                                $notifItems[] = [
-                                    'title' => 'New Proposal Submitted',
-                                    'desc'  => '"' . substr($p->title, 0, 30) . '..." awaiting screening',
-                                    'time'  => $p->created_at ? $p->created_at->diffForHumans() : 'Recently',
-                                    'icon'  => 'bi-file-earmark-text text-warning'
-                                ];
-                            }
-                        } elseif (in_array($userRole, ['dean', 'rcsc', 'vparttcs'])) {
-                            $pendingBudgets = \App\Models\BudgetRequest::where('status', 'Pending')->get();
-                            $notifCount = $pendingBudgets->count();
-                            foreach($pendingBudgets as $b) {
-                                $notifItems[] = [
-                                    'title' => 'Budget Approval Needed',
-                                    'desc'  => 'Project #' . $b->project_id . ' - ETB ' . number_format($b->requested_amount, 2),
-                                    'time'  => $b->created_at ? $b->created_at->diffForHumans() : 'Recently',
-                                    'icon'  => 'bi-currency-dollar text-success'
-                                ];
-                            }
-                        } elseif ($userRole === 'pi') {
-                            $myProjects = \App\Models\Project::where('pi_id', Auth::id())->whereNotIn('status', ['Completed', 'Terminated'])->get();
-                            $notifCount = $myProjects->count();
-                            foreach($myProjects as $p) {
-                                $notifItems[] = [
-                                    'title' => 'Project Status Update',
-                                    'desc'  => '"' . substr($p->title, 0, 30) . '..." is currently ' . $p->status,
-                                    'time'  => $p->updated_at ? $p->updated_at->diffForHumans() : 'Recently',
-                                    'icon'  => 'bi-info-circle text-info'
-                                ];
-                            }
-                        } elseif ($userRole === 'irerc') {
-                            $pendingIRERC = \App\Models\IRERCClearance::where('status', 'Pending')->get();
-                            $notifCount = $pendingIRERC->count();
-                            foreach($pendingIRERC as $ir) {
-                                $notifItems[] = [
-                                    'title' => 'Ethics Review Pending',
-                                    'desc'  => 'Project #' . $ir->project_id . ' requires IRERC clearance',
-                                    'time'  => $ir->created_at ? $ir->created_at->diffForHumans() : 'Recently',
-                                    'icon'  => 'bi-shield-exclamation text-warning'
-                                ];
-                            }
-                        } elseif ($userRole === 'admin') {
-                            $activeUsers = \App\Models\User::where('status', 'active')->count();
-                            $notifCount = 1;
-                            $notifItems[] = [
-                                'title' => 'System Overview',
-                                'desc'  => $activeUsers . ' active users in the system',
-                                'time'  => 'Now',
-                                'icon'  => 'bi-gear text-primary'
-                            ];
-                        } elseif ($userRole === 'tm') {
-                            $myMemberProjects = \App\Models\ProjectMember::where('user_id', Auth::id())->get();
-                            $notifCount = $myMemberProjects->count();
-                            foreach($myMemberProjects as $mp) {
-                                $p = \App\Models\Project::find($mp->project_id);
-                                if ($p) {
-                                    $notifItems[] = [
-                                        'title' => 'Team Project Update',
-                                        'desc'  => '"' . substr($p->title, 0, 30) . '..." - ' . $p->status,
-                                        'time'  => $p->updated_at ? $p->updated_at->diffForHumans() : 'Recently',
-                                        'icon'  => 'bi-people text-info'
-                                    ];
-                                }
-                            }
-                        }
-                    @endphp
+                    {{-- Notifications loaded via LoadNotifications middleware --}}
 
                     <div class="dropdown me-3">
                         <button class="btn btn-link p-0 border-0 position-relative d-flex align-items-center text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
@@ -1558,10 +1474,11 @@
     </style>
 
     <script>
-    // Custom Select Dropdowns - replaces native <select> with styled dropdowns
+    // Custom Select Dropdowns - lazy init, only processes new selects
     (function() {
-        function initCustomSelects() {
-            document.querySelectorAll('select.form-select:not(.custom-select-done)').forEach(function(sel) {
+        function initCustomSelects(root) {
+            var container = root || document;
+            container.querySelectorAll('select.form-select:not(.custom-select-done)').forEach(function(sel) {
                 sel.classList.add('custom-select-done');
                 var isSmall = sel.classList.contains('form-select-sm');
                 var wrapper = document.createElement('div');
@@ -1595,8 +1512,6 @@
                         var div = document.createElement('div');
                         div.className = 'custom-select-option' + (opt.value === sel.value ? ' selected' : '');
                         div.textContent = opt.text;
-                        div.dataset.value = opt.value;
-                        div.dataset.index = i;
                         var check = document.createElement('span');
                         check.className = 'check-icon';
                         check.innerHTML = '&#10003;';
@@ -1619,18 +1534,11 @@
 
                 trigger.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    document.querySelectorAll('.custom-select-options.show').forEach(function(o) {
-                        o.classList.remove('show');
-                    });
-                    document.querySelectorAll('.custom-select-trigger.open').forEach(function(t) {
-                        t.classList.remove('open');
-                    });
-                    // Position fixed dropdown relative to trigger
+                    document.querySelectorAll('.custom-select-options.show').forEach(function(o) { o.classList.remove('show'); });
+                    document.querySelectorAll('.custom-select-trigger.open').forEach(function(t) { t.classList.remove('open'); });
                     var rect = trigger.getBoundingClientRect();
-                    var dropWidth = rect.width;
-                    optionsDiv.style.width = dropWidth + 'px';
+                    optionsDiv.style.width = rect.width + 'px';
                     optionsDiv.style.left = rect.left + 'px';
-                    // Check if dropdown would go below viewport, show above if so
                     var dropHeight = Math.min(200, optionsDiv.scrollHeight || 200);
                     if (rect.bottom + dropHeight > window.innerHeight) {
                         optionsDiv.style.top = (rect.top - dropHeight - 4) + 'px';
@@ -1640,31 +1548,22 @@
                     optionsDiv.classList.toggle('show');
                     trigger.classList.toggle('open');
                 });
-
-                // Observe select value changes (e.g. form reset, JS changes)
-                var observer = new MutationObserver(function() {
-                    renderOptions();
-                    selectedText.textContent = sel.value ? sel.options[sel.selectedIndex].text : placeholderText;
-                    selectedText.className = sel.value ? '' : 'placeholder';
-                });
-                observer.observe(sel, { childList: true, attributes: true });
             });
         }
 
-        // Init on load
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initCustomSelects);
+            document.addEventListener('DOMContentLoaded', function() { initCustomSelects(document); });
         } else {
-            initCustomSelects();
+            initCustomSelects(document);
         }
-        // Re-init when modals open (dynamic content)
+
+        // Only init selects inside a modal WHEN that specific modal opens (not all modals)
         document.querySelectorAll('.modal').forEach(function(modal) {
             modal.addEventListener('shown.bs.modal', function() {
-                setTimeout(initCustomSelects, 100);
+                initCustomSelects(modal);
             });
         });
 
-        // Close all custom selects on outside click
         document.addEventListener('click', function() {
             document.querySelectorAll('.custom-select-options.show').forEach(function(o) { o.classList.remove('show'); });
             document.querySelectorAll('.custom-select-trigger.open').forEach(function(t) { t.classList.remove('open'); });
