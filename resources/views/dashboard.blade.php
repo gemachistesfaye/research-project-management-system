@@ -57,23 +57,13 @@
     <h5 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-dark"></i>Quick Actions</h5>
     <div class="row g-2">
         <div class="col-6 col-md-auto">
-            <a href="{{ route('progress.index') }}" class="btn btn-outline-primary fw-bold w-100 text-nowrap py-2">
-                <i class="bi bi-file-earmark-bar-graph me-1"></i> <span class="d-none d-sm-inline">Progress Reports</span><span class="d-inline d-sm-none">Progress</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-auto">
-            <a href="{{ route('extensions.index') }}" class="btn btn-outline-info fw-bold w-100 text-nowrap py-2">
-                <i class="bi bi-clock-history me-1"></i> <span class="d-none d-sm-inline">Extensions</span><span class="d-inline d-sm-none">Extensions</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-auto">
             <a href="{{ route('procurement.index') }}" class="btn btn-outline-secondary fw-bold w-100 text-nowrap py-2">
-                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Procurement</span><span class="d-inline d-sm-none">Procurement</span>
+                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Procurement Tracker</span><span class="d-inline d-sm-none">Procurement</span>
             </a>
         </div>
         <div class="col-6 col-md-auto">
             <a href="{{ route('projects.index') }}" class="btn btn-outline-dark fw-bold w-100 text-nowrap py-2">
-                <i class="bi bi-people me-1"></i> <span class="d-none d-sm-inline">Manage Team</span><span class="d-inline d-sm-none">Team</span>
+                <i class="bi bi-people me-1"></i> <span class="d-none d-sm-inline">Manage Team &amp; Tasks</span><span class="d-inline d-sm-none">Team</span>
             </a>
         </div>
     </div>
