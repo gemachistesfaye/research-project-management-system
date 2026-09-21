@@ -29,10 +29,6 @@
             color: #1e293b;
             letter-spacing: -0.01em;
         }
-        body.modal-open {
-            padding-right: 0 !important;
-            overflow-y: auto !important;
-        }
         /* Navbar Styling */
         .navbar-gmu {
             background: linear-gradient(135deg, var(--gmu-primary) 0%, var(--gmu-primary-dark) 100%);
@@ -196,13 +192,6 @@
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
             border-radius: 10px;
         }
-    /* Prevent layout shift when scrollbar appears/disappears */
-    html {
-        scrollbar-gutter: stable;
-    }
-    .modal-body {
-        scrollbar-gutter: stable;
-    }
     /* Select Dropdowns - Modern Dark Theme */
     .custom-select-wrapper {
         position: relative;
@@ -1108,7 +1097,7 @@
     <!-- Bootstrap 5.3 JS Bundle (local) -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script>
-        // Lock background scroll when ANY overlay (modal, offcanvas, dropdown) is open
+        // Lock scroll only for modals and offcanvas — dropdowns do NOT lock scroll
         (function() {
             var scrollPos = 0;
 
@@ -1134,68 +1123,18 @@
                 window.scrollTo(0, scrollPos);
             }
 
-            // Lighter lock for dropdowns — no overflow change to avoid layout shift
-            function lockScrollDropdown() {
-                scrollPos = window.pageYOffset || document.documentElement.scrollTop;
-            }
-
-            function unlockScrollDropdown() {
-                window.scrollTo(0, scrollPos);
-            }
-
-            function hasOpenOverlay() {
-                if (document.querySelector('.modal.show')) return true;
-                if (document.querySelector('.offcanvas.show')) return true;
-                return false;
-            }
-
-            function checkAndUnlock() {
-                if (hasOpenOverlay()) {
-                    lockScroll();
-                } else {
-                    unlockScroll();
-                }
-            }
-
             // Offcanvas sidebar
             var sidebar = document.getElementById('navbarOffcanvas');
             if (sidebar) {
-                sidebar.addEventListener('show.bs.offcanvas', function() { lockScroll(); });
-                sidebar.addEventListener('hidden.bs.offcanvas', function() {
-                    setTimeout(checkAndUnlock, 200);
-                });
+                sidebar.addEventListener('show.bs.offcanvas', lockScroll);
+                sidebar.addEventListener('hidden.bs.offcanvas', unlockScroll);
             }
 
-            // ALL modals (confirm, calendar, create, edit, delete, etc.)
+            // ALL modals
             document.querySelectorAll('.modal').forEach(function(modal) {
-                modal.addEventListener('show.bs.modal', function() { lockScroll(); });
-                modal.addEventListener('hidden.bs.modal', function() {
-                    setTimeout(checkAndUnlock, 200);
-                });
+                modal.addEventListener('show.bs.modal', lockScroll);
+                modal.addEventListener('hidden.bs.modal', unlockScroll);
             });
-
-            // ALL dropdowns — light lock only (no position:fixed)
-            document.querySelectorAll('.dropdown').forEach(function(dropdown) {
-                dropdown.addEventListener('show.bs.dropdown', function() { lockScrollDropdown(); });
-                dropdown.addEventListener('hidden.bs.dropdown', function() {
-                    if (!hasOpenOverlay()) unlockScrollDropdown();
-                });
-            });
-
-            // Block touchmove on background when any overlay is open
-            document.addEventListener('touchmove', function(e) {
-                if (!hasOpenOverlay() && !document.querySelector('.dropdown-menu.show')) return;
-                var offcanvas = document.querySelector('.offcanvas.show');
-                if (offcanvas) {
-                    var body = offcanvas.querySelector('.offcanvas-body');
-                    if (body && body.contains(e.target)) return;
-                }
-                var modalBody = document.querySelector('.modal.show .modal-body');
-                if (modalBody && modalBody.contains(e.target)) return;
-                var dropdownMenu = document.querySelector('.dropdown-menu.show');
-                if (dropdownMenu && dropdownMenu.contains(e.target)) return;
-                e.preventDefault();
-            }, { passive: false });
         })();
     </script>
     <script>
@@ -1436,23 +1375,23 @@
     <style>
     .hover-cal-bg:hover { background-color: #f1f5f9 !important; color: #000 !important; }
     
-    /* Bulletproof fix for offcanvas->modal scroll bug */
+    /* Bulletproof modal scroll lock */
     body:has(.modal.show),
     html:has(.modal.show),
     body:has(.offcanvas.show),
     html:has(.offcanvas.show) {
         overflow: hidden !important;
     }
-    
-    /* Ensure profile dropdown doesn't cause scroll */
+
+    /* Profile dropdown positioning */
     .profile-dropdown-menu.show {
         position: fixed !important;
         right: 1rem !important;
         left: auto !important;
         top: auto !important;
     }
-    
-    /* Navbar always sticks at top - no scroll interference */
+
+    /* Navbar sticky */
     .navbar-gmu {
         position: sticky !important;
         top: 0 !important;
@@ -1461,15 +1400,13 @@
     @media (max-width: 991.98px) {
         .navbar-gmu {
             position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 1060 !important;
-            width: 100% !important;
+            width: 100%;
         }
-        body {
-            padding-top: 70px !important;
-        }
+        body { padding-top: 70px !important; }
     }
     </style>
 
