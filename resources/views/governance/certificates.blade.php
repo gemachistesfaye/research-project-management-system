@@ -1,5 +1,48 @@
 @extends('layouts.app')
 
+@section('styles')
+<style>
+    #issueCertificateModal .form-select {
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230f3e2e' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: right 0.75rem center !important;
+        background-size: 10px 10px !important;
+        padding-right: 2.25rem !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+        color: #0f172a !important;
+        background-color: #ffffff !important;
+        transition: all 0.2s ease !important;
+        cursor: pointer !important;
+        height: auto !important;
+    }
+    #issueCertificateModal .form-select:hover {
+        border-color: #94a3b8 !important;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+    }
+    #issueCertificateModal .form-select:focus {
+        border-color: #0f3e2e !important;
+        box-shadow: 0 0 0 3px rgba(15,62,46,0.12) !important;
+        outline: none !important;
+    }
+    #issueCertificateModal .form-select option {
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+    }
+    #issueCertificateModal .form-select option:checked {
+        background: #0f3e2e !important;
+        color: #ffffff !important;
+    }
+</style>
+@endsection
+
 @section('content')
 <h3 class="fw-bold mb-4"><i class="bi bi-file-earmark-pdf me-2 text-success"></i>Completion Certificates & Journal Awards</h3>
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -82,7 +125,7 @@
                     <div class="row g-2 mb-2">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1">Project <span class="text-danger">*</span></label>
-                            <select name="project_id" class="form-select form-select-sm" required>
+                            <select name="project_id" class="form-select form-select-sm" required style="appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230f3e2e' d='M6 8L1 3h10z'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 0.75rem center;background-size:10px 10px;padding-right:2.25rem;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:500;color:#0f172a;background-color:#fff;cursor:pointer;">
                                 <option value="">-- Select Completed Project --</option>
                                 @foreach($completedProjects as $proj)
                                     <option value="{{ $proj->project_id }}">#{{ $proj->project_id }} — {{ $proj->title }}</option>
@@ -91,7 +134,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1">Certificate Type <span class="text-danger">*</span></label>
-                            <select name="type" class="form-select form-select-sm" required>
+                            <select name="type" class="form-select form-select-sm" required style="appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230f3e2e' d='M6 8L1 3h10z'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 0.75rem center;background-size:10px 10px;padding-right:2.25rem;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:500;color:#0f172a;background-color:#fff;cursor:pointer;">
                                 <option value="">-- Select Type --</option>
                                 <option value="Completion">Completion Certificate</option>
                                 <option value="Award">Journal Award Letter</option>
