@@ -17,10 +17,8 @@ class ProfileController extends Controller
         $user = Auth::user()->load('department.college');
         $recentLogs = AuditLog::where('user_id', $user->id)
             ->latest()
-            ->take(10)
             ->take(15)
             ->get();
-        return view('profile.show', compact('user', 'recentLogs'));
 
         // Calculate role-specific mini statistics
         $stats = [];

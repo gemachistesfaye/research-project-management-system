@@ -4,8 +4,6 @@
 <style>
     .avatar-upload-wrapper {
         position: relative;
-        width: 120px;
-        height: 120px;
         width: 110px;
         height: 110px;
         cursor: pointer;
@@ -15,13 +13,10 @@
         opacity: 1;
     }
     .avatar-circle {
-        width: 120px;
-        height: 120px;
         width: 110px;
         height: 110px;
         border-radius: 50%;
         object-fit: cover;
-        border: 4px solid #e2e8f0;
         border: 4px solid rgba(255, 255, 255, 0.4);
         background: #f1f5f9;
         display: flex;
@@ -47,7 +42,6 @@
         position: absolute;
         inset: 0;
         border-radius: 50%;
-        background: rgba(15, 23, 42, 0.55);
         background: rgba(15, 23, 42, 0.65);
         display: flex;
         flex-direction: column;
@@ -57,7 +51,6 @@
         transition: opacity 0.25s ease;
         color: #fff;
     }
-    .avatar-overlay i { font-size: 1.6rem; }
     .avatar-overlay i { font-size: 1.5rem; }
     .avatar-overlay span { font-size: 0.65rem; font-weight: 600; margin-top: 2px; }
 
@@ -65,8 +58,6 @@
     .breadcrumb-sm .breadcrumb-item + .breadcrumb-item::before { font-size: 0.72rem; }
 
     .role-badge {
-        font-size: 0.7rem;
-        padding: 3px 10px;
         font-size: 0.72rem;
         padding: 4px 10px;
         border-radius: 6px;
@@ -75,20 +66,10 @@
         text-transform: uppercase;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .role-pi       { background: #dbeafe; color: #1e40af; }
-    .role-tm       { background: #e0e7ff; color: #3730a3; }
-    .role-dh       { background: #fef3c7; color: #92400e; }
     .role-pi          { background: #dbeafe; color: #1e40af; }
     .role-tm          { background: #e0e7ff; color: #3730a3; }
     .role-dh          { background: #fef3c7; color: #92400e; }
     .role-coordinator { background: #d1fae5; color: #065f46; }
-    .role-reviewer { background: #ede9fe; color: #5b21b6; }
-    .role-dean     { background: #fce7f3; color: #9d174d; }
-    .role-irerc    { background: #fee2e2; color: #991b1b; }
-    .role-vparttcs { background: #fef9c3; color: #854d0e; }
-    .role-rcsc     { background: #ccfbf1; color: #0f766e; }
-    .role-finance  { background: #ecfdf5; color: #065f46; }
-    .role-admin    { background: #1e293b; color: #f8fafc; }
     .role-reviewer    { background: #ede9fe; color: #5b21b6; }
     .role-dean        { background: #fce7f3; color: #9d174d; }
     .role-irerc       { background: #fee2e2; color: #991b1b; }
@@ -101,8 +82,6 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
         background: rgba(255, 255, 255, 0.12);
         border: 1px solid rgba(255, 255, 255, 0.25);
         border-radius: 8px;
@@ -117,7 +96,6 @@
         border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 8px;
         padding: 6px 14px;
-        font-size: 0.8rem;
         text-align: center;
         min-width: 90px;
     }
@@ -130,7 +108,6 @@
         border-radius: 8px;
         transition: all 0.2s ease;
     }
-    .info-chip i { font-size: 0.95rem; }
     .nav-pills-custom .nav-link:hover {
         background: #f1f5f9;
         color: #0f3e2e;
@@ -155,8 +132,6 @@
     }
 
     .activity-dot {
-        width: 8px;
-        height: 8px;
         width: 10px;
         height: 10px;
         border-radius: 50%;
@@ -169,7 +144,6 @@
     .profile-hero {
         background: linear-gradient(135deg, var(--gmu-primary) 0%, var(--gmu-secondary) 100%);
         border-radius: 14px;
-        padding: 2rem 2rem 1.5rem;
         padding: 1.75rem 1.75rem 1.5rem;
         color: #fff;
         margin-bottom: 1.5rem;
@@ -180,16 +154,9 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-lg-8">
     <div class="col-lg-9">
 
         {{-- Breadcrumbs --}}
-        <nav aria-label="breadcrumb" class="mb-3 breadcrumb-sm">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-decoration-none"><i class="bi bi-house-door me-1"></i>Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">My Profile</li>
-            </ol>
-        </nav>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <nav aria-label="breadcrumb" class="breadcrumb-sm m-0">
                 <ol class="breadcrumb m-0">
@@ -204,12 +171,6 @@
 
         {{-- Profile Hero Card --}}
         <div class="profile-hero">
-            <div class="d-flex align-items-center gap-4 flex-wrap">
-                {{-- Avatar Upload --}}
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" id="avatarForm" class="m-0">
-                    @csrf
-                    @method('PUT')
-                    <label for="avatarInput" class="avatar-upload-wrapper mb-0" title="Change avatar">
             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
                 
                 {{-- Left: Avatar + Identity --}}
@@ -239,11 +200,6 @@
                         </form>
                         
                         @if($user->avatar_path)
-                            <img src="{{ Storage::url($user->avatar_path) }}" alt="Avatar" class="avatar-circle">
-                        @else
-                            <div class="avatar-circle d-flex align-items-center justify-content-center">
-                                <i class="bi bi-person-fill fs-1 text-secondary"></i>
-                            </div>
                         <form action="{{ route('profile.delete-avatar') }}" method="POST" class="mt-2 m-0">
                             @csrf
                             @method('DELETE')
@@ -252,9 +208,6 @@
                             </button>
                         </form>
                         @endif
-                        <div class="avatar-overlay">
-                            <i class="bi bi-camera-fill"></i>
-                            <span>Change</span>
                     </div>
 
                     {{-- Name, Role, Metadata --}}
@@ -263,9 +216,6 @@
                             <h3 class="fw-bold mb-0 text-white">{{ preg_replace('/\s*\([^)]*\)/', '', $user->name) }}</h3>
                             <span class="role-badge role-{{ $user->role }}">{{ strtoupper($user->role) }}</span>
                         </div>
-                    </label>
-                    <input type="file" name="avatar" id="avatarInput" accept="image/*" class="d-none">
-                </form>
                         
                         <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
                             <span class="info-chip">
@@ -276,10 +226,6 @@
                             </span>
                         </div>
 
-                <div>
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <h3 class="fw-bold mb-0 text-white">{{ $user->name }}</h3>
-                        <span class="role-badge role-{{ $user->role }}">{{ strtoupper($user->role) }}</span>
                         <div class="d-flex align-items-center gap-3 flex-wrap mt-2 text-white text-opacity-75" style="font-size: 0.74rem;">
                             @if($user->department)
                                 <span><i class="bi bi-building me-1"></i>{{ $user->department->name }}</span>
@@ -290,13 +236,6 @@
                             <span><i class="bi bi-calendar-check me-1"></i>Member since {{ $user->created_at->format('M Y') }}</span>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center gap-3 flex-wrap mt-2" style="opacity: 0.85;">
-                        <span class="info-chip border-0 bg-white bg-opacity-10 text-white">
-                            <i class="bi bi-envelope"></i> {{ $user->email }}
-                        </span>
-                        <span class="info-chip border-0 bg-white bg-opacity-10 text-white">
-                            <i class="bi bi-person-badge"></i> {{ $user->staff_id ?? 'N/A' }}
-                        </span>
                 </div>
 
                 {{-- Right: Mini Statistics Pills --}}
@@ -309,16 +248,6 @@
                         </div>
                         <div class="fs-5 fw-bold text-white mt-1">{{ $st['val'] }}</div>
                     </div>
-                    <div class="d-flex align-items-center gap-3 flex-wrap mt-2" style="opacity: 0.75;">
-                        @if($user->last_login_at)
-                            <span class="info-chip border-0 bg-white bg-opacity-10 text-white" style="font-size:0.73rem;">
-                                <i class="bi bi-clock-history"></i> Last Login: {{ $user->last_login_at->diffForHumans() }}
-                            </span>
-                        @endif
-                        <span class="info-chip border-0 bg-white bg-opacity-10 text-white" style="font-size:0.73rem;">
-                            <i class="bi bi-calendar-check"></i> Member Since: {{ $user->created_at->format('M d, Y') }}
-                        </span>
-                    </div>
                     @endforeach
                 </div>
                 @endif
@@ -326,21 +255,6 @@
             </div>
         </div>
 
-        {{-- Profile Info Card --}}
-        <div class="card card-custom mb-4">
-            <div class="card-header bg-white border-bottom fw-bold">
-                <i class="bi bi-person-badge me-2 text-success"></i> Account Details
-            </div>
-            <div class="card-body">
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" id="profileForm">
-                    @csrf
-                    @method('PUT')
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Full Name</label>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                   value="{{ old('name', $user->name) }}" required>
-                            @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
         {{-- Tabbed Navigation for Clean Zero-Scroll Layout --}}
         <ul class="nav nav-pills nav-pills-custom gap-2 mb-4 bg-white p-2 rounded-3 shadow-sm" id="profileTabs" role="tablist">
             <li class="nav-item flex-grow-1 flex-md-grow-0" role="presentation">
@@ -408,11 +322,6 @@
                                        value="{{ $user->department && $user->department->college ? $user->department->college->name : 'N/A' }}" disabled>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Email Address</label>
-                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                   value="{{ old('email', $user->email) }}" required>
-                            @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
                         <div class="d-flex justify-content-between align-items-center mt-4 pt-2 border-top">
                             <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Institutional details are synchronized with GMU HRMS.</small>
@@ -420,66 +329,10 @@
                                 <i class="bi bi-check-lg me-1"></i> Save Changes
                             </button>
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold small text-muted">Staff ID</label>
-                            <input type="text" class="form-control" value="{{ $user->staff_id ?? 'N/A' }}" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold small text-muted">Role</label>
-                            <input type="text" class="form-control" value="{{ strtoupper($user->role) }}" disabled>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold small text-muted">Status</label>
-                            <input type="text" class="form-control"
-                                   value="{{ ucfirst($user->status ?? 'Active') }}" disabled>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Department</label>
-                            <input type="text" class="form-control"
-                                   value="{{ $user->department ? $user->department->name : 'N/A' }}" disabled>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">College</label>
-                            <input type="text" class="form-control"
-                                   value="{{ $user->department && $user->department->college ? $user->department->college->name : 'N/A' }}" disabled>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-dark fw-bold">
-                            <i class="bi bi-check-lg me-1"></i> Save Changes
-                        </button>
-                    </div>
-                </form>
                     </form>
                 </div>
             </div>
-        </div>
 
-        {{-- Change Password Card --}}
-        <div class="card card-custom mb-4">
-            <div class="card-header bg-white border-bottom fw-bold">
-                <i class="bi bi-lock me-2 text-dark"></i> Change Password
-            </div>
-            <div class="card-body">
-                <form action="{{ route('profile.change-password') }}" method="POST" id="passwordForm">
-                    @csrf
-                    @method('PUT')
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label fw-bold small text-muted">Current Password</label>
-                            <input type="password" name="current_password"
-                                   class="form-control @error('current_password') is-invalid @enderror" required>
-                            @error('current_password') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">New Password</label>
-                            <input type="password" name="new_password" id="newPasswordInput"
-                                   class="form-control @error('new_password') is-invalid @enderror" required>
-                            @error('new_password') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            {{-- Password Strength Indicator --}}
-                            <div class="mt-2">
-                                <div class="strength-bar">
-                                    <div class="fill" id="strengthFill" style="width:0%; background:#e2e8f0;"></div>
             {{-- Tab 2: Security & Password --}}
             <div class="tab-pane fade" id="securityPane" role="tabpanel">
                 <div class="card card-custom p-3 p-md-4">
@@ -499,9 +352,7 @@
                                     </button>
                                     @error('current_password') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                <small class="text-muted mt-1 d-block" id="strengthLabel" style="font-size:0.72rem;"></small>
                             </div>
-                            <div class="form-text">Min 8 chars, upper, lower, number, and symbol required.</div>
                             
                             <div class="col-12 col-md-6">
                                 <label class="form-label fw-bold small text-muted">New Password</label>
@@ -534,37 +385,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small text-muted">Confirm New Password</label>
-                            <input type="password" name="new_password_confirmation" class="form-control" required>
 
                         <div class="d-flex justify-content-end mt-4 pt-2 border-top">
                             <button type="submit" class="btn btn-dark fw-bold px-4">
                                 <i class="bi bi-shield-lock me-1"></i> Update Password
                             </button>
                         </div>
-                    </div>
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-dark fw-bold">
-                            <i class="bi bi-shield-lock me-1"></i> Update Password
-                        </button>
-                    </div>
-                </form>
                     </form>
                 </div>
             </div>
-        </div>
 
-        {{-- Activity History Card --}}
-        <div class="card card-custom mb-4">
-            <div class="card-header bg-white border-bottom fw-bold">
-                <i class="bi bi-clock-history me-2 text-dark"></i> Recent Activity
-            </div>
-            <div class="card-body p-0">
-                @if($recentLogs->isEmpty())
-                    <div class="text-center py-4 text-muted">
-                        <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-                        <span class="small">No recent activity recorded.</span>
             {{-- Tab 3: Activity & Audit Logs --}}
             <div class="tab-pane fade" id="activityPane" role="tabpanel">
                 <div class="card card-custom p-0 overflow-hidden">
@@ -572,20 +402,6 @@
                         <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-clock-history me-2 text-dark"></i>Personal Event Activity Log</h6>
                         <span class="badge bg-secondary">Immutable Trail</span>
                     </div>
-                @else
-                    <div class="list-group list-group-flush">
-                        @foreach($recentLogs as $log)
-                            <div class="list-group-item d-flex align-items-start gap-3 py-3">
-                                <div class="activity-dot mt-1 {{ str_contains(strtolower($log->action), 'login') ? 'login' : (str_contains(strtolower($log->action), 'create') || str_contains(strtolower($log->action), 'update') || str_contains(strtolower($log->action), 'delete') ? 'action' : 'default') }}"></div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold text-dark small">{{ ucfirst($log->action) }}</div>
-                                    <div class="text-muted" style="font-size:0.76rem;">
-                                        @if($log->entity_type)
-                                            <span class="badge bg-light text-dark border me-1" style="font-size:0.68rem;">{{ class_basename($log->entity_type) }}</span>
-                                        @endif
-                                        @if($log->details)
-                                            {{ is_string($log->details) ? Str::limit($log->details, 80) : json_encode($log->details) }}
-                                        @endif
 
                     @if($recentLogs->isEmpty())
                         <div class="text-center py-5 text-muted">
@@ -617,13 +433,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="text-muted text-nowrap" style="font-size:0.7rem;">
-                                    <i class="bi bi-clock me-1"></i>{{ $log->created_at ? $log->created_at->diffForHumans() : 'N/A' }}
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
                             @endforeach
                         </div>
                     @endif
@@ -631,11 +440,6 @@
             </div>
 
         </div>
-
-        {{-- Back to Dashboard --}}
-        <a href="{{ route('dashboard') }}" class="btn btn-outline-dark">
-            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
-        </a>
 
     </div>
 </div>
