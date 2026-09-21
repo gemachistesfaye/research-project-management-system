@@ -36,7 +36,17 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold mb-0"><i class="bi bi-cart-check me-2 text-dark"></i> Procurement Tracker (SCR-20)</h3>
-        <span class="text-muted">Submit and track purchase requests for active projects</span>
+        <span class="text-muted">
+            @if(Auth::user()->role === 'pi')
+                Submit and track purchase requests for your active research projects
+            @elseif(in_array(Auth::user()->role, ['vparttcs', 'rcsc']))
+                Executive oversight of university-wide faculty equipment &amp; supply requisitions (View &amp; Audit)
+            @elseif(Auth::user()->role === 'coordinator')
+                Review, approve, and track faculty equipment &amp; supply requisitions
+            @else
+                Track and audit project procurement requests
+            @endif
+        </span>
     </div>
 </div>
 

@@ -3,7 +3,13 @@
 @section('content')
 <h3 class="fw-bold mb-4"><i class="bi bi-file-earmark-pdf me-2 text-success"></i>Completion Certificates & Journal Awards</h3>
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <span class="text-muted small">Digital completion certificates and journal award letters issued to PIs</span>
+    <span class="text-muted small">
+        @if(in_array(Auth::user()->role, ['vparttcs', 'rcsc']))
+            Executive registry &amp; validation of official university research completion certificates
+        @else
+            Digital completion certificates and journal award letters issued to PIs
+        @endif
+    </span>
     @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
     <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#issueCertificateModal">
         <i class="bi bi-file-earmark-plus me-1"></i> Issue Certificate
