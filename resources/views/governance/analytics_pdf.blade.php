@@ -47,7 +47,7 @@
         </tr>
         <tr>
             <td><strong>Export Authority:</strong> {{ $generatedBy }} (VP-ARTTCS / RCSC Governance)</td>
-            <td style="text-align: right;"><strong>Reporting Standard:</strong> MOE &amp; Institutional Compliance</td>
+            <td style="text-align: right;"><strong>Reporting Standard:</strong> University Research Governance Standards</td>
         </tr>
     </table>
 
