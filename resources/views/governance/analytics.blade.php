@@ -13,29 +13,29 @@
 
 {{-- KPI Summary Cards --}}
 <div class="row g-3 mb-4">
-    <div class="col-md-3">
-        <div class="card card-custom p-3 text-center border-start border-dark border-4">
+    <div class="col-6 col-md-3">
+        <div class="card card-custom p-3 text-center border-0 shadow-sm">
             <div class="text-muted small text-uppercase fw-bold">Total Grants</div>
             <div class="fs-1 fw-bold text-dark">{{ $totalProjects }}</div>
             <div class="small text-muted">University-wide</div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card card-custom p-3 text-center border-start border-dark border-4">
+    <div class="col-6 col-md-3">
+        <div class="card card-custom p-3 text-center border-0 shadow-sm">
             <div class="text-muted small text-uppercase fw-bold">Active Research</div>
             <div class="fs-1 fw-bold text-dark">{{ $activeProjects }}</div>
             <div class="small text-muted">Currently in field</div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card card-custom p-3 text-center border-start border-dark border-4">
+    <div class="col-6 col-md-3">
+        <div class="card card-custom p-3 text-center border-0 shadow-sm">
             <div class="text-muted small text-uppercase fw-bold">Completed</div>
             <div class="fs-1 fw-bold text-dark">{{ $completedProjects }}</div>
             <div class="small text-muted">Successfully closed</div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card card-custom p-3 text-center border-start border-dark border-4">
+    <div class="col-6 col-md-3">
+        <div class="card card-custom p-3 text-center border-0 shadow-sm">
             <div class="text-muted small text-uppercase fw-bold">Under Review</div>
             <div class="fs-1 fw-bold text-dark">{{ $underReviewProjects }}</div>
             <div class="small text-muted">Peer review stage</div>
