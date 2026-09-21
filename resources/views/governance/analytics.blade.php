@@ -44,20 +44,24 @@
 </div>
 
 {{-- Charts Row --}}
-<div class="row g-4 mb-4">
+<div class="row g-4 mb-4 align-items-stretch">
     {{-- Pie Chart: Project Status Distribution --}}
     <div class="col-md-5">
-        <div class="card card-custom p-4">
+        <div class="card card-custom p-4 h-100 border-0 shadow-sm d-flex flex-column">
             <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart-fill me-2 text-dark"></i>Project Status Distribution</h6>
-            <canvas id="statusPieChart" height="260"></canvas>
+            <div class="flex-grow-1 d-flex align-items-center justify-content-center" style="min-height: 260px;">
+                <canvas id="statusPieChart"></canvas>
+            </div>
         </div>
     </div>
 
     {{-- Bar Chart: Budget by Thematic Area --}}
     <div class="col-md-7">
-        <div class="card card-custom p-4">
+        <div class="card card-custom p-4 h-100 border-0 shadow-sm d-flex flex-column">
             <h6 class="fw-bold mb-3"><i class="bi bi-bar-chart-fill me-2 text-dark"></i>Requested Budget by Thematic Area (ETB)</h6>
-            <canvas id="budgetBarChart" height="260"></canvas>
+            <div class="flex-grow-1 d-flex align-items-center justify-content-center" style="min-height: 260px;">
+                <canvas id="budgetBarChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -122,6 +126,7 @@
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: { position: 'bottom', labels: { font: { size: 11 } } }
             }
@@ -146,6 +151,7 @@
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
                 y: {
