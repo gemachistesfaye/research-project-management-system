@@ -497,27 +497,6 @@
                     </li>
                     @endif
 
-                    {{-- 3. Project Operations (PI dropdown: Procurement, Transfer, Termination) --}}
-                    @if(Auth::user()->hasAnyPermission(['submit_procurement', 'request_pi_transfer', 'request_termination']))
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs('procurement.*') || request()->routeIs('pitransfer.*') || request()->routeIs('termination.*') ? 'active-link' : '' }}" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-kanban me-1"></i> Project Operations
-                        </a>
-                        <ul class="dropdown-menu">
-                            @if(Auth::user()->hasPermission('submit_procurement'))
-                            <li><a class="dropdown-item" href="{{ route('procurement.index') }}"><i class="bi bi-cart3 me-2 text-primary"></i>Procurement Tracker</a></li>
-                            @endif
-                            @if(Auth::user()->hasPermission('request_pi_transfer'))
-                            <li><a class="dropdown-item" href="{{ route('pitransfer.index') }}"><i class="bi bi-arrow-left-right me-2 text-secondary"></i>PI Transfer</a></li>
-                            @endif
-                            @if(Auth::user()->hasPermission('request_termination'))
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="{{ route('termination.index') }}"><i class="bi bi-exclamation-triangle me-2"></i>Terminate Project</a></li>
-                            @endif
-                        </ul>
-                    </li>
-                    @endif
-
                     {{-- 3. Department Head Screening --}}
                     @if(Auth::user()->hasPermission('screen_proposals'))
                     <li class="nav-item">
@@ -821,24 +800,10 @@
                     </a>
                 </li>
                 @endif
-                @if(Auth::user()->hasPermission('submit_procurement'))
+                @if(Auth::user()->hasAnyPermission(['request_extension', 'request_amendment']) && !Auth::user()->hasAnyPermission(['approve_extensions', 'approve_amendments']))
                 <li class="nav-item">
-                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('procurement.*') ? 'active-link' : '' }}" href="{{ route('procurement.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-cart3 me-2"></i> Procurement Tracker
-                    </a>
-                </li>
-                @endif
-                @if(Auth::user()->hasPermission('request_pi_transfer'))
-                <li class="nav-item">
-                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('pitransfer.*') ? 'active-link' : '' }}" href="{{ route('pitransfer.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-arrow-left-right me-2"></i> PI Transfer
-                    </a>
-                </li>
-                @endif
-                @if(Auth::user()->hasPermission('request_termination'))
-                <li class="nav-item">
-                    <a class="nav-link text-danger py-2 px-2 {{ request()->routeIs('termination.*') ? 'active-link' : '' }}" href="{{ route('termination.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-exclamation-triangle me-2"></i> Terminate Project
+                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('extensions.*') ? 'active-link' : '' }}" href="{{ route('extensions.index') }}" style="font-size: 0.85rem;">
+                        <i class="bi bi-clock-history me-2"></i> Extensions
                     </a>
                 </li>
                 @endif
