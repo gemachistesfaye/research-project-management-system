@@ -197,48 +197,109 @@
             border-radius: 10px;
         }
         /* Select Dropdowns - Modern Dark Theme */
-        .form-select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230f172a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 10px 10px;
-            padding-right: 2.25rem;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.875rem;
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .custom-select-wrapper .form-select {
+            display: none;
+        }
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.45rem 0.75rem;
+            font-size: 0.85rem;
             font-weight: 500;
             color: #0f172a;
-            background-color: #ffffff;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        .form-select:hover {
-            border-color: #94a3b8;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-        }
-        .form-select:focus {
-            border-color: var(--gmu-primary, #0f3e2e);
-            box-shadow: 0 0 0 3px rgba(15, 62, 46, 0.12);
-            outline: none;
-        }
-        .form-select-sm {
-            font-size: 0.82rem;
-            padding: 0.35rem 2rem 0.35rem 0.65rem;
-            border-radius: 6px;
-        }
-        .form-select option {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.85rem;
             background: #ffffff;
-            color: #0f172a;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 38px;
         }
-        .form-select option:hover,
-        .form-select option:checked {
+        .custom-select-trigger:hover {
+            border-color: #94a3b8;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .custom-select-trigger.open {
+            border-color: var(--gmu-primary, #0f3e2e);
+            box-shadow: 0 0 0 3px rgba(15,62,46,0.12);
+        }
+        .custom-select-trigger .placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        .custom-select-trigger .arrow {
+            font-size: 0.6rem;
+            color: #64748b;
+            transition: transform 0.2s ease;
+            margin-left: 8px;
+        }
+        .custom-select-trigger.open .arrow {
+            transform: rotate(180deg);
+        }
+        .custom-select-options {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px -4px rgba(0,0,0,0.15);
+            z-index: 9999;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            padding: 4px;
+        }
+        .custom-select-options.show {
+            display: block;
+        }
+        .custom-select-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: #0f172a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .custom-select-option:hover {
+            background: #f1f5f9;
+            color: var(--gmu-primary, #0f3e2e);
+        }
+        .custom-select-option.selected {
             background: var(--gmu-primary, #0f3e2e);
             color: #ffffff;
+        }
+        .custom-select-option.selected:hover {
+            background: #1e5641;
+            color: #ffffff;
+        }
+        .custom-select-option .check-icon {
+            margin-left: auto;
+            display: none;
+            font-size: 0.75rem;
+        }
+        .custom-select-option.selected .check-icon {
+            display: inline;
+        }
+        /* Small variant */
+        .custom-select-sm .custom-select-trigger {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            min-height: 32px;
+            border-radius: 6px;
+        }
+        .custom-select-sm .custom-select-option {
+            padding: 6px 10px;
+            font-size: 0.8rem;
         }
         /* Profile dropdown: fixed so it doesn't shift page content */
         .profile-dropdown-menu.show {
@@ -1472,6 +1533,109 @@
         }
     }
     </style>
+
+    <script>
+    // Custom Select Dropdowns - replaces native <select> with styled dropdowns
+    (function() {
+        function initCustomSelects() {
+            document.querySelectorAll('select.form-select:not(.custom-select-done)').forEach(function(sel) {
+                sel.classList.add('custom-select-done');
+                var isSmall = sel.classList.contains('form-select-sm');
+                var wrapper = document.createElement('div');
+                wrapper.className = 'custom-select-wrapper' + (isSmall ? ' custom-select-sm' : '');
+                sel.parentNode.insertBefore(wrapper, sel);
+                wrapper.appendChild(sel);
+
+                var trigger = document.createElement('div');
+                trigger.className = 'custom-select-trigger';
+                var optionsDiv = document.createElement('div');
+                optionsDiv.className = 'custom-select-options';
+
+                var placeholderText = '-- Select --';
+                var firstOption = sel.querySelector('option[value=""]');
+                if (firstOption) placeholderText = firstOption.textContent;
+
+                var selectedText = document.createElement('span');
+                selectedText.className = sel.value ? '' : 'placeholder';
+                selectedText.textContent = sel.value ? sel.options[sel.selectedIndex].text : placeholderText;
+                var arrow = document.createElement('span');
+                arrow.className = 'arrow';
+                arrow.innerHTML = '&#9662;';
+                trigger.appendChild(selectedText);
+                trigger.appendChild(arrow);
+                wrapper.appendChild(trigger);
+                wrapper.appendChild(optionsDiv);
+
+                function renderOptions() {
+                    optionsDiv.innerHTML = '';
+                    Array.from(sel.options).forEach(function(opt, i) {
+                        var div = document.createElement('div');
+                        div.className = 'custom-select-option' + (opt.value === sel.value ? ' selected' : '');
+                        div.textContent = opt.text;
+                        div.dataset.value = opt.value;
+                        div.dataset.index = i;
+                        var check = document.createElement('span');
+                        check.className = 'check-icon';
+                        check.innerHTML = '&#10003;';
+                        div.appendChild(check);
+                        div.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            sel.value = opt.value;
+                            selectedText.textContent = opt.text;
+                            selectedText.className = opt.value ? '' : 'placeholder';
+                            optionsDiv.querySelectorAll('.custom-select-option').forEach(function(o) { o.classList.remove('selected'); });
+                            div.classList.add('selected');
+                            optionsDiv.classList.remove('show');
+                            trigger.classList.remove('open');
+                            sel.dispatchEvent(new Event('change'));
+                        });
+                        optionsDiv.appendChild(div);
+                    });
+                }
+                renderOptions();
+
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    document.querySelectorAll('.custom-select-options.show').forEach(function(o) {
+                        if (o !== optionsDiv) o.classList.remove('show');
+                    });
+                    document.querySelectorAll('.custom-select-trigger.open').forEach(function(t) {
+                        if (t !== trigger) t.classList.remove('open');
+                    });
+                    optionsDiv.classList.toggle('show');
+                    trigger.classList.toggle('open');
+                });
+
+                // Observe select value changes (e.g. form reset, JS changes)
+                var observer = new MutationObserver(function() {
+                    renderOptions();
+                    selectedText.textContent = sel.value ? sel.options[sel.selectedIndex].text : placeholderText;
+                    selectedText.className = sel.value ? '' : 'placeholder';
+                });
+                observer.observe(sel, { childList: true, attributes: true });
+            });
+        }
+
+        // Init on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCustomSelects);
+        } else {
+            initCustomSelects();
+        }
+        // Re-init when modals open (dynamic content)
+        document.querySelectorAll('.modal').forEach(function(modal) {
+            modal.addEventListener('shown.bs.modal', function() {
+                setTimeout(initCustomSelects, 100);
+            });
+        });
+
+        // Close all custom selects on outside click
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.custom-select-options.show').forEach(function(o) { o.classList.remove('show'); });
+            document.querySelectorAll('.custom-select-trigger.open').forEach(function(t) { t.classList.remove('open'); });
+        });
+    })();
+    </script>
 
     @stack('scripts')
 </body>
