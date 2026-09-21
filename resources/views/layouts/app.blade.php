@@ -196,6 +196,10 @@
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
             border-radius: 10px;
         }
+        /* Prevent layout shift when scrollbar appears/disappears in modals */
+        .modal-body {
+            scrollbar-gutter: stable;
+        }
         /* Select Dropdowns - Modern Dark Theme */
         .custom-select-wrapper {
             position: relative;
@@ -242,15 +246,12 @@
             transform: rotate(180deg);
         }
         .custom-select-options {
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
+            position: fixed;
             background: #ffffff;
             border: 1.5px solid #e2e8f0;
             border-radius: 8px;
             box-shadow: 0 8px 24px -4px rgba(0,0,0,0.15);
-            z-index: 9999;
+            z-index: 99999;
             max-height: 200px;
             overflow-y: auto;
             display: none;
@@ -1597,11 +1598,23 @@
                 trigger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     document.querySelectorAll('.custom-select-options.show').forEach(function(o) {
-                        if (o !== optionsDiv) o.classList.remove('show');
+                        o.classList.remove('show');
                     });
                     document.querySelectorAll('.custom-select-trigger.open').forEach(function(t) {
-                        if (t !== trigger) t.classList.remove('open');
+                        t.classList.remove('open');
                     });
+                    // Position fixed dropdown relative to trigger
+                    var rect = trigger.getBoundingClientRect();
+                    var dropWidth = rect.width;
+                    optionsDiv.style.width = dropWidth + 'px';
+                    optionsDiv.style.left = rect.left + 'px';
+                    // Check if dropdown would go below viewport, show above if so
+                    var dropHeight = Math.min(200, optionsDiv.scrollHeight || 200);
+                    if (rect.bottom + dropHeight > window.innerHeight) {
+                        optionsDiv.style.top = (rect.top - dropHeight - 4) + 'px';
+                    } else {
+                        optionsDiv.style.top = (rect.bottom + 4) + 'px';
+                    }
                     optionsDiv.classList.toggle('show');
                     trigger.classList.toggle('open');
                 });
