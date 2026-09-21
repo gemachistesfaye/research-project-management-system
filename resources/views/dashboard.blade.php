@@ -60,39 +60,53 @@
 
 {{-- PI Quick Actions --}}
 @if($role === 'pi')
-<div class="card card-custom p-4 mb-4">
+<div class="card card-custom p-3 p-md-4 mb-4">
     <h5 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-dark"></i>Quick Actions</h5>
-    <div class="d-flex flex-wrap gap-2">
-        <a href="{{ route('progress.index') }}" class="btn btn-outline-primary fw-bold">
-            <i class="bi bi-file-earmark-bar-graph me-1"></i> Progress Reports
-        </a>
-        <a href="{{ route('extensions.index') }}" class="btn btn-outline-info fw-bold">
-            <i class="bi bi-clock-history me-1"></i> Extensions
-        </a>
-        <a href="{{ route('procurement.index') }}" class="btn btn-outline-secondary fw-bold">
-            <i class="bi bi-cart3 me-1"></i> Procurement
-        </a>
-        <a href="{{ route('projects.index') }}" class="btn btn-outline-dark fw-bold">
-            <i class="bi bi-people me-1"></i> Manage Team
-        </a>
+    <div class="row g-2">
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('progress.index') }}" class="btn btn-outline-primary fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-file-earmark-bar-graph me-1"></i> <span class="d-none d-sm-inline">Progress Reports</span><span class="d-inline d-sm-none">Progress</span>
+            </a>
+        </div>
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('extensions.index') }}" class="btn btn-outline-info fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-clock-history me-1"></i> <span class="d-none d-sm-inline">Extensions</span><span class="d-inline d-sm-none">Extensions</span>
+            </a>
+        </div>
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('procurement.index') }}" class="btn btn-outline-secondary fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Procurement</span><span class="d-inline d-sm-none">Procurement</span>
+            </a>
+        </div>
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('projects.index') }}" class="btn btn-outline-dark fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-people me-1"></i> <span class="d-none d-sm-inline">Manage Team</span><span class="d-inline d-sm-none">Team</span>
+            </a>
+        </div>
     </div>
 </div>
 @endif
 
 {{-- Coordinator Quick Actions --}}
 @if($role === 'coordinator')
-<div class="card card-custom p-4 mb-4">
+<div class="card card-custom p-3 p-md-4 mb-4">
     <h5 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-dark"></i>Coordinator Quick Actions</h5>
-    <div class="d-flex flex-wrap gap-2">
-        <a href="{{ route('progress.index') }}" class="btn btn-outline-dark fw-bold">
-            <i class="bi bi-graph-up me-1"></i> Milestone Progress &amp; Audit
-        </a>
-        <a href="{{ route('procurement.index') }}" class="btn btn-outline-secondary fw-bold">
-            <i class="bi bi-cart3 me-1"></i> Procurement Tracker
-        </a>
-        <a href="{{ route('certificates') }}" class="btn btn-outline-success fw-bold">
-            <i class="bi bi-award me-1"></i> Completion Certificates
-        </a>
+    <div class="row g-2">
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('progress.index') }}" class="btn btn-outline-dark fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-graph-up me-1"></i> <span class="d-none d-sm-inline">Milestone Progress &amp; Audit</span><span class="d-inline d-sm-none">Milestones</span>
+            </a>
+        </div>
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('procurement.index') }}" class="btn btn-outline-secondary fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Procurement Tracker</span><span class="d-inline d-sm-none">Procurement</span>
+            </a>
+        </div>
+        <div class="col-12 col-md-auto">
+            <a href="{{ route('certificates') }}" class="btn btn-outline-success fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-award me-1"></i> <span class="d-none d-sm-inline">Completion Certificates</span><span class="d-inline d-sm-none">Certificates</span>
+            </a>
+        </div>
     </div>
 </div>
 @endif
