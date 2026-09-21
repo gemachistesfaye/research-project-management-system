@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
     <div>
         <h3 class="fw-bold mb-0"><i class="bi bi-arrow-left-right me-2 text-dark"></i> PI Transfer</h3>
         <span class="text-muted">Transfer Principal Investigator role to another staff member</span>
+    </div>
+    <div class="w-100 w-md-auto d-flex justify-content-start justify-content-md-end">
+        <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </a>
     </div>
 </div>
 

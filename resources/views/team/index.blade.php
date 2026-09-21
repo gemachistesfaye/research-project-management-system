@@ -1,19 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
     <div>
         <h3 class="fw-bold mb-0"><i class="bi bi-people me-2 text-dark"></i> Team Members</h3>
         <span class="text-muted">{{ $project->title }}</span>
         @if($project->proposal_document_url)
-        <a href="{{ Storage::url($project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-danger ms-2" title="View Proposal Document">
+        <a href="{{ Storage::url($project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-danger ms-2 mt-2 mt-md-0 d-inline-block" title="View Proposal Document">
             <i class="bi bi-file-pdf me-1"></i>Proposal
         </a>
         @endif
     </div>
-    <a href="{{ route('projects.show', $project->project_id) }}" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i> Back to Project
-    </a>
+    <div class="w-100 w-md-auto d-flex justify-content-start justify-content-md-end">
+        <a href="{{ route('projects.show', $project->project_id) }}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Back to Project
+        </a>
+    </div>
 </div>
 
 <div class="row g-4">
