@@ -306,6 +306,67 @@ Route::middleware(['auth'])->group(function () {
 
             return back()->with('success', 'Disbursement of ETB ' . number_format($amount, 2) . ' processed successfully.');
         })->name('finance.process-disbursement');
+
+        Route::get('/finance/disbursement/{id}/voucher', function ($id) {
+            $request = \App\Models\BudgetRequest::with(['project.pi', 'project.thematicArea', 'project.department'])->findOrFail($id);
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('finance.voucher_pdf', [
+                'request' => $request,
+            ])->setPaper('a4', 'portrait');
+
+            return $pdf->download('GMU_Payment_Voucher_' . $request->request_id . '.pdf');
+        })->name('finance.voucher');
+
+        Route::get('/finance/export/csv', function () {
+            $disbursed = \App\Models\BudgetRequest::where('status', 'Released')
+                ->with(['project.pi', 'project.thematicArea', 'project.department'])
+                ->latest()
+                ->get();
+
+            $filename = 'GMU_Finance_Disbursement_Audit_' . date('Y_m_d_His') . '.csv';
+            $headers = [
+                'Content-Type'        => 'text/csv; charset=UTF-8',
+                'Content-Disposition' => "attachment; filename=\"$filename\"",
+            ];
+
+            $callback = function () use ($disbursed) {
+                $handle = fopen('php://output', 'w');
+                fputs($handle, "\xEF\xBB\xBF");
+
+                fputcsv($handle, [
+                    'Request ID',
+                    'Project Code',
+                    'Project Title',
+                    'Principal Investigator',
+                    'Thematic Area',
+                    'Department',
+                    'Milestone Phase',
+                    'Disbursed Amount (ETB)',
+                    'Payment Method',
+                    'Disbursement Date',
+                    'Payment Notes / Reference'
+                ]);
+
+                foreach ($disbursed as $d) {
+                    fputcsv($handle, [
+                        'REQ-' . $d->request_id,
+                        $d->project->project_code ?? ('GMU-PRJ-' . $d->project_id),
+                        $d->project->title ?? 'N/A',
+                        $d->project->pi->name ?? 'N/A',
+                        $d->project->thematicArea->title ?? 'General',
+                        $d->project->department->name ?? 'N/A',
+                        $d->milestone_phase,
+                        number_format((float)$d->approved_amount, 2, '.', ''),
+                        $d->payment_method ?? 'N/A',
+                        $d->disbursed_at ? $d->disbursed_at->format('Y-m-d H:i') : 'N/A',
+                        $d->notes ?? 'N/A'
+                    ]);
+                }
+
+                fclose($handle);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        })->name('finance.export.csv');
     });
 
     // SCR-20: Procurement Tracker

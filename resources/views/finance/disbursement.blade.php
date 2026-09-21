@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
     <div>
         <h3 class="fw-bold mb-0"><i class="bi bi-cash-stack me-2 text-dark"></i> Finance Disbursement (SCR-14)</h3>
         <span class="text-muted">Process approved budget requests and track disbursements</span>
+    </div>
+    <div>
+        <a href="{{ route('finance.export.csv') }}" class="btn btn-outline-dark fw-bold shadow-sm">
+            <i class="bi bi-file-earmark-spreadsheet me-1 text-success"></i> Export Disbursement Audit (CSV)
+        </a>
     </div>
 </div>
 
@@ -340,6 +345,7 @@
                         <th>Method</th>
                         <th>Date</th>
                         <th>Voucher / Ref</th>
+                        <th class="text-center">Receipt</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -386,10 +392,15 @@
                                 <span class="text-muted small">N/A</span>
                             @endif
                         </td>
+                        <td class="text-center">
+                            <a href="{{ route('finance.voucher', $hist->request_id) }}" class="btn btn-xs btn-outline-dark py-1 px-2" title="Download Official Payment Voucher (PDF)">
+                                <i class="bi bi-file-earmark-pdf text-danger me-1"></i>Voucher
+                            </a>
+                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center text-muted py-4">
+                        <td colspan="9" class="text-center text-muted py-4">
                             <i class="bi bi-inbox fs-3 d-block mb-2"></i>
                             No disbursement history found.
                         </td>
