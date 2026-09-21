@@ -1,12 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-ui-checks me-2 text-warning"></i>Department Head Screening Queue</h3>
-<div class="card card-custom p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+    <div>
+        <h3 class="fw-bold mb-0"><i class="bi bi-ui-checks me-2 text-warning"></i>Department Head Screening Queue</h3>
         <span class="text-muted small">Proposals submitted for DH screening and decision</span>
-        <span class="badge bg-warning text-dark">{{ $projects->count() }} in Queue</span>
     </div>
+    <div>
+        <span class="badge bg-warning text-dark px-3 py-2 fw-bold"><i class="bi bi-hourglass-split me-1"></i>{{ $projects->count() }} in Queue</span>
+    </div>
+</div>
+<div class="card card-custom p-3 p-md-4">
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-light">
