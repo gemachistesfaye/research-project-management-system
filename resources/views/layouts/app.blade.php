@@ -1070,7 +1070,7 @@
     <!-- Bootstrap 5.3 JS Bundle (local) -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script>
-        // Lock background scroll when mobile offcanvas OR modal is open
+        // Lock background scroll when ANY overlay (modal, offcanvas, dropdown) is open
         (function() {
             var scrollPos = 0;
 
@@ -1096,48 +1096,58 @@
                 window.scrollTo(0, scrollPos);
             }
 
-            function isAnyOverlayOpen() {
-                var sidebar = document.getElementById('navbarOffcanvas');
-                var sidebarOpen = sidebar && sidebar.classList.contains('show');
-                var modalOpen = document.querySelector('.modal.show');
-                return sidebarOpen || modalOpen;
+            function hasOpenOverlay() {
+                if (document.querySelector('.modal.show')) return true;
+                if (document.querySelector('.offcanvas.show')) return true;
+                if (document.querySelector('.dropdown-menu.show')) return true;
+                return false;
+            }
+
+            function checkAndLock() {
+                if (hasOpenOverlay()) {
+                    lockScroll();
+                } else {
+                    unlockScroll();
+                }
             }
 
             // Offcanvas sidebar
             var sidebar = document.getElementById('navbarOffcanvas');
             if (sidebar) {
-                sidebar.addEventListener('show.bs.offcanvas', function() {
-                    if (!isAnyOverlayOpen()) lockScroll();
-                });
-                sidebar.addEventListener('hide.bs.offcanvas', function() {
-                    setTimeout(function() {
-                        if (!isAnyOverlayOpen()) unlockScroll();
-                    }, 150);
+                sidebar.addEventListener('show.bs.offcanvas', function() { lockScroll(); });
+                sidebar.addEventListener('hidden.bs.offcanvas', function() {
+                    setTimeout(checkAndLock, 200);
                 });
             }
 
-            // All Bootstrap modals
+            // ALL modals (confirm, calendar, create, edit, delete, etc.)
             document.querySelectorAll('.modal').forEach(function(modal) {
-                modal.addEventListener('show.bs.modal', function() {
-                    if (!isAnyOverlayOpen()) lockScroll();
+                modal.addEventListener('show.bs.modal', function() { lockScroll(); });
+                modal.addEventListener('hidden.bs.modal', function() {
+                    setTimeout(checkAndLock, 200);
                 });
-                modal.addEventListener('hide.bs.modal', function() {
-                    setTimeout(function() {
-                        if (!isAnyOverlayOpen()) unlockScroll();
-                    }, 150);
+            });
+
+            // ALL dropdowns (profile switcher, nav dropdowns)
+            document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+                dropdown.addEventListener('show.bs.dropdown', function() { lockScroll(); });
+                dropdown.addEventListener('hidden.bs.dropdown', function() {
+                    setTimeout(checkAndLock, 200);
                 });
             });
 
             // Block touchmove on background when any overlay is open
             document.addEventListener('touchmove', function(e) {
-                if (!isAnyOverlayOpen()) return;
-                var sidebar = document.getElementById('navbarOffcanvas');
-                if (sidebar && sidebar.classList.contains('show')) {
-                    var offcanvasBody = sidebar.querySelector('.offcanvas-body');
-                    if (offcanvasBody && offcanvasBody.contains(e.target)) return;
+                if (!hasOpenOverlay()) return;
+                var offcanvas = document.querySelector('.offcanvas.show');
+                if (offcanvas) {
+                    var body = offcanvas.querySelector('.offcanvas-body');
+                    if (body && body.contains(e.target)) return;
                 }
-                var openModal = document.querySelector('.modal.show .modal-body');
-                if (openModal && openModal.contains(e.target)) return;
+                var modalBody = document.querySelector('.modal.show .modal-body');
+                if (modalBody && modalBody.contains(e.target)) return;
+                var dropdownMenu = document.querySelector('.dropdown-menu.show');
+                if (dropdownMenu && dropdownMenu.contains(e.target)) return;
                 e.preventDefault();
             }, { passive: false });
         })();
@@ -1313,34 +1323,7 @@
         const todayBtn = document.getElementById('calTodayBtn');
         if(!calGrid || !monthLabel) return;
 
-        // Fix background scrolling bug when opening modal from offcanvas
-        const calModalEl = document.getElementById('calendarModal');
-        const calOffcanvasEl = document.getElementById('navbarOffcanvas');
-        if (calModalEl) {
-            calModalEl.addEventListener('show.bs.modal', function () {
-                document.documentElement.style.overflow = 'hidden';
-                document.body.style.overflow = 'hidden';
-            });
-            calModalEl.addEventListener('shown.bs.modal', function () {
-                document.documentElement.style.overflow = 'hidden';
-                document.body.style.overflow = 'hidden';
-                document.body.classList.add('modal-open');
-            });
-            calModalEl.addEventListener('hidden.bs.modal', function () {
-                document.body.classList.remove('modal-open');
-                document.documentElement.style.overflow = '';
-                document.body.style.overflow = '';
-            });
-        }
-        if (calOffcanvasEl && calModalEl) {
-            calOffcanvasEl.addEventListener('hidden.bs.offcanvas', function () {
-                if (calModalEl.classList.contains('show')) {
-                    document.documentElement.style.overflow = 'hidden';
-                    document.body.style.overflow = 'hidden';
-                    document.body.classList.add('modal-open');
-                }
-            });
-        }
+        // Calendar scroll is handled by global overlay scroll lock above
         
         let currentDate = new Date(); // Date used for navigation
         const actualToday = new Date(); // Always strictly today
@@ -1408,8 +1391,12 @@
     .hover-cal-bg:hover { background-color: #f1f5f9 !important; color: #000 !important; }
     
     /* Bulletproof fix for offcanvas->modal scroll bug */
-    body:has(#calendarModal.show),
-    html:has(#calendarModal.show) {
+    body:has(.modal.show),
+    html:has(.modal.show),
+    body:has(.offcanvas.show),
+    html:has(.offcanvas.show),
+    body:has(.dropdown-menu.show),
+    html:has(.dropdown-menu.show) {
         overflow: hidden !important;
     }
     
