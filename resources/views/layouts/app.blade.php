@@ -20,6 +20,10 @@
             --gmu-bg: #f6f8fa;
             --gmu-card-border: #e2e8f0;
         }
+        html {
+            overflow-x: hidden;
+            scrollbar-gutter: stable;
+        }
         body {
             background-color: var(--gmu-bg);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -27,8 +31,9 @@
             letter-spacing: -0.01em;
             overflow-x: hidden;
         }
-        html {
-            overflow-x: hidden;
+        body.modal-open {
+            padding-right: 0 !important;
+            overflow-y: auto !important;
         }
         /* Navbar Styling */
         .navbar-gmu {
@@ -438,17 +443,26 @@
                         </a>
                     </li>
 
-                    {{-- 1a. Departments & Colleges (Admin only) --}}
+                    {{-- 1a. Admin Console Links (Exact 4-Item Layout) --}}
                     @if(Auth::user()->role === 'admin')
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.departments') ? 'active-link' : '' }}" href="{{ route('admin.departments') }}">
-                            <i class="bi bi-building me-1"></i> Departments
+                        <a class="nav-link {{ request()->routeIs('admin.users') ? 'active-link' : '' }}" href="{{ route('admin.users') }}">
+                            <i class="bi bi-people me-1"></i> Users
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.colleges') ? 'active-link' : '' }}" href="{{ route('admin.colleges') }}">
-                            <i class="bi bi-bank me-1"></i> Colleges
+                        <a class="nav-link {{ request()->routeIs('admin.thematic-areas') ? 'active-link' : '' }}" href="{{ route('admin.thematic-areas') }}">
+                            <i class="bi bi-diagram-3 me-1"></i> Thematics
                         </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.colleges', 'admin.departments') ? 'active-link' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bank me-1"></i> Academic Units
+                        </a>
+                        <ul class="dropdown-menu shadow-sm">
+                            <li><a class="dropdown-item small" href="{{ route('admin.colleges') }}"><i class="bi bi-bank me-2 text-dark"></i>Colleges</a></li>
+                            <li><a class="dropdown-item small" href="{{ route('admin.departments') }}"><i class="bi bi-building me-2 text-dark"></i>Departments</a></li>
+                        </ul>
                     </li>
                     @endif
 
@@ -538,6 +552,15 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('rcsc.*') ? 'active-link' : '' }}" href="{{ route('rcsc.portal') }}">
                             <i class="bi bi-shield-lock me-1"></i> RCSC Portal
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- 7b. Analytics (RCSC, VP, Admin) --}}
+                    @if(Auth::user()->hasPermission('view_analytics') && Auth::user()->role !== 'admin')
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('analytics') ? 'active-link' : '' }}" href="{{ route('analytics') }}">
+                            <i class="bi bi-bar-chart-line me-1"></i> Analytics
                         </a>
                     </li>
                     @endif
@@ -652,7 +675,7 @@
                     @endphp
 
                     <div class="dropdown me-3">
-                        <button class="btn btn-link p-0 border-0 position-relative d-flex align-items-center text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications (SCR-17)">
+                        <button class="btn btn-link p-0 border-0 position-relative d-flex align-items-center text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
                             <i class="bi bi-bell-fill fs-5 text-warning"></i>
                             @if($notifCount > 0)
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem; margin-top: -2px;">
@@ -662,7 +685,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end p-2 shadow-lg" style="width: 320px; max-height: 380px; overflow-y: auto;">
                             <li class="dropdown-header fw-bold d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-                                <span><i class="bi bi-bell me-1 text-warning"></i> Notifications Center (SCR-17)</span>
+                                <span><i class="bi bi-bell me-1 text-warning"></i> Notifications Center</span>
                                 <span class="badge bg-dark rounded-pill">{{ $notifCount }}</span>
                             </li>
                             @forelse($notifItems as $item)
@@ -843,7 +866,7 @@
                     </a>
                 </li>
                 @endif
-                @if(Auth::user()->hasPermission('view_analytics') && !in_array(Auth::user()->role, ['vparttcs', 'rcsc']))
+                @if(Auth::user()->hasPermission('view_analytics') && Auth::user()->role !== 'admin')
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('analytics') ? 'active-link' : '' }}" href="{{ route('analytics') }}" style="font-size: 0.85rem;">
                         <i class="bi bi-bar-chart-line me-2"></i> Analytics
@@ -872,6 +895,11 @@
                 </li>
                 @endif
                 @if(Auth::user()->role === 'admin')
+                <li class="nav-item">
+                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.thematic-areas') ? 'active-link' : '' }}" href="{{ route('admin.thematic-areas') }}" style="font-size: 0.85rem;">
+                        <i class="bi bi-diagram-3 me-2"></i> Thematics
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.colleges') ? 'active-link' : '' }}" href="{{ route('admin.colleges') }}" style="font-size: 0.85rem;">
                         <i class="bi bi-bank me-2"></i> Colleges
@@ -944,7 +972,7 @@
             </div>
         @endif
 
-        @if($errors->any())
+        @if($errors->any() && !request()->routeIs('login', 'password.*', 'register'))
             <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
                 <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i>Please correct the following errors:</div>
                 <ul class="mb-0 ps-3">
