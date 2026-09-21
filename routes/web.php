@@ -542,6 +542,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:rcsc,vparttcs,admin', 'permission:view_analytics'])->group(function () {
         Route::get('/analytics', [GovernanceController::class, 'analytics'])->name('analytics');
+        Route::get('/analytics/export/csv', [GovernanceController::class, 'exportAnalyticsCsv'])->name('analytics.export.csv');
+        Route::get('/analytics/export/pdf', [GovernanceController::class, 'exportAnalyticsPdf'])->name('analytics.export.pdf');
     });
 
     // Admin-only Pages

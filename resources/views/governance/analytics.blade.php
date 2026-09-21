@@ -1,14 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-bar-chart-line me-2 text-dark"></i>Executive Analytics & MOE Reporting</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-bar-chart-line me-2 text-dark"></i>Executive Analytics &amp; Reporting</h3>
         <span class="text-muted small">Real-time research portfolio intelligence dashboard</span>
     </div>
-    <button onclick="alert('Exporting MOE Data Report (Excel/PDF)...')" class="btn btn-outline-dark fw-bold">
-        <i class="bi bi-download me-1"></i> Export MOE Report
-    </button>
+    <div class="d-flex gap-2">
+        <a href="{{ route('analytics.export.csv') }}" class="btn btn-outline-dark fw-bold shadow-sm">
+            <i class="bi bi-file-earmark-spreadsheet me-1 text-success"></i> Export CSV / Excel
+        </a>
+        <a href="{{ route('analytics.export.pdf') }}" class="btn btn-dark fw-bold shadow-sm">
+            <i class="bi bi-file-earmark-pdf me-1 text-danger"></i> Export PDF Report
+        </a>
+    </div>
 </div>
 
 {{-- KPI Summary Cards --}}
