@@ -276,5 +276,31 @@ class RPMSWorkflowTest extends TestCase
         $this->assertEquals(180000.00, (float)$tranche3->approved_amount);
         $this->assertEquals('Approved', $tranche3->status);
     }
+
+    public function test_analytics_csv_and_pdf_exports()
+    {
+        $vp = User::factory()->create(['role' => 'vparttcs']);
+        \App\Services\RbacService::syncUserRole($vp);
+
+        $thematic = ThematicArea::create(['title' => 'Hydrology & Water Security']);
+        Project::create([
+            'title' => 'Baro River Watershed Study',
+            'abstract_text' => 'Study on seasonal flood management',
+            'thematic_id' => $thematic->id,
+            'pi_id' => $vp->id,
+            'requested_budget' => 700000.00,
+            'status' => 'Active',
+        ]);
+
+        // 1. Test CSV Export
+        $csvResponse = $this->actingAs($vp)->get(route('analytics.export.csv'));
+        $csvResponse->assertStatus(200);
+        $csvResponse->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+
+        // 2. Test PDF Export
+        $pdfResponse = $this->actingAs($vp)->get(route('analytics.export.pdf'));
+        $pdfResponse->assertStatus(200);
+        $pdfResponse->assertHeader('content-type', 'application/pdf');
+    }
 }
 
