@@ -22,14 +22,12 @@
         }
         html {
             overflow-x: hidden;
-            scrollbar-gutter: stable;
         }
         body {
             background-color: var(--gmu-bg);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             color: #1e293b;
             letter-spacing: -0.01em;
-            overflow-x: hidden;
         }
         body.modal-open {
             padding-right: 0 !important;
@@ -41,6 +39,8 @@
             box-shadow: 0 4px 20px -2px rgba(15, 62, 46, 0.35);
             border-bottom: 2px solid var(--gmu-gold);
         }
+        /* Fixed navbar on desktop */
+
         .brand-text {
             color: #ffffff;
             font-weight: 800;
@@ -332,14 +332,6 @@
             justify-content: space-between;
             position: relative;
             padding: 20px 0;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        @media (max-width: 767.98px) {
-            .timeline-container {
-                min-width: 520px;
-                padding-bottom: 12px;
-            }
         }
         .timeline-container::before {
             content: '';
@@ -351,6 +343,15 @@
             background: #e9ecef;
             z-index: 0;
         }
+        @media (max-width: 767.98px) {
+            .timeline-container {
+                flex-wrap: wrap;
+                row-gap: 30px;
+            }
+            .timeline-container::before {
+                display: none; /* Hide main line on mobile */
+            }
+        }
         .timeline-item {
             display: flex;
             flex-direction: column;
@@ -359,6 +360,26 @@
             flex: 1;
             position: relative;
             z-index: 1;
+        }
+        @media (max-width: 767.98px) {
+            .timeline-item {
+                flex: 0 0 33.33%; /* 3 items per row */
+            }
+            /* Segment lines between items on mobile */
+            .timeline-item::before {
+                content: '';
+                position: absolute;
+                top: 22px; /* Center of the 48px circle */
+                left: 50%;
+                width: 100%;
+                height: 4px;
+                background: #e9ecef;
+                z-index: -1;
+            }
+            /* Hide the line going out of the 3rd and 6th items (end of row) */
+            .timeline-item:nth-child(3n)::before {
+                display: none;
+            }
         }
         .timeline-circle {
             width: 48px;
@@ -412,7 +433,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-lg navbar-gmu py-2 @yield('navbar-class')">
+    <nav class="navbar navbar-expand-lg navbar-gmu py-2 sticky-lg-top @yield('navbar-class')" style="z-index: 1040;">
         <div class="container @yield('navbar-container-class')">
             <!-- Brand Identity -->
             <a class="navbar-brand d-flex align-items-center me-4" href="{{ route('dashboard') }}">
@@ -426,8 +447,8 @@
             @auth
             <!-- Mobile Right Hamburger Toggler -->
             <div class="d-flex align-items-center gap-2 d-lg-none ms-auto">
-                <button class="btn text-white p-1 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas" aria-label="Toggle navigation">
-                    <i class="bi bi-list fs-1 text-warning"></i>
+                <button id="mobileNavToggler" class="btn text-white p-1 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas" aria-label="Toggle navigation">
+                    <i id="mobileNavIcon" class="bi bi-list fs-1 text-white"></i>
                 </button>
             </div>
 
@@ -556,14 +577,7 @@
                     </li>
                     @endif
 
-                    {{-- 7b. Analytics (RCSC, VP, Admin) --}}
-                    @if(Auth::user()->hasPermission('view_analytics') && Auth::user()->role !== 'admin')
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('analytics') ? 'active-link' : '' }}" href="{{ route('analytics') }}">
-                            <i class="bi bi-bar-chart-line me-1"></i> Analytics
-                        </a>
-                    </li>
-                    @endif
+
 
                     {{-- 8. Extensions --}}
                     @if(Auth::user()->hasAnyPermission(['approve_extensions', 'approve_amendments']))
@@ -723,29 +737,60 @@
                                 <span class="badge badge-role mt-1" style="font-size: 0.65rem; padding: 2px 6px; cursor: pointer;">{{ strtoupper(Auth::user()->role) }} ▾</span>
                             </div>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end p-2 shadow-lg profile-dropdown-menu" aria-labelledby="userProfileMenuBtn" style="min-width: 250px; z-index: 1050;">
-                            <li class="dropdown-header fw-bold border-bottom pb-2 mb-1">
-                                <i class="bi bi-person-badge me-1 text-success"></i> Account Profile
+                        <ul class="dropdown-menu dropdown-menu-end p-2 shadow-lg profile-dropdown-menu" aria-labelledby="userProfileMenuBtn" style="min-width: 290px; max-height: 480px; overflow-y: auto; z-index: 1050;">
+                            {{-- Account Mini Card --}}
+                            <li class="p-2 mb-2 rounded bg-light border">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px; font-size: 0.85rem;">
+                                        {{ collect(explode(' ', preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name)))->map(fn($p) => substr($p, 0, 1))->take(2)->join('') ?: 'GMU' }}
+                                    </div>
+                                    <div class="flex-grow-1 text-truncate">
+                                        <div class="fw-bold text-dark small text-truncate">{{ preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name) }}</div>
+                                        <div class="text-muted" style="font-size: 0.72rem;">{{ Auth::user()->email }}</div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 pt-2 border-top d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-dark font-monospace" style="font-size: 0.65rem;">{{ Auth::user()->staff_id ?? 'GMU-STAFF' }}</span>
+                                    <a href="{{ route('profile') }}" class="btn btn-sm d-flex align-items-center gap-1 fw-semibold text-white" style="font-size: 0.75rem; background: var(--gmu-secondary); border: 1px solid rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 6px;">
+                                        <i class="bi bi-person-circle"></i> View Profile
+                                    </a>
+                                </div>
                             </li>
-                            <li><span class="dropdown-item-text small text-muted"><strong>Staff ID:</strong> {{ Auth::user()->staff_id ?? 'GMU-STAFF' }}</span></li>
-                            <li><span class="dropdown-item-text small text-muted"><strong>Email:</strong> {{ Auth::user()->email }}</span></li>
-                            <li><a class="dropdown-item small" href="{{ route('profile') }}"><i class="bi bi-person-circle me-2"></i>View &amp; Edit Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="dropdown-header fw-bold text-primary mb-1">
-                                <i class="bi bi-arrow-repeat me-1"></i> Switch Demo Role View
+
+                            <li class="dropdown-header fw-bold text-dark px-1 py-1 d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-arrow-repeat me-1 text-primary"></i> Switch Demo Role</span>
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle" style="font-size: 0.6rem;">DEMO</span>
                             </li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'pi') }}"><i class="bi bi-person me-2"></i>PI (Principal Investigator)</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'tm') }}"><i class="bi bi-people me-2"></i>Team Member (Co-Researcher)</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'dh') }}"><i class="bi bi-person-workspace me-2"></i>Department Head (DH)</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'coordinator') }}"><i class="bi bi-person-badge me-2"></i>Research Coordinator</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'reviewer') }}"><i class="bi bi-eye me-2"></i>Peer Reviewer</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'dean') }}"><i class="bi bi-bank me-2"></i>College Dean</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'irerc') }}"><i class="bi bi-shield-exclamation me-2"></i>IRERC Ethics Committee</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'vparttcs') }}"><i class="bi bi-person-badge me-2"></i>Vice President (ARTTCS)</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'rcsc') }}"><i class="bi bi-shield-lock me-2"></i>RCSC Chair</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'finance') }}"><i class="bi bi-cash me-2"></i>Finance Office</a></li>
-                            <li><a class="dropdown-item small" href="{{ route('switch-role', 'admin') }}"><i class="bi bi-gear me-2"></i>System Administrator</a></li>
-                            <li><hr class="dropdown-divider"></li>
+
+                            @php
+                                $demoRoles = [
+                                    'pi'          => ['name' => 'Principal Investigator', 'icon' => 'bi-person'],
+                                    'tm'          => ['name' => 'Team Member',           'icon' => 'bi-people'],
+                                    'dh'          => ['name' => 'Department Head',       'icon' => 'bi-person-workspace'],
+                                    'coordinator' => ['name' => 'Coordinator',           'icon' => 'bi-person-badge'],
+                                    'reviewer'    => ['name' => 'Peer Reviewer',         'icon' => 'bi-eye'],
+                                    'dean'        => ['name' => 'College Dean',          'icon' => 'bi-bank'],
+                                    'irerc'       => ['name' => 'IRERC Ethics',          'icon' => 'bi-shield-exclamation'],
+                                    'vparttcs'    => ['name' => 'Vice President',        'icon' => 'bi-person-badge'],
+                                    'rcsc'        => ['name' => 'RCSC Chair',            'icon' => 'bi-shield-lock'],
+                                    'finance'     => ['name' => 'Finance Office',        'icon' => 'bi-cash'],
+                                    'admin'       => ['name' => 'System Admin',          'icon' => 'bi-gear'],
+                                ];
+                            @endphp
+
+                            @foreach($demoRoles as $rKey => $rMeta)
+                                @php $isActiveRole = (Auth::user()->role === $rKey); @endphp
+                                <li>
+                                    <a class="dropdown-item small d-flex align-items-center justify-content-between py-1 px-2 my-1 rounded {{ $isActiveRole ? 'bg-success text-white fw-bold' : '' }}" href="{{ route('switch-role', $rKey) }}">
+                                        <span><i class="bi {{ $rMeta['icon'] }} me-2 {{ $isActiveRole ? 'text-white' : 'text-muted' }}"></i>{{ $rMeta['name'] }}</span>
+                                        @if($isActiveRole)
+                                            <i class="bi bi-check-circle-fill text-white"></i>
+                                        @endif
+                                    </a>
+                                </li>
+                            @endforeach
+
+                            <li><hr class="dropdown-divider my-2"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline m-0">
                                     @csrf
@@ -770,77 +815,84 @@
 
     @auth
     <!-- Mobile Offcanvas Right Sidebar -->
-    <div class="offcanvas offcanvas-end text-white d-lg-none" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel" style="background-color: var(--gmu-primary-dark); max-width: 320px; width: 70vw;">
-        <div class="offcanvas-header border-bottom border-secondary pb-3">
+    <div class="offcanvas offcanvas-end text-white d-lg-none" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel" style="background-color: var(--gmu-primary-dark); max-width: 320px; width: 78vw;">
+        <div class="offcanvas-header border-bottom border-secondary pb-2 pt-3 px-3">
             <div class="d-flex align-items-center">
                 <i class="bi bi-journal-bookmark-fill fs-3 text-warning me-2"></i>
                 <div>
-                    <div class="fw-bold text-white small">GAMBELLA UNIVERSITY</div>
-                    <div class="text-warning" style="font-size: 0.7rem;">RPMS Mobile Menu</div>
+                    <div class="fw-bold text-white small lh-1">GAMBELLA UNIVERSITY</div>
+                    <div class="text-warning" style="font-size: 0.68rem;">RPMS Mobile Portal</div>
                 </div>
             </div>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body p-3 d-flex flex-column">
-            {{-- User info card --}}
-            <div class="p-2 bg-dark bg-opacity-50 rounded-3 mb-3 border border-secondary">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="fw-bold text-white small">{{ preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name) }}</div>
-                        <span class="badge badge-role mt-1" style="font-size: 0.6rem;">{{ strtoupper(Auth::user()->role) }}</span>
+        
+        <div class="offcanvas-body p-3 d-flex flex-column" style="overflow-y: auto;">
+            {{-- User info card — dark theme matching sidebar --}}
+            <div class="p-2 mb-3 rounded-3 border" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15) !important;">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0" style="width: 42px; height: 42px; font-size: 0.9rem;">
+                        {{ collect(explode(' ', preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name)))->map(fn($p) => substr($p, 0, 1))->take(2)->join('') ?: 'GMU' }}
                     </div>
-                    <a href="{{ route('profile') }}" class="text-warning text-decoration-none" style="font-size: 0.7rem;">
-                        <i class="bi bi-pencil-square"></i>
+                    <div class="flex-grow-1 text-truncate">
+                        <div class="fw-bold text-white small text-truncate">{{ preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name) }}</div>
+                        <div class="text-white-50 text-truncate" style="font-size: 0.72rem;">{{ Auth::user()->email }}</div>
+                    </div>
+                </div>
+                <div class="mt-2 pt-2 d-flex justify-content-between align-items-center" style="border-top: 1px solid rgba(255,255,255,0.15);">
+                    <span class="badge bg-dark font-monospace" style="font-size: 0.65rem;">{{ Auth::user()->staff_id ?? 'GMU-STAFF' }}</span>
+                    <a href="{{ route('profile') }}" class="btn btn-sm d-flex align-items-center gap-1 fw-semibold text-white" style="font-size: 0.75rem; background: var(--gmu-secondary); border: 1px solid rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 6px;">
+                        <i class="bi bi-person-circle"></i> View Profile
                     </a>
                 </div>
             </div>
 
             {{-- Main Navigation Links --}}
-            <ul class="nav nav-pills flex-column gap-0 mb-3 flex-grow-1" style="overflow-y: auto;">
+            <ul class="nav nav-pills flex-column gap-1 mb-3">
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('dashboard') ? 'active-link' : '' }}" href="{{ route('dashboard') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                        <i class="bi bi-speedometer2 me-2 text-white-50"></i> Dashboard
                     </a>
                 </li>
                 @if(Auth::user()->hasPermission('view_projects'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('projects.*') ? 'active-link' : '' }}" href="{{ route('projects.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-folder2-open me-2"></i> Projects
+                        <i class="bi bi-folder2-open me-2 text-white-50"></i> Projects
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->role === 'reviewer')
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('evaluations.*') ? 'active-link' : '' }}" href="{{ route('evaluations.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-clipboard-check me-2"></i> My Evaluations
+                        <i class="bi bi-clipboard-check me-2 text-white-50"></i> My Evaluations
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('submit_progress_report'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('progress.*') ? 'active-link' : '' }}" href="{{ route('progress.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-graph-up me-2"></i> Progress Reports
+                        <i class="bi bi-graph-up me-2 text-white-50"></i> Progress Reports
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasAnyPermission(['request_extension', 'request_amendment']) && !Auth::user()->hasAnyPermission(['approve_extensions', 'approve_amendments']))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('extensions.*') ? 'active-link' : '' }}" href="{{ route('extensions.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-clock-history me-2"></i> Extensions
+                        <i class="bi bi-clock-history me-2 text-white-50"></i> Extensions
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('screen_proposals'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('dh.screening') ? 'active-link' : '' }}" href="{{ route('dh.screening') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-ui-checks me-2"></i> DH Screening
+                        <i class="bi bi-ui-checks me-2 text-white-50"></i> DH Screening
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('assign_reviewer'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('coordinator.*') ? 'active-link' : '' }}" href="{{ route('coordinator.hub') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-briefcase me-2"></i> Coordinator Hub
+                        <i class="bi bi-briefcase me-2 text-white-50"></i> Coordinator Hub
                     </a>
                 </li>
                 @endif
@@ -848,109 +900,125 @@
                 @if(Auth::user()->role === 'dean')
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('dean.approvals') ? 'active-link' : '' }}" href="{{ route('dean.approvals') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-bank me-2"></i> Dean Approvals
+                        <i class="bi bi-bank me-2 text-white-50"></i> Dean Approvals
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('ethics_review'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('irerc.panel') ? 'active-link' : '' }}" href="{{ route('irerc.panel') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-shield-exclamation me-2"></i> IRERC Panel
+                        <i class="bi bi-shield-exclamation me-2 text-white-50"></i> IRERC Panel
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('view_rcsc_portal'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('rcsc.*') ? 'active-link' : '' }}" href="{{ route('rcsc.portal') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-shield-lock me-2"></i> RCSC Portal
+                        <i class="bi bi-shield-lock me-2 text-white-50"></i> RCSC Portal
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('view_analytics') && Auth::user()->role !== 'admin')
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('analytics') ? 'active-link' : '' }}" href="{{ route('analytics') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-bar-chart-line me-2"></i> Analytics
+                        <i class="bi bi-bar-chart-line me-2 text-white-50"></i> Analytics
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('process_disbursement'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('finance.*') ? 'active-link' : '' }}" href="{{ route('finance.disbursement') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-cash-stack me-2"></i> Finance
+                        <i class="bi bi-cash-stack me-2 text-white-50"></i> Finance
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasAnyPermission(['approve_extensions', 'approve_amendments']))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('extensions.*') ? 'active-link' : '' }}" href="{{ route('extensions.index') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-clock-history me-2"></i> Extensions
+                        <i class="bi bi-clock-history me-2 text-white-50"></i> Extensions
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->hasPermission('manage_users'))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.users') ? 'active-link' : '' }}" href="{{ route('admin.users') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-people me-2"></i> Users
+                        <i class="bi bi-people me-2 text-white-50"></i> Users
                     </a>
                 </li>
                 @endif
                 @if(Auth::user()->role === 'admin')
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.thematic-areas') ? 'active-link' : '' }}" href="{{ route('admin.thematic-areas') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-diagram-3 me-2"></i> Thematics
+                        <i class="bi bi-diagram-3 me-2 text-white-50"></i> Thematics
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.colleges') ? 'active-link' : '' }}" href="{{ route('admin.colleges') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-bank me-2"></i> Colleges
+                        <i class="bi bi-bank me-2 text-white-50"></i> Colleges
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('admin.departments') ? 'active-link' : '' }}" href="{{ route('admin.departments') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-building me-2"></i> Departments
+                        <i class="bi bi-building me-2 text-white-50"></i> Departments
                     </a>
                 </li>
                 @endif
             </ul>
 
-            {{-- Demo Role Switcher (Collapsible) --}}
-            <div>
-                <a class="btn btn-outline-warning w-100 fw-bold mb-2 py-2" data-bs-toggle="collapse" href="#demoRoleCollapse" role="button" aria-expanded="false" style="font-size: 0.88rem;">
-                    <i class="bi bi-arrow-repeat me-1"></i> Switch Demo Role <i class="bi bi-chevron-down float-end mt-1"></i>
+            {{-- Demo Role Switcher (Compact 2-Column Grid) --}}
+            <div class="mb-3">
+                <a class="w-100 fw-semibold py-2 d-flex justify-content-between align-items-center text-decoration-none rounded px-2" data-bs-toggle="collapse" href="#demoRoleCollapse" role="button" aria-expanded="false" style="font-size: 0.8rem; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.12);">
+                    <span><i class="bi bi-arrow-repeat me-2 text-white-50"></i>Switch Demo Role</span>
+                    <i class="bi bi-chevron-down text-white-50" style="font-size: 0.75rem;"></i>
                 </a>
-                <div class="collapse" id="demoRoleCollapse">
-                    <div class="d-flex flex-wrap gap-1 mb-2">
-                        <a href="{{ route('switch-role', 'pi') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Principal Investigator</a>
-                        <a href="{{ route('switch-role', 'tm') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Team Member</a>
-                        <a href="{{ route('switch-role', 'dh') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Dept. Head</a>
-                        <a href="{{ route('switch-role', 'coordinator') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Coordinator</a>
-                        <a href="{{ route('switch-role', 'reviewer') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Reviewer</a>
-                        <a href="{{ route('switch-role', 'dean') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">College Dean</a>
-                        <a href="{{ route('switch-role', 'irerc') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">IRERC</a>
-                        <a href="{{ route('switch-role', 'vparttcs') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">VP ARTTCS</a>
-                        <a href="{{ route('switch-role', 'rcsc') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">RCSC Chair</a>
-                        <a href="{{ route('switch-role', 'finance') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">Finance</a>
-                        <a href="{{ route('switch-role', 'admin') }}" class="btn btn-sm btn-outline-light py-1 px-2" style="font-size: 0.78rem;">System Admin</a>
+                <div class="collapse mt-2" id="demoRoleCollapse">
+                    @php
+                        $mobileRoles = [
+                            'pi'          => ['name' => 'PI (Lead)',          'icon' => 'bi-person'],
+                            'tm'          => ['name' => 'Team Member',        'icon' => 'bi-people'],
+                            'dh'          => ['name' => 'Dept. Head',         'icon' => 'bi-person-workspace'],
+                            'coordinator' => ['name' => 'Coordinator',        'icon' => 'bi-person-badge'],
+                            'reviewer'    => ['name' => 'Peer Reviewer',      'icon' => 'bi-eye'],
+                            'dean'        => ['name' => 'College Dean',       'icon' => 'bi-bank'],
+                            'irerc'       => ['name' => 'IRERC Ethics',       'icon' => 'bi-shield-exclamation'],
+                            'vparttcs'    => ['name' => 'Vice President',     'icon' => 'bi-person-badge'],
+                            'rcsc'        => ['name' => 'RCSC Chair',         'icon' => 'bi-shield-lock'],
+                            'finance'     => ['name' => 'Finance Office',     'icon' => 'bi-cash'],
+                            'admin'       => ['name' => 'System Admin',       'icon' => 'bi-gear'],
+                        ];
+                    @endphp
+                    <div class="row g-1">
+                        @foreach($mobileRoles as $rKey => $rMeta)
+                            @php $isActiveRole = (Auth::user()->role === $rKey); @endphp
+                            <div class="col-6">
+                                <a href="{{ route('switch-role', $rKey) }}"
+                                   class="d-block w-100 text-truncate text-start py-1 px-2 rounded text-decoration-none {{ $isActiveRole ? 'fw-bold' : '' }}"
+                                   style="font-size: 0.72rem; {{ $isActiveRole ? 'background: #1a7a4a; color: #fff; border: 1px solid #28a465;' : 'background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.78); border: 1px solid rgba(255,255,255,0.1);' }}" title="{{ $rMeta['name'] }}">
+                                    <i class="bi {{ $rMeta['icon'] }} me-1 {{ $isActiveRole ? 'text-white' : 'text-white-50' }}"></i>
+                                    <span>{{ $rMeta['name'] }}</span>
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
-            <hr class="border-secondary my-2">
+            <hr class="border-secondary my-2 opacity-25">
 
             {{-- Sign out --}}
             <div class="mt-auto pt-2 flex-shrink-0">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-outline-light w-100 fw-bold py-2 confirm-btn" style="font-size: 0.85rem;"
-                        data-confirm-title="Sign Out"
-                        data-confirm-message="Are you sure you want to sign out of your account?"
-                        data-confirm-icon="bi-box-arrow-right"
-                        data-confirm-color="text-danger"
-                        data-confirm-btn-text="Yes, Sign Out"
-                        data-confirm-btn-class="btn-danger">
-                    <i class="bi bi-box-arrow-right me-2"></i> Sign Out
-                </button>
-            </form>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger w-100 fw-bold py-2 confirm-btn" style="font-size: 0.85rem;"
+                            data-confirm-title="Sign Out"
+                            data-confirm-message="Are you sure you want to sign out of your account?"
+                            data-confirm-icon="bi-box-arrow-right"
+                            data-confirm-color="text-danger"
+                            data-confirm-btn-text="Yes, Sign Out"
+                            data-confirm-btn-class="btn-danger">
+                        <i class="bi bi-box-arrow-right me-2"></i> Sign Out
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -1139,6 +1207,20 @@
                     if (menu) {
                         menu.style.top = rect.bottom + 4 + 'px';
                     }
+                });
+            }
+
+            // Hamburger → X toggle on mobile offcanvas open/close
+            var offcanvasEl = document.getElementById('navbarOffcanvas');
+            var mobileNavIcon = document.getElementById('mobileNavIcon');
+            if (offcanvasEl && mobileNavIcon) {
+                offcanvasEl.addEventListener('show.bs.offcanvas', function () {
+                    mobileNavIcon.classList.remove('bi-list');
+                    mobileNavIcon.classList.add('bi-x-lg');
+                });
+                offcanvasEl.addEventListener('hide.bs.offcanvas', function () {
+                    mobileNavIcon.classList.remove('bi-x-lg');
+                    mobileNavIcon.classList.add('bi-list');
                 });
             }
         });
