@@ -52,6 +52,7 @@
                     <th>Score</th>
                     <th>Decision</th>
                     <th>Evaluated At</th>
+                    <th class="text-center" style="width: 130px;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,14 +60,23 @@
                 <tr>
                     <td>#{{ $eval->eval_id }}</td>
                     <td>#{{ $eval->project_id }}</td>
-                    <td>{{ $eval->project->title ?? 'N/A' }}</td>
-                    <td><span class="badge bg-dark">{{ $eval->score }}</span></td>
-                    <td><span class="badge bg-secondary">{{ $eval->decision }}</span></td>
+                    <td class="fw-bold">
+                        <a href="{{ route('evaluations.show', $eval->eval_id) }}" class="text-decoration-none text-dark hover-underline">
+                            {{ $eval->project->title ?? 'N/A' }}
+                        </a>
+                    </td>
+                    <td><span class="badge bg-dark">{{ $eval->score }} / 100</span></td>
+                    <td><span class="badge bg-light text-dark border">{{ $eval->decision }}</span></td>
                     <td>{{ $eval->evaluated_at ? $eval->evaluated_at->format('M d, Y H:i') : 'N/A' }}</td>
+                    <td class="text-center">
+                        <a href="{{ route('evaluations.show', $eval->eval_id) }}" class="btn btn-sm btn-outline-dark py-1 px-2">
+                            <i class="bi bi-eye me-1"></i>View Details
+                        </a>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
+                    <td colspan="7" class="text-center text-muted py-4">
                         <i class="bi bi-clipboard-data fs-3 d-block text-secondary mb-2"></i>
                         No completed reviews yet.
                     </td>
