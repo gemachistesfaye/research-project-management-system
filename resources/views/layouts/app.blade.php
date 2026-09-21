@@ -1202,14 +1202,26 @@
                 window.scrollTo(0, scrollPos);
             }
 
+            // Lighter lock for dropdowns — no position:fixed to avoid layout shift
+            function lockScrollDropdown() {
+                scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function unlockScrollDropdown() {
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
+                window.scrollTo(0, scrollPos);
+            }
+
             function hasOpenOverlay() {
                 if (document.querySelector('.modal.show')) return true;
                 if (document.querySelector('.offcanvas.show')) return true;
-                if (document.querySelector('.dropdown-menu.show')) return true;
                 return false;
             }
 
-            function checkAndLock() {
+            function checkAndUnlock() {
                 if (hasOpenOverlay()) {
                     lockScroll();
                 } else {
@@ -1222,7 +1234,7 @@
             if (sidebar) {
                 sidebar.addEventListener('show.bs.offcanvas', function() { lockScroll(); });
                 sidebar.addEventListener('hidden.bs.offcanvas', function() {
-                    setTimeout(checkAndLock, 200);
+                    setTimeout(checkAndUnlock, 200);
                 });
             }
 
@@ -1230,21 +1242,21 @@
             document.querySelectorAll('.modal').forEach(function(modal) {
                 modal.addEventListener('show.bs.modal', function() { lockScroll(); });
                 modal.addEventListener('hidden.bs.modal', function() {
-                    setTimeout(checkAndLock, 200);
+                    setTimeout(checkAndUnlock, 200);
                 });
             });
 
-            // ALL dropdowns (profile switcher, nav dropdowns)
+            // ALL dropdowns — light lock only (no position:fixed)
             document.querySelectorAll('.dropdown').forEach(function(dropdown) {
-                dropdown.addEventListener('show.bs.dropdown', function() { lockScroll(); });
+                dropdown.addEventListener('show.bs.dropdown', function() { lockScrollDropdown(); });
                 dropdown.addEventListener('hidden.bs.dropdown', function() {
-                    setTimeout(checkAndLock, 200);
+                    if (!hasOpenOverlay()) unlockScrollDropdown();
                 });
             });
 
             // Block touchmove on background when any overlay is open
             document.addEventListener('touchmove', function(e) {
-                if (!hasOpenOverlay()) return;
+                if (!hasOpenOverlay() && !document.querySelector('.dropdown-menu.show')) return;
                 var offcanvas = document.querySelector('.offcanvas.show');
                 if (offcanvas) {
                     var body = offcanvas.querySelector('.offcanvas-body');
@@ -1500,9 +1512,7 @@
     body:has(.modal.show),
     html:has(.modal.show),
     body:has(.offcanvas.show),
-    html:has(.offcanvas.show),
-    body:has(.dropdown-menu.show),
-    html:has(.dropdown-menu.show) {
+    html:has(.offcanvas.show) {
         overflow: hidden !important;
     }
     
