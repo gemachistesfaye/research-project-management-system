@@ -315,9 +315,14 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('finance.voucher', $hist->request_id) }}" class="btn btn-xs btn-outline-dark py-1 px-2" title="Download Official Payment Voucher (PDF)">
-                                <i class="bi bi-file-earmark-pdf text-danger me-1"></i>Voucher
-                            </a>
+                            <div class="d-flex gap-1 justify-content-center align-items-center">
+                                <a href="{{ route('finance.voucher.view', $hist->request_id) }}" target="_blank" class="btn btn-xs btn-outline-dark py-1 px-2" title="View Official Payment Voucher in Browser">
+                                    <i class="bi bi-eye me-1"></i>View
+                                </a>
+                                <a href="{{ route('finance.voucher', $hist->request_id) }}" class="btn btn-xs btn-dark py-1 px-2" title="Download Official Payment Voucher (PDF)">
+                                    <i class="bi bi-download me-1"></i>PDF
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     @empty

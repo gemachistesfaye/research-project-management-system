@@ -77,3 +77,4 @@ class FinanceSampleDataSeeder extends Seeder
         }
     }
 }
+

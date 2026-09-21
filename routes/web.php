@@ -316,6 +316,15 @@ Route::middleware(['auth'])->group(function () {
             return $pdf->download('GMU_Payment_Voucher_' . $request->request_id . '.pdf');
         })->name('finance.voucher');
 
+        Route::get('/finance/disbursement/{id}/voucher/view', function ($id) {
+            $request = \App\Models\BudgetRequest::with(['project.pi', 'project.thematicArea', 'project.department'])->findOrFail($id);
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('finance.voucher_pdf', [
+                'request' => $request,
+            ])->setPaper('a4', 'portrait');
+
+            return $pdf->stream('GMU_Payment_Voucher_' . $request->request_id . '.pdf');
+        })->name('finance.voucher.view');
+
         Route::get('/finance/export/csv', function () {
             $disbursed = \App\Models\BudgetRequest::where('status', 'Released')
                 ->with(['project.pi', 'project.thematicArea', 'project.department'])
