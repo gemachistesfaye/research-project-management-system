@@ -21,14 +21,7 @@
             <i class="bi bi-bank me-1"></i> Open Dean Approvals
         </a>
     @elseif(in_array($role, ['vparttcs', 'rcsc']))
-        <div class="d-flex gap-2">
-            <a href="{{ route('rcsc.portal') }}" class="btn btn-warning fw-bold text-dark shadow-sm">
-                <i class="bi bi-shield-lock me-1"></i> Open RCSC Portal
-            </a>
-            <a href="{{ route('analytics') }}" class="btn btn-outline-dark fw-bold shadow-sm">
-                <i class="bi bi-bar-chart-line me-1"></i> Analytics & Reports
-            </a>
-        </div>
+        {{-- Vice President & RCSC header kept clean and uncluttered --}}
     @elseif($role === 'finance')
         <a href="{{ route('finance.disbursement') }}" class="btn btn-success fw-bold shadow-sm">
             <i class="bi bi-cash-stack me-1"></i> Open Finance Disbursement
@@ -105,6 +98,30 @@
         <div class="col-12 col-md-auto">
             <a href="{{ route('certificates') }}" class="btn btn-outline-success fw-bold w-100 text-nowrap py-2">
                 <i class="bi bi-award me-1"></i> <span class="d-none d-sm-inline">Completion Certificates</span><span class="d-inline d-sm-none">Certificates</span>
+            </a>
+        </div>
+    </div>
+</div>
+@endif
+
+{{-- Vice President & RCSC Quick Actions --}}
+@if(in_array($role, ['vparttcs', 'rcsc']))
+<div class="card card-custom p-3 p-md-4 mb-4">
+    <h5 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-dark"></i>Executive Quick Actions</h5>
+    <div class="row g-2">
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('analytics') }}" class="btn btn-outline-dark fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-bar-chart-line me-1"></i> <span class="d-none d-sm-inline">Analytics &amp; Reports</span><span class="d-inline d-sm-none">Analytics</span>
+            </a>
+        </div>
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('certificates') }}" class="btn btn-outline-success fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-award me-1"></i> <span class="d-none d-sm-inline">Completion Certificates</span><span class="d-inline d-sm-none">Certificates</span>
+            </a>
+        </div>
+        <div class="col-12 col-md-auto">
+            <a href="{{ route('procurement.index') }}" class="btn btn-outline-secondary fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Procurement Tracker</span><span class="d-inline d-sm-none">Procurement</span>
             </a>
         </div>
     </div>

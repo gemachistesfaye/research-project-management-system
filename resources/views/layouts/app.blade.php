@@ -849,7 +849,7 @@
                     </a>
                 </li>
                 @endif
-                @if(Auth::user()->hasPermission('view_analytics'))
+                @if(Auth::user()->hasPermission('view_analytics') && !in_array(Auth::user()->role, ['vparttcs', 'rcsc']))
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('analytics') ? 'active-link' : '' }}" href="{{ route('analytics') }}" style="font-size: 0.85rem;">
                         <i class="bi bi-bar-chart-line me-2"></i> Analytics
