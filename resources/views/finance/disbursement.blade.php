@@ -92,59 +92,45 @@
             <table class="table table-hover align-middle mb-0" id="pendingDisbursementsTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 110px;">Req &amp; Project</th>
-                        <th>Research Proposal &amp; Category</th>
+                        <th style="width: 90px;">Req #</th>
+                        <th>Project Proposal</th>
                         <th>Principal Investigator</th>
-                        <th class="text-center">Tranche Phase</th>
-                        <th class="text-end">Approved Amount</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center">Tranche</th>
+                        <th class="text-end">Amount</th>
+                        <th class="text-center" style="width: 110px;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($pendingRequests as $req)
                     <tr>
                         <td>
-                            <div class="font-monospace fw-bold text-dark">#REQ-{{ $req->request_id }}</div>
-                            <span class="badge bg-secondary bg-opacity-10 text-secondary border mt-1" style="font-size: 0.72rem;">
-                                PRJ #{{ $req->project->project_id ?? $req->project_id }}
-                            </span>
+                            <span class="font-monospace fw-bold text-dark">#{{ $req->request_id }}</span>
                         </td>
                         <td>
-                            <div class="fw-bold text-dark text-wrap" style="max-width: 360px;">
+                            <div class="fw-bold text-dark text-truncate" style="max-width: 320px;" title="{{ $req->project->title ?? 'N/A' }}">
                                 {{ $req->project->title ?? 'N/A' }}
                             </div>
-                            <div class="d-flex gap-1 flex-wrap mt-1">
-                                <span class="badge bg-light text-dark border" style="font-size: 0.7rem;">
-                                    <i class="bi bi-tag me-1"></i>{{ $req->project->thematicArea->title ?? 'General' }}
-                                </span>
-                                @if($req->project->department)
-                                <span class="badge bg-light text-secondary border" style="font-size: 0.7rem;">
-                                    <i class="bi bi-building me-1"></i>{{ $req->project->department->name }}
-                                </span>
-                                @endif
-                            </div>
+                            <small class="text-muted">{{ $req->project->thematicArea->title ?? 'General' }}</small>
                         </td>
                         <td>
                             <div class="fw-semibold text-dark">
-                                <i class="bi bi-person-circle me-1 text-secondary"></i>
                                 {{ preg_replace('/\s*\([^)]*\)/', '', $req->project->pi->name ?? 'N/A') }}
                             </div>
-                            <small class="text-muted" style="font-size: 0.75rem;">{{ $req->project->pi->email ?? '' }}</small>
+                            <small class="text-muted" style="font-size: 0.72rem;">{{ $req->project->department->name ?? '' }}</small>
                         </td>
                         <td class="text-center">
                             @if($req->milestone_phase === 'Tranche 1')
-                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1 (30% Advance)</span>
+                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1 (30%)</span>
                             @elseif($req->milestone_phase === 'Tranche 2')
-                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40% Mid-Term)</span>
+                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40%)</span>
                             @elseif($req->milestone_phase === 'Tranche 3')
-                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30% Final)</span>
+                                <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30%)</span>
                             @else
                                 <span class="badge bg-secondary text-white px-2 py-1">{{ $req->milestone_phase }}</span>
                             @endif
                         </td>
                         <td class="text-end">
-                            <div class="fw-bold text-dark fs-6">{{ number_format($req->approved_amount ?? 0, 2) }} ETB</div>
-                            <small class="text-muted" style="font-size:0.72rem;">Total: {{ number_format($req->project->approved_budget ?: $req->project->requested_budget, 2) }} ETB</small>
+                            <span class="fw-bold text-dark">{{ number_format($req->approved_amount ?? 0, 2) }} ETB</span>
                         </td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-success fw-bold px-3 shadow-sm" data-bs-toggle="modal"
@@ -259,35 +245,28 @@
             <table class="table table-hover align-middle mb-0" id="disbursementHistoryTable">
                 <thead class="table-light">
                     <tr>
-                        <th style="width: 110px;">Req &amp; Project</th>
-                        <th>Research Proposal &amp; Category</th>
+                        <th style="width: 90px;">Req #</th>
+                        <th>Project Proposal</th>
                         <th>Principal Investigator</th>
                         <th class="text-center">Tranche</th>
-                        <th class="text-end">Disbursed Amount</th>
+                        <th class="text-end">Amount</th>
                         <th>Method</th>
                         <th>Date</th>
-                        <th>Voucher / Ref</th>
-                        <th class="text-center">Receipt</th>
+                        <th>Reference</th>
+                        <th class="text-center" style="width: 130px;">Voucher</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($disbursedHistory as $hist)
                     <tr>
                         <td>
-                            <div class="font-monospace fw-bold text-dark">#REQ-{{ $hist->request_id }}</div>
-                            <span class="badge bg-secondary bg-opacity-10 text-secondary border mt-1" style="font-size: 0.72rem;">
-                                PRJ #{{ $hist->project->project_id ?? $hist->project_id }}
-                            </span>
+                            <span class="font-monospace fw-bold text-dark">#{{ $hist->request_id }}</span>
                         </td>
                         <td>
-                            <div class="fw-bold text-dark text-wrap" style="max-width: 320px;">
+                            <div class="fw-bold text-dark text-truncate" style="max-width: 300px;" title="{{ $hist->project->title ?? 'N/A' }}">
                                 {{ $hist->project->title ?? 'N/A' }}
                             </div>
-                            <div class="d-flex gap-1 flex-wrap mt-1">
-                                <span class="badge bg-light text-dark border" style="font-size: 0.7rem;">
-                                    {{ $hist->project->thematicArea->title ?? 'General' }}
-                                </span>
-                            </div>
+                            <small class="text-muted">{{ $hist->project->thematicArea->title ?? 'General' }}</small>
                         </td>
                         <td>
                             <div class="fw-semibold text-dark">
@@ -295,24 +274,21 @@
                             </div>
                         </td>
                         <td class="text-center">
-                            <span class="badge bg-light text-dark border px-2 py-1">{{ $hist->milestone_phase ?? 'Tranche' }}</span>
+                            <span class="badge bg-light text-dark border">{{ $hist->milestone_phase ?? 'Tranche' }}</span>
                         </td>
                         <td class="text-end">
-                            <div class="fw-bold text-dark">{{ number_format($hist->approved_amount ?? 0, 2) }} ETB</div>
-                        </td>
-                        <td><span class="badge bg-light text-dark border">{{ $hist->payment_method ?? 'N/A' }}</span></td>
-                        <td>
-                            <div class="small fw-semibold text-dark">{{ $hist->disbursed_at ? $hist->disbursed_at->format('M d, Y') : 'N/A' }}</div>
-                            <small class="text-muted" style="font-size: 0.72rem;">{{ $hist->disbursed_at ? $hist->disbursed_at->format('h:i A') : '' }}</small>
+                            <span class="fw-bold text-dark">{{ number_format($hist->approved_amount ?? 0, 2) }} ETB</span>
                         </td>
                         <td>
-                            @if($hist->notes)
-                                <span class="badge bg-light text-dark border text-truncate" style="max-width: 140px;" title="{{ $hist->notes }}">
-                                    <i class="bi bi-receipt me-1"></i>{{ $hist->notes }}
-                                </span>
-                            @else
-                                <span class="text-muted small">N/A</span>
-                            @endif
+                            <span class="badge bg-light text-dark border">{{ $hist->payment_method ?? 'N/A' }}</span>
+                        </td>
+                        <td>
+                            <span class="small text-dark">{{ $hist->disbursed_at ? $hist->disbursed_at->format('M d, Y') : 'N/A' }}</span>
+                        </td>
+                        <td>
+                            <span class="small text-muted text-truncate d-inline-block" style="max-width: 140px;" title="{{ $hist->notes ?? 'N/A' }}">
+                                {{ $hist->notes ?? 'N/A' }}
+                            </span>
                         </td>
                         <td class="text-center">
                             <div class="d-flex gap-1 justify-content-center align-items-center">
@@ -329,7 +305,7 @@
                     <tr>
                         <td colspan="9" class="text-center text-muted py-4">
                             <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-                            No disbursement history found.
+                            No disbursement history recorded yet.
                         </td>
                     </tr>
                     @endforelse
