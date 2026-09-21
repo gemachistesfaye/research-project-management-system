@@ -1,31 +1,17 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up()
     {
-        // Recreate procurement_requests table with correct foreign key referencing projects(project_id)
-        Schema::dropIfExists('procurement_requests');
-
-        Schema::create('procurement_requests', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('project_id')->constrained('projects', 'project_id')->onDelete('cascade');
-            $table->string('item_name');
-            $table->string('category', 50)->default('Equipment');
-            $table->text('description')->nullable();
-            $table->decimal('estimated_cost', 14, 2);
-            $table->enum('status', ['Pending', 'Approved', 'Rejected', 'Purchased'])->default('Pending');
-            $table->timestamps();
-        });
+        // Safe no-op: original migration used DROP/RECREATE which destroys all data.
+        // The FK fix was for a bug in the original migration, but SQLite silently ignores
+        // invalid FK references anyway. The table was already created by earlier migrations.
     }
 
     public function down()
     {
-        Schema::dropIfExists('procurement_requests');
     }
 };
-

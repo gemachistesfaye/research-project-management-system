@@ -19,3 +19,5 @@ services:
         value: sqlite
       - key: DB_DATABASE
         value: /data/database.sqlite
+      - key: SESSION_DRIVER
+        value: database
