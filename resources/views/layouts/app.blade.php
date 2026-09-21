@@ -196,10 +196,13 @@
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
             border-radius: 10px;
         }
-        /* Prevent layout shift when scrollbar appears/disappears in modals */
-        .modal-body {
-            scrollbar-gutter: stable;
-        }
+    /* Prevent layout shift when scrollbar appears/disappears */
+    html {
+        scrollbar-gutter: stable;
+    }
+    .modal-body {
+        scrollbar-gutter: stable;
+    }
         /* Select Dropdowns - Modern Dark Theme */
         .custom-select-wrapper {
             position: relative;
@@ -1202,16 +1205,12 @@
                 window.scrollTo(0, scrollPos);
             }
 
-            // Lighter lock for dropdowns — no position:fixed to avoid layout shift
+            // Lighter lock for dropdowns — no overflow change to avoid layout shift
             function lockScrollDropdown() {
                 scrollPos = window.pageYOffset || document.documentElement.scrollTop;
-                document.documentElement.style.overflow = 'hidden';
-                document.body.style.overflow = 'hidden';
             }
 
             function unlockScrollDropdown() {
-                document.documentElement.style.overflow = '';
-                document.body.style.overflow = '';
                 window.scrollTo(0, scrollPos);
             }
 
