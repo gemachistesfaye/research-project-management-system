@@ -3,17 +3,17 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-cash-stack me-2 text-dark"></i> Finance Disbursement (SCR-14)</h3>
-        <span class="text-muted">Process approved budget requests and track disbursements</span>
+        <h3 class="fw-bold mb-0"><i class="bi bi-cash-stack me-2 text-dark"></i> Finance &amp; Grant Disbursement</h3>
+        <span class="text-muted small">Process approved budget requests and track institutional releases</span>
     </div>
     <div>
-        <a href="{{ route('finance.export.csv') }}" class="btn btn-outline-dark fw-bold shadow-sm">
-            <i class="bi bi-file-earmark-spreadsheet me-1 text-success"></i> Export Disbursement Audit (CSV)
+        <a href="{{ route('finance.export.csv') }}" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
+            <i class="bi bi-file-earmark-spreadsheet me-1 text-success"></i> Export Audit (CSV)
         </a>
     </div>
 </div>
 
-{{-- Total Disbursed Summary --}}
+{{-- Total Disbursed Summary & Compact Tranche Guide --}}
 @php
     $totalApproved = $pendingRequests->sum('approved_amount') + $disbursedHistory->sum('approved_amount');
     $totalDisbursed = $disbursedHistory->sum('approved_amount');
@@ -21,126 +21,48 @@
 @endphp
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-dark bg-opacity-10 p-3 me-3">
-                        <i class="bi bi-cash-coin text-dark fs-4"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small">Total Disbursed</div>
-                        <div class="fs-4 fw-bold text-dark">{{ number_format($totalDisbursed, 2) }} ETB</div>
-                    </div>
-                </div>
-            </div>
+    <div class="col-6 col-md-4">
+        <div class="card card-custom p-3 border-0 shadow-sm h-100">
+            <div class="text-muted small text-uppercase fw-bold">Total Disbursed</div>
+            <div class="fs-3 fw-bold text-dark my-1">{{ number_format($totalDisbursed, 2) }} ETB</div>
+            <div class="small text-muted">Of {{ number_format($totalApproved, 2) }} ETB approved</div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-dark bg-opacity-10 p-3 me-3">
-                        <i class="bi bi-hourglass-split text-dark fs-4"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small">Pending Disbursements</div>
-                        <div class="fs-4 fw-bold text-dark">{{ $pendingRequests->count() }}</div>
-                    </div>
-                </div>
-            </div>
+    <div class="col-6 col-md-4">
+        <div class="card card-custom p-3 border-0 shadow-sm h-100">
+            <div class="text-muted small text-uppercase fw-bold">Pending Requests</div>
+            <div class="fs-3 fw-bold text-dark my-1">{{ $pendingRequests->count() }}</div>
+            <div class="small text-muted">Awaiting fund transfer</div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-dark bg-opacity-10 p-3 me-3">
-                        <i class="bi bi-graph-up text-dark fs-4"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small">Disbursement Progress</div>
-                        <div class="fs-4 fw-bold text-dark">{{ $disbursementPercentage }}%</div>
-                    </div>
-                </div>
+    <div class="col-12 col-md-4">
+        <div class="card card-custom p-3 border-0 shadow-sm h-100">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted small text-uppercase fw-bold">Fund Release Progress</span>
+                <span class="badge bg-dark rounded-pill">{{ $disbursementPercentage }}%</span>
+            </div>
+            <div class="progress my-2" style="height: 8px; border-radius: 4px;">
+                <div class="progress-bar bg-dark" style="width: {{ $disbursementPercentage }}%;"></div>
+            </div>
+            <div class="d-flex justify-content-between text-muted" style="font-size: 0.75rem;">
+                <span>0 ETB</span>
+                <span>{{ number_format($totalApproved, 0) }} ETB</span>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Budget Progress Bar --}}
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
-        <div class="d-flex justify-content-between mb-2">
-            <span class="fw-bold"><i class="bi bi-bar-chart-line me-2"></i> Overall Budget Disbursement Progress</span>
-            <span class="text-muted small">{{ number_format($totalDisbursed, 2) }} ETB of {{ number_format($totalApproved, 2) }} ETB</span>
+{{-- Compact Horizontal Tranche Guide Bar --}}
+<div class="card card-custom p-2 mb-4 bg-light border-0">
+    <div class="d-flex justify-content-between align-items-center flex-wrap px-2 py-1 gap-2">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-info-circle text-dark"></i>
+            <span class="small text-dark fw-bold">Standard Tranche Structure:</span>
         </div>
-        <div class="progress" style="height: 24px;">
-            <div class="progress-bar bg-dark" role="progressbar" style="width: {{ $disbursementPercentage }}%"
-                 aria-valuenow="{{ $disbursementPercentage }}" aria-valuemin="0" aria-valuemax="100">
-                {{ $disbursementPercentage }}%
-            </div>
-        </div>
-        <div class="d-flex justify-content-between mt-2">
-            <small class="text-muted">0 ETB</small>
-            <small class="text-muted">{{ number_format($totalApproved, 2) }} ETB</small>
-        </div>
-    </div>
-</div>
-
-{{-- Tranche Breakdown Overview --}}
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-header bg-white border-bottom fw-bold">
-        <i class="bi bi-layers me-2 text-dark"></i> Tranche Breakdown (Standard Structure)
-    </div>
-    <div class="card-body">
-        <div class="row g-3">
-            <div class="col-md-4">
-                <div class="card border-dark h-100 shadow-sm">
-                    <div class="card-body text-center p-3 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center mb-2" style="width: 46px; height: 46px; min-width: 46px; min-height: 46px; border-radius: 50%;">
-                            <span class="fs-5 fw-bold">1</span>
-                        </div>
-                        <h6 class="fw-bold mb-1">Tranche 1</h6>
-                        <div class="fs-3 fw-bold text-dark">30%</div>
-                        <small class="text-muted">Initial Release</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card border-dark h-100 shadow-sm">
-                    <div class="card-body text-center p-3 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center mb-2" style="width: 46px; height: 46px; min-width: 46px; min-height: 46px; border-radius: 50%;">
-                            <span class="fs-5 fw-bold">2</span>
-                        </div>
-                        <h6 class="fw-bold mb-1">Tranche 2</h6>
-                        <div class="fs-3 fw-bold text-dark">40%</div>
-                        <small class="text-muted">Progress-Based Release</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card border-dark h-100 shadow-sm">
-                    <div class="card-body text-center p-3 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center mb-2" style="width: 46px; height: 46px; min-width: 46px; min-height: 46px; border-radius: 50%;">
-                            <span class="fs-5 fw-bold">3</span>
-                        </div>
-                        <h6 class="fw-bold mb-1">Tranche 3</h6>
-                        <div class="fs-3 fw-bold text-dark">30%</div>
-                        <small class="text-muted">Final Release</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-3 p-3 bg-light rounded">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-info-circle me-2 text-dark"></i>
-                <small class="text-muted">
-                    <strong>Note:</strong> Tranches are released sequentially. Each tranche requires completion verification before the next release.
-                    Tranche 1 (30%) is released on approval, Tranche 2 (40%) at 50% progress, and Tranche 3 (30%) upon final completion.
-                </small>
-            </div>
+        <div class="d-flex gap-2 align-items-center flex-wrap" style="font-size: 0.8rem;">
+            <span class="badge bg-white text-dark border"><strong class="text-dark">Tranche 1:</strong> 30% Advance (On VP Sign)</span>
+            <span class="badge bg-white text-dark border"><strong class="text-dark">Tranche 2:</strong> 40% Mid-Term (&ge;40% Milestone)</span>
+            <span class="badge bg-white text-dark border"><strong class="text-dark">Tranche 3:</strong> 30% Final (100% Completion)</span>
         </div>
     </div>
 </div>
