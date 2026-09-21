@@ -1,12 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-bank me-2 text-dark"></i>College Management</h3>
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <span class="text-muted small">Manage academic colleges and view their departments</span>
-    <button type="button" class="btn btn-dark fw-bold" data-bs-toggle="modal" data-bs-target="#createCollegeModal">
-        <i class="bi bi-plus-circle me-1"></i> Create New College
-    </button>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+    <div>
+        <h3 class="fw-bold mb-0"><i class="bi bi-bank me-2 text-dark"></i>College Management</h3>
+        <span class="text-muted small">Manage academic colleges and view their departments</span>
+    </div>
+    <div>
+        <button type="button" class="btn btn-dark fw-bold text-nowrap" data-bs-toggle="modal" data-bs-target="#createCollegeModal">
+            <i class="bi bi-plus-circle me-1"></i> Create College
+        </button>
+    </div>
 </div>
 
 @if(session('success'))

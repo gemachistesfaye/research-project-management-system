@@ -1,12 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-diagram-3 me-2 text-dark"></i>Thematic Priority Area Configuration</h3>
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <span class="text-muted small">Manage institutional thematic priority areas for research proposals</span>
-    <button type="button" class="btn btn-dark fw-bold" data-bs-toggle="modal" data-bs-target="#createThematicModal">
-        <i class="bi bi-plus-circle me-1"></i> Create New
-    </button>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+    <div>
+        <h3 class="fw-bold mb-0"><i class="bi bi-diagram-3 me-2 text-dark"></i>Thematic Priority Area Configuration</h3>
+        <span class="text-muted small">Manage institutional thematic priority areas for research proposals</span>
+    </div>
+    <div>
+        <button type="button" class="btn btn-dark fw-bold text-nowrap" data-bs-toggle="modal" data-bs-target="#createThematicModal">
+            <i class="bi bi-plus-circle me-1"></i> Create Thematic Area
+        </button>
+    </div>
 </div>
 <div class="card card-custom p-4">
     <div class="table-responsive">
