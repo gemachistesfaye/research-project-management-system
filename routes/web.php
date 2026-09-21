@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     // Profile (all authenticated users)
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.delete-avatar');
     Route::put('/profile/password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
 
     // Demo Role Switcher (accessible to all authenticated users for prototype demo)
