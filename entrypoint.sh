@@ -18,8 +18,9 @@ touch "$DB_PATH"
 chown www-data:www-data "$DB_PATH"
 chmod 664 "$DB_PATH"
 
-# Run Laravel migrations (force for production)
+# Run Laravel migrations and seeders (force for production)
 php /var/www/artisan migrate --force
+php /var/www/artisan db:seed --force
 
 # Optimize Laravel for production
 php /var/www/artisan config:cache
