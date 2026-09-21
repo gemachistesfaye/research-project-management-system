@@ -54,6 +54,16 @@
     .avatar-overlay i { font-size: 1.5rem; }
     .avatar-overlay span { font-size: 0.65rem; font-weight: 600; margin-top: 2px; }
 
+    @media (max-width: 767.98px) {
+        .avatar-upload-wrapper, .avatar-circle, .avatar-initials {
+            width: 80px;
+            height: 80px;
+        }
+        .avatar-initials { font-size: 1.6rem; border-width: 2px; }
+        .avatar-overlay i { font-size: 1.2rem; }
+        .avatar-overlay span { font-size: 0.55rem; }
+    }
+
     .breadcrumb-sm { font-size: 0.82rem; }
     .breadcrumb-sm .breadcrumb-item + .breadcrumb-item::before { font-size: 0.72rem; }
 
@@ -118,6 +128,29 @@
         box-shadow: 0 4px 10px rgba(15, 62, 46, 0.25);
     }
 
+    .profile-hero {
+        background: linear-gradient(135deg, var(--gmu-primary) 0%, var(--gmu-secondary) 100%);
+        border-radius: 14px;
+        padding: 1.75rem 1.75rem 1.5rem;
+        color: #fff;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 16px rgba(15, 62, 46, 0.15);
+    }
+
+    @media (max-width: 767.98px) {
+        .nav-pills-custom .nav-link {
+            padding: 0.45rem 0.75rem;
+            font-size: 0.8rem;
+        }
+        .profile-hero {
+            padding: 1.25rem 1rem 1rem;
+        }
+        .stat-pill {
+            padding: 6px 8px;
+            min-width: 80px;
+        }
+    }
+
     .strength-bar {
         height: 6px;
         border-radius: 3px;
@@ -140,15 +173,6 @@
     .activity-dot.action { background: #3b82f6; }
     .activity-dot.login  { background: #22c55e; }
     .activity-dot.default { background: #94a3b8; }
-
-    .profile-hero {
-        background: linear-gradient(135deg, var(--gmu-primary) 0%, var(--gmu-secondary) 100%);
-        border-radius: 14px;
-        padding: 1.75rem 1.75rem 1.5rem;
-        color: #fff;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 16px rgba(15, 62, 46, 0.15);
-    }
 </style>
 @endsection
 
@@ -323,9 +347,8 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center mt-4 pt-2 border-top">
-                            <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Institutional details are synchronized with GMU HRMS.</small>
-                            <button type="submit" class="btn btn-dark fw-bold px-4">
+                        <div class="d-flex justify-content-end align-items-center mt-4 pt-2 border-top">
+                            <button type="submit" class="btn btn-dark fw-bold px-4 w-100 w-md-auto">
                                 <i class="bi bi-check-lg me-1"></i> Save Changes
                             </button>
                         </div>
