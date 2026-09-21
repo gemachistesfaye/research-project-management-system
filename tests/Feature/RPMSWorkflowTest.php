@@ -302,5 +302,131 @@ class RPMSWorkflowTest extends TestCase
         $pdfResponse->assertStatus(200);
         $pdfResponse->assertHeader('content-type', 'application/pdf');
     }
+
+    public function test_finance_disbursement_lifecycle_and_voucher_exports()
+    {
+        $financeOfficer = User::factory()->create(['role' => 'finance']);
+        \App\Services\RbacService::syncUserRole($financeOfficer);
+
+        $pi = User::factory()->create(['role' => 'pi']);
+        \App\Services\RbacService::syncUserRole($pi);
+
+        $thematic = ThematicArea::create(['title' => 'Renewable Energy']);
+        $project = Project::create([
+            'title' => 'Solar Microgrid Gambella Campus',
+            'abstract_text' => 'Deployment of off-grid solar panels',
+            'thematic_id' => $thematic->id,
+            'pi_id' => $pi->id,
+            'requested_budget' => 500000.00,
+            'approved_budget' => 500000.00,
+            'status' => 'Active',
+        ]);
+
+        $tranche1 = \App\Models\BudgetRequest::create([
+            'project_id' => $project->project_id,
+            'milestone_phase' => 'Tranche 1',
+            'requested_amount' => 150000.00,
+            'approved_amount' => 150000.00,
+            'approval_tier' => 'RCSC_VP',
+            'status' => 'Approved',
+            'approved_by' => $financeOfficer->id,
+        ]);
+
+        // 1. Visit disbursement page
+        $pageResponse = $this->actingAs($financeOfficer)->get(route('finance.disbursement'));
+        $pageResponse->assertStatus(200);
+        $pageResponse->assertSee('Solar Microgrid Gambella Campus');
+        $this->assertNotNull($tranche1);
+        $this->assertEquals(150000.00, (float)$tranche1->approved_amount);
+        $this->assertEquals('Approved', $tranche1->status);
+
+        // 2. Process disbursement release
+        $processResponse = $this->actingAs($financeOfficer)->post(route('finance.process-disbursement', $tranche1->request_id), [
+            'payment_method' => 'Bank Transfer',
+            'notes' => 'CBE Transfer Ref #GMU-TEST-2026',
+        ]);
+        $processResponse->assertSessionHas('success');
+
+        $tranche1->refresh();
+        $this->assertEquals('Released', $tranche1->status);
+        $this->assertEquals('Bank Transfer', $tranche1->payment_method);
+        $this->assertEquals('CBE Transfer Ref #GMU-TEST-2026', $tranche1->notes);
+        $this->assertNotNull($tranche1->disbursed_at);
+
+        // 3. Test Voucher PDF Download
+        $voucherPdf = $this->actingAs($financeOfficer)->get(route('finance.voucher', $tranche1->request_id));
+        $voucherPdf->assertStatus(200);
+        $voucherPdf->assertHeader('content-type', 'application/pdf');
+
+        // 4. Test Voucher In-Browser View
+        $voucherView = $this->actingAs($financeOfficer)->get(route('finance.voucher.view', $tranche1->request_id));
+        $voucherView->assertStatus(200);
+        $voucherView->assertHeader('content-type', 'application/pdf');
+
+        // 5. Test Finance Audit CSV Export
+        $csvExport = $this->actingAs($financeOfficer)->get(route('finance.export.csv'));
+        $csvExport->assertStatus(200);
+        $csvExport->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+    }
+
+    public function test_admin_user_management_lifecycle()
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $user = User::factory()->create([
+            'role' => 'pi',
+            'name' => 'Original Name',
+            'email' => 'original@gmu.edu.et',
+            'status' => 'active',
+            'staff_id' => 'GMU-TEST-001',
+        ]);
+
+        // 1. Update user details & role
+        $updateResponse = $this->actingAs($admin)->put(route('admin.users.update', $user->id), [
+            'staff_id' => 'GMU-TEST-001-MOD',
+            'name' => 'Updated Name',
+            'email' => 'updated@gmu.edu.et',
+            'role' => 'dh',
+            'status' => 'active',
+        ]);
+        $updateResponse->assertSessionHas('success');
+
+        $user->refresh();
+        $this->assertEquals('Updated Name', $user->name);
+        $this->assertEquals('updated@gmu.edu.et', $user->email);
+        $this->assertEquals('dh', $user->role);
+        $this->assertEquals('GMU-TEST-001-MOD', $user->staff_id);
+
+        // 2. Toggle status to inactive
+        $toggleResponse = $this->actingAs($admin)->post(route('admin.users.toggle-status', $user->id));
+        $toggleResponse->assertSessionHas('success');
+
+        $user->refresh();
+        $this->assertEquals('inactive', $user->status);
+
+        // Verify deactivated user cannot log in
+        $this->post('/logout');
+        $loginAttempt = $this->post('/login', [
+            'email' => 'updated@gmu.edu.et',
+            'password' => 'password',
+        ]);
+        $loginAttempt->assertSessionHasErrors(['email']);
+        $this->assertGuest();
+
+        // 3. Reactivate user
+        $reactivateResponse = $this->actingAs($admin)->post(route('admin.users.toggle-status', $user->id));
+        $reactivateResponse->assertSessionHas('success');
+
+        $user->refresh();
+        $this->assertEquals('active', $user->status);
+
+        // 4. Delete user (with no active projects)
+        $deleteResponse = $this->actingAs($admin)->delete(route('admin.users.destroy', $user->id));
+        $deleteResponse->assertSessionHas('success');
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+
+        // 5. Self-deactivation protection
+        $selfToggle = $this->actingAs($admin)->post(route('admin.users.toggle-status', $admin->id));
+        $selfToggle->assertSessionHas('error');
+    }
 }
 
