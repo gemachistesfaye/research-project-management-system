@@ -11,27 +11,23 @@
             <i class="bi bi-plus-lg me-1"></i> Submit New Proposal
         </a>
     @elseif($role === 'dh')
-        <a href="{{ route('dh.screening') }}" class="btn btn-warning fw-bold text-dark shadow-sm">
-            <i class="bi bi-ui-checks me-1"></i> Open Dept Screening Queue
-        </a>
+        {{-- DH header kept clean and uncluttered --}}
     @elseif($role === 'coordinator')
         {{-- Coordinator header kept clean and uncluttered --}}
     @elseif($role === 'dean')
-        <a href="{{ route('dean.approvals') }}" class="btn btn-primary fw-bold shadow-sm">
+        <a href="{{ route('dean.approvals') }}" class="btn btn-dark fw-bold shadow-sm">
             <i class="bi bi-bank me-1"></i> Open Dean Approvals
         </a>
     @elseif(in_array($role, ['vparttcs', 'rcsc']))
         {{-- Vice President & RCSC header kept clean and uncluttered --}}
     @elseif($role === 'finance')
-        <a href="{{ route('finance.disbursement') }}" class="btn btn-success fw-bold shadow-sm">
+        <a href="{{ route('finance.disbursement') }}" class="btn btn-dark fw-bold shadow-sm">
             <i class="bi bi-cash-stack me-1"></i> Open Finance Disbursement
         </a>
     @elseif($role === 'tm')
-        <a href="{{ route('progress.index') }}" class="btn btn-info fw-bold shadow-sm">
-            <i class="bi bi-graph-up me-1"></i> My Progress Reports
-        </a>
+        {{-- TM header kept clean since Progress Reports is directly in the top navbar --}}
     @elseif($role === 'reviewer')
-        <a href="{{ route('evaluations.index') }}" class="btn btn-primary fw-bold shadow-sm">
+        <a href="{{ route('evaluations.index') }}" class="btn btn-dark fw-bold shadow-sm">
             <i class="bi bi-clipboard-check me-1"></i> My Evaluations
         </a>
     @endif
@@ -48,6 +44,25 @@
         <strong>{{ $pendingCancellations->count() }} pending withdrawal request(s)</strong> awaiting your review.
     </div>
     <a href="{{ route('projects.index') }}" class="btn btn-warning fw-bold">Review Now</a>
+</div>
+@endif
+
+{{-- DH Quick Actions --}}
+@if($role === 'dh')
+<div class="card card-custom p-3 p-md-4 mb-4">
+    <h5 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-dark"></i>Department Quick Actions</h5>
+    <div class="row g-2">
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('dh.screening') }}" class="btn btn-outline-dark fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-ui-checks me-1"></i> <span class="d-none d-sm-inline">Proposal Screening Queue</span><span class="d-inline d-sm-none">Screening</span>
+            </a>
+        </div>
+        <div class="col-6 col-md-auto">
+            <a href="{{ route('progress.index') }}" class="btn btn-outline-secondary fw-bold w-100 text-nowrap py-2">
+                <i class="bi bi-graph-up me-1"></i> <span class="d-none d-sm-inline">Department Progress Reports</span><span class="d-inline d-sm-none">Progress</span>
+            </a>
+        </div>
+    </div>
 </div>
 @endif
 
