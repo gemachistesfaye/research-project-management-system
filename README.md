@@ -83,15 +83,15 @@ Visit `http://localhost:8000`
 
 Key variables in `.env`:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `APP_KEY` | Encryption key | Pre-configured |
-| `APP_URL` | Application URL | Auto-detected |
-| `APP_DEBUG` | Debug mode | `false` in production |
-| `DB_CONNECTION` | Database driver | `sqlite` |
-| `DB_DATABASE` | Database path | `/data/database.sqlite` |
-| `CACHE_DRIVER` | Cache backend | `file` |
-| `SESSION_DRIVER` | Session storage | `file` |
+| Variable           | Description     | Default                   |
+| ------------------ | --------------- | ------------------------- |
+| `APP_KEY`        | Encryption key  | Pre-configured            |
+| `APP_URL`        | Application URL | Auto-detected             |
+| `APP_DEBUG`      | Debug mode      | `false` in production   |
+| `DB_CONNECTION`  | Database driver | `sqlite`                |
+| `DB_DATABASE`    | Database path   | `/data/database.sqlite` |
+| `CACHE_DRIVER`   | Cache backend   | `file`                  |
+| `SESSION_DRIVER` | Session storage | `file`                  |
 
 ## Docker Deployment
 
@@ -103,6 +103,7 @@ docker run -p 8000:8000 -v data:/data rpms
 ```
 
 The container handles automatically on startup:
+
 1. Environment variable overrides for production
 2. Database migration and seeding
 3. Config, route, and view cache rebuild
@@ -112,19 +113,19 @@ The container handles automatically on startup:
 
 The system enforces 60+ granular permissions across 12 roles:
 
-| Role | Key Permissions |
-|------|----------------|
-| Principal Investigator | Create/manage own projects, submit progress reports |
-| Team Member | View assigned projects, submit contributions |
-| Department Head | Screen proposals within department |
-| Coordinator | Assign reviewers, manage review workflow |
-| Reviewer | Conduct blind evaluations, submit scores |
-| College Dean | Approve/reject projects (<500k ETB), view college analytics |
-| IRERC Ethics Committee | Ethics review and approval |
-| VP Academic (ARTTCS) | Final approval, amendment review, certificate issuance |
-| RCSC Chair | Financial governance (≥500k ETB), budget approval |
-| Finance Office | Process disbursements, financial tracking |
-| System Administrator | Full access: users, colleges, departments, thematic areas, audit logs |
+| Role                   | Key Permissions                                                       |
+| ---------------------- | --------------------------------------------------------------------- |
+| Principal Investigator | Create/manage own projects, submit progress reports                   |
+| Team Member            | View assigned projects, submit contributions                          |
+| Department Head        | Screen proposals within department                                    |
+| Coordinator            | Assign reviewers, manage review workflow                              |
+| Reviewer               | Conduct blind evaluations, submit scores                              |
+| College Dean           | Approve/reject projects (<500k ETB), view college analytics           |
+| IRERC Ethics Committee | Ethics review and approval                                            |
+| VP Academic (ARTTCS)   | Final approval, amendment review, certificate issuance                |
+| RCSC Chair             | Financial governance (≥500k ETB), budget approval                    |
+| Finance Office         | Process disbursements, financial tracking                             |
+| System Administrator   | Full access: users, colleges, departments, thematic areas, audit logs |
 
 ## License
 
