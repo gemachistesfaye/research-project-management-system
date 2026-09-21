@@ -44,6 +44,14 @@ class ProfileController extends Controller
 
         $user->update($data);
 
+        \App\Services\AuditService::log(
+            'UPDATE_USER',
+            'User',
+            $user->id,
+            "User {$user->name} updated their personal profile details" . ($request->hasFile('avatar') ? ' and avatar' : '') . '.',
+            $user->id
+        );
+
         return back()->with('success', 'Profile updated successfully.');
     }
 
@@ -70,6 +78,14 @@ class ProfileController extends Controller
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
+
+        \App\Services\AuditService::log(
+            'RESET_PASSWORD',
+            'User',
+            $user->id,
+            "User {$user->name} successfully changed their account password via self-service.",
+            $user->id
+        );
 
         return back()->with('success', 'Password changed successfully.');
     }
