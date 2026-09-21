@@ -821,13 +821,7 @@
                     </a>
                 </li>
                 @endif
-                @if(Auth::user()->hasPermission('manage_certificates') && Auth::user()->role !== 'coordinator')
-                <li class="nav-item">
-                    <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('certificates') ? 'active-link' : '' }}" href="{{ route('certificates') }}" style="font-size: 0.85rem;">
-                        <i class="bi bi-award me-2"></i> Certificates
-                    </a>
-                </li>
-                @endif
+
                 @if(Auth::user()->role === 'dean')
                 <li class="nav-item">
                     <a class="nav-link text-white py-2 px-2 {{ request()->routeIs('dean.approvals') ? 'active-link' : '' }}" href="{{ route('dean.approvals') }}" style="font-size: 0.85rem;">
