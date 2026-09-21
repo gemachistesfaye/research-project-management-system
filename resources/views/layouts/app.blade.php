@@ -4,40 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GMU - Research Project Management System</title>
-    <!-- Bootstrap 5.3 CSS (local) -->
+    <!-- Bootstrap 5.3 CSS (CDN) -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Bootstrap Icons (local) -->
-    <link href="{{ asset('vendor/bootstrap/css/bootstrap-icons.css') }}" rel="stylesheet">
-    <!-- Page Transition Loader -->
-    <style>
-        #page-loader {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 62, 46, 0.85);
-            z-index: 99999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 16px;
-            backdrop-filter: blur(4px);
-        }
-        #page-loader.active { display: flex; }
-        #page-loader .spinner {
-            width: 40px; height: 40px;
-            border: 4px solid rgba(255,255,255,0.2);
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-        #page-loader .loader-text {
-            color: #ffffff;
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+    <!-- Bootstrap Icons (CDN) -->
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap-icons.subset.css') }}" rel="stylesheet">
+    <!-- Page Transition Loader Removed -->
     <style>
         :root {
             --gmu-primary: #0f3e2e;
