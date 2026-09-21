@@ -540,7 +540,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/rcsc/portal/{id}/decision', [GovernanceController::class, 'rcscDecision'])->name('rcsc.decision');
     });
 
-    Route::middleware(['role:rcsc,vparttcs', 'permission:view_analytics'])->group(function () {
+    Route::middleware(['role:rcsc,vparttcs,admin', 'permission:view_analytics'])->group(function () {
         Route::get('/analytics', [GovernanceController::class, 'analytics'])->name('analytics');
     });
 

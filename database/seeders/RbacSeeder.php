@@ -113,7 +113,7 @@ class RbacSeeder extends Seeder
             'admin' => [
                 'view_dashboard', 'manage_profile', 'view_projects', 'manage_users',
                 'manage_thematic_areas', 'view_audit_logs', 'hrms_sync',
-                'approve_termination',
+                'approve_termination', 'view_analytics',
             ],
         ];
 

@@ -136,6 +136,9 @@
         <a href="{{ route('admin.users') }}" class="btn btn-outline-dark fw-bold">
             <i class="bi bi-people me-1"></i> User Management
         </a>
+        <a href="{{ route('analytics') }}" class="btn btn-outline-dark fw-bold">
+            <i class="bi bi-bar-chart-line me-1"></i> Analytics &amp; Reports
+        </a>
         <a href="{{ route('admin.thematic-areas') }}" class="btn btn-outline-dark fw-bold">
             <i class="bi bi-diagram-3 me-1"></i> Thematic Areas
         </a>
