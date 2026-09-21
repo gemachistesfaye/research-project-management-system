@@ -8,6 +8,36 @@
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Bootstrap Icons (local) -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap-icons.css') }}" rel="stylesheet">
+    <!-- Page Transition Loader -->
+    <style>
+        #page-loader {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 62, 46, 0.85);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+            backdrop-filter: blur(4px);
+        }
+        #page-loader.active { display: flex; }
+        #page-loader .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        #page-loader .loader-text {
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
     <style>
         :root {
             --gmu-primary: #0f3e2e;
@@ -542,6 +572,12 @@
     @yield('styles')
 </head>
 <body class="d-flex flex-column min-vh-100">
+
+    <!-- Page Transition Loader -->
+    <div id="page-loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Loading...</div>
+    </div>
 
     <!-- Navigation Header -->
     <nav class="navbar navbar-expand-lg navbar-gmu py-2 sticky-lg-top @yield('navbar-class')" style="z-index: 1050;">
@@ -1504,6 +1540,42 @@
         document.addEventListener('click', function() {
             document.querySelectorAll('.custom-select-options.show').forEach(function(o) { o.classList.remove('show'); });
             document.querySelectorAll('.custom-select-trigger.open').forEach(function(t) { t.classList.remove('open'); });
+        });
+    })();
+    </script>
+
+    <script>
+    // Page Transition Loader
+    (function() {
+        var loader = document.getElementById('page-loader');
+        if (!loader) return;
+
+        // Show loader on all internal link clicks
+        document.addEventListener('click', function(e) {
+            var link = e.target.closest('a[href]');
+            if (!link) return;
+            var href = link.getAttribute('href');
+            if (!href || href === '#' || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+            if (link.target === '_blank') return;
+            if (link.hasAttribute('data-bs-toggle') || link.hasAttribute('data-bs-dismiss')) return;
+            if (link.closest('.dropdown-menu') || link.closest('.modal')) return;
+            // Only for internal links
+            if (href.startsWith('/') || href.startsWith(window.location.origin)) {
+                loader.classList.add('active');
+            }
+        });
+
+        // Show loader on form submits (confirm buttons)
+        document.addEventListener('submit', function(e) {
+            var btn = e.target.querySelector('button[type="submit"], .confirm-btn');
+            if (btn && !btn.classList.contains('btn-outline-secondary')) {
+                loader.classList.add('active');
+            }
+        });
+
+        // Hide loader when page fully loads
+        window.addEventListener('load', function() {
+            loader.classList.remove('active');
         });
     })();
     </script>
