@@ -266,18 +266,20 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="{{ Auth::user()->role === 'coordinator' ? 7 : 6 }}" class="text-center py-5">
+                                <td colspan="{{ in_array(Auth::user()->role, ['coordinator', 'vparttcs', 'rcsc', 'admin']) ? 7 : 6 }}" class="text-center py-5">
                                     <i class="bi bi-cart3 fs-1 d-block mb-3 text-muted"></i>
                                     <h6 class="text-muted mb-1">No Purchase Requests Found</h6>
                                     <p class="text-muted mb-3" style="font-size:13px">
                                         @if(request('category'))
                                             No requests match the "{{ request('category') }}" category.
                                             <a href="{{ route('procurement.index') }}">Clear filter</a>
-                                        @else
+                                        @elseif(Auth::user()->role === 'pi')
                                             Start by submitting a purchase request for one of your active projects.
+                                        @else
+                                            No faculty purchase requests have been submitted yet.
                                         @endif
                                     </p>
-                                    @if(!request('category') && $activeProjects->isNotEmpty())
+                                    @if(!request('category') && Auth::user()->role === 'pi' && $activeProjects->isNotEmpty())
                                         <a href="#" class="btn btn-success btn-sm" onclick="document.querySelector('form').scrollIntoView({behavior:'smooth'}); return false;">
                                             <i class="bi bi-plus-circle me-1"></i> Create First Request
                                         </a>
