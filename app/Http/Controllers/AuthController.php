@@ -33,10 +33,24 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        // --- Brute-force protection (SDD: lockout after 5 attempts / 15 min) ---
+        // --- Brute-force protection (SDD: lockout after 5 failed attempts / 15 min) ---
         $throttleKey = 'login.' . $request->ip();
 
+        // Pass 'status' => 'active' to ensure deactivated accounts cannot log in
+        $authCredentials = array_merge($credentials, ['status' => 'active']);
+
+        // If locked out, check if user is entering correct credentials for an admin account
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $user = \App\Models\User::where('email', $credentials['email'])->first();
+            if ($user && $user->role === 'admin' && \Illuminate\Support\Facades\Hash::check($credentials['password'], $user->password) && $user->status === 'active') {
+                // Admin override: authenticate and clear rate limit
+                Auth::login($user, $request->boolean('remember'));
+                RateLimiter::clear($throttleKey);
+                $request->session()->regenerate();
+                $user->update(['last_login_at' => now()]);
+                return redirect()->intended('/dashboard');
+            }
+
             $seconds = RateLimiter::availableIn($throttleKey);
             $minutes = ceil($seconds / 60);
             return back()->withErrors([
@@ -44,11 +58,12 @@ class AuthController extends Controller
             ])->onlyInput('email');
         }
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($authCredentials, $request->boolean('remember'))) {
             RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
 
             Auth::user()->update(['last_login_at' => now()]);
+            \App\Services\AuditService::log('LOGIN', 'User', Auth::id(), 'User logged in to system');
 
             return redirect()->intended('/dashboard');
         }
@@ -56,8 +71,17 @@ class AuthController extends Controller
         // Increment failure counter — decays after 900 seconds (15 minutes)
         RateLimiter::hit($throttleKey, 900);
 
+        // Check if the credentials matched but the user is deactivated
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+        if ($user && \Illuminate\Support\Facades\Hash::check($credentials['password'], $user->password) && $user->status !== 'active') {
+            \App\Services\AuditService::log('LOGIN_DENIED_INACTIVE', 'User', $user->id, 'Deactivated user attempted login', $user->id);
+            return back()->withErrors([
+                'email' => 'Your account has been deactivated by the Administrator. Please contact research support.',
+            ])->onlyInput('email');
+        }
+
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Invalid email address or password. Please check your credentials and try again.',
         ])->onlyInput('email');
     }
 
@@ -108,6 +132,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
 
+        \App\Services\AuditService::log('PASSWORD_RESET', 'User', $user->id, 'User password reset via verified self-service', $user->id);
+
         return redirect()->route('login')
             ->with('success', 'Password reset successfully. Please sign in with your new password.');
     }
@@ -117,6 +143,9 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        if (Auth::check()) {
+            \App\Services\AuditService::log('LOGOUT', 'User', Auth::id(), 'User logged out of system');
+        }
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
