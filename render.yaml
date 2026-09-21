@@ -13,3 +13,5 @@ services:
         generateValue: true
       - key: DB_CONNECTION
         value: sqlite
+      - key: DB_DATABASE
+        value: /var/www/database/database.sqlite
