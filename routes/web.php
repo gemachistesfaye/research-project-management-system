@@ -212,48 +212,6 @@ Route::middleware(['auth'])->group(function () {
     // SCR-14: Finance Disbursement (Finance only)
     Route::middleware(['role:finance', 'permission:process_disbursement'])->group(function () {
         Route::get('/finance/disbursement', function () {
-            // Ensure all Active projects have Tranche 1 queued if not already present
-            $activeProjects = \App\Models\Project::where('status', 'Active')->with('milestoneReports')->get();
-            foreach ($activeProjects as $p) {
-                $approvedBudget = $p->approved_budget ?: $p->requested_budget;
-                $tier = ($approvedBudget >= 500000) ? 'RCSC_VP' : 'Dean';
-
-                $hasTranche1 = \App\Models\BudgetRequest::where('project_id', $p->project_id)
-                    ->where('milestone_phase', 'Tranche 1')
-                    ->exists();
-                if (!$hasTranche1) {
-                    $tranche1Amount = round($approvedBudget * 0.30, 2);
-                    \App\Models\BudgetRequest::create([
-                        'project_id' => $p->project_id,
-                        'milestone_phase' => 'Tranche 1',
-                        'requested_amount' => $tranche1Amount,
-                        'approved_amount' => $tranche1Amount,
-                        'approval_tier' => $tier,
-                        'status' => 'Approved',
-                        'approved_by' => \Auth::id() ?? $p->pi_id,
-                    ]);
-                }
-
-                // Check if project has an approved milestone report with >= 40% and Tranche 2 is not yet created
-                $hasApprovedMilestone = $p->milestoneReports->whereIn('status', ['Approved', 'Coordinator_Audited'])->where('progress_percentage', '>=', 40)->count() > 0;
-                $hasTranche2 = \App\Models\BudgetRequest::where('project_id', $p->project_id)
-                    ->where('milestone_phase', 'Tranche 2')
-                    ->exists();
-
-                if ($hasApprovedMilestone && !$hasTranche2) {
-                    $tranche2Amount = round($approvedBudget * 0.40, 2);
-                    \App\Models\BudgetRequest::create([
-                        'project_id' => $p->project_id,
-                        'milestone_phase' => 'Tranche 2',
-                        'requested_amount' => $tranche2Amount,
-                        'approved_amount' => $tranche2Amount,
-                        'approval_tier' => $tier,
-                        'status' => 'Approved',
-                        'approved_by' => \Auth::id() ?? $p->pi_id,
-                    ]);
-                }
-            }
-
             $pendingRequests = \App\Models\BudgetRequest::where('status', 'Approved')
                 ->where(function ($q) {
                     $q->where('milestone_phase', 'like', 'Tranche%')
@@ -303,6 +261,8 @@ Route::middleware(['auth'])->group(function () {
                 'payment_method' => request('payment_method'),
                 'notes' => request('notes'),
             ]);
+
+            \App\Services\AuditService::log('BUDGET_DISBURSED', 'BudgetRequest', $req->id, "Finance released payment of ETB " . number_format($amount, 2) . " via " . request('payment_method') . " for Project #{$req->project_id}");
 
             return back()->with('success', 'Disbursement of ETB ' . number_format($amount, 2) . ' processed successfully.');
         })->name('finance.process-disbursement');
@@ -620,6 +580,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin', 'permission:manage_users'])->group(function () {
         Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
         Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+        Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+        Route::post('/admin/users/{id}/toggle-status', [AdminController::class, 'toggleUserStatus'])->name('admin.users.toggle-status');
+        Route::delete('/admin/users/{id}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
         Route::post('/admin/users/{id}/reset-password', [AdminController::class, 'resetPassword'])->name('admin.users.reset-password');
     });
 
@@ -636,6 +599,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:admin', 'permission:hrms_sync'])->group(function () {
         Route::get('/admin/hrms-sync', [AdminController::class, 'hrmsSync'])->name('admin.hrms-sync');
+        Route::post('/admin/hrms-sync/ping', [AdminController::class, 'triggerHrmsPing'])->name('admin.hrms-sync.ping');
     });
 
     // Admin: Department & College Management
