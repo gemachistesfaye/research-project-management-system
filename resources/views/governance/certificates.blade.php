@@ -4,9 +4,11 @@
 <h3 class="fw-bold mb-4"><i class="bi bi-file-earmark-pdf me-2 text-success"></i>Completion Certificates & Journal Awards</h3>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <span class="text-muted small">Digital completion certificates and journal award letters issued to PIs</span>
+    @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
     <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#issueCertificateModal">
         <i class="bi bi-file-earmark-plus me-1"></i> Issue Certificate
     </button>
+    @endif
 </div>
 <div class="card card-custom p-4">
     <div class="table-responsive">
