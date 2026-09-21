@@ -132,4 +132,39 @@ class ForgotPasswordTest extends TestCase
 
         $response->assertRedirect('/dashboard');
     }
+
+    public function test_user_can_change_password_from_profile_with_valid_current_password()
+    {
+        $user = User::factory()->create([
+            'email'    => 'profileuser@gmu.edu.et',
+            'password' => Hash::make('Current@123'),
+        ]);
+
+        $response = $this->actingAs($user)->put(route('profile.change-password'), [
+            'current_password'          => 'Current@123',
+            'new_password'              => 'BrandNew@456',
+            'new_password_confirmation' => 'BrandNew@456',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+        $this->assertTrue(Hash::check('BrandNew@456', $user->fresh()->password));
+    }
+
+    public function test_profile_change_password_rejects_wrong_current_password()
+    {
+        $user = User::factory()->create([
+            'email'    => 'profileuser2@gmu.edu.et',
+            'password' => Hash::make('Current@123'),
+        ]);
+
+        $response = $this->actingAs($user)->put(route('profile.change-password'), [
+            'current_password'          => 'WrongPassword@123',
+            'new_password'              => 'BrandNew@456',
+            'new_password_confirmation' => 'BrandNew@456',
+        ]);
+
+        $response->assertSessionHasErrors('current_password');
+        $this->assertTrue(Hash::check('Current@123', $user->fresh()->password));
+    }
 }
