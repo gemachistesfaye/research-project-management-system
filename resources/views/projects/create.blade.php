@@ -19,7 +19,10 @@
 
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
-                <h5 class="fw-bold mb-1"><i class="bi bi-journal-plus me-2 text-success"></i>New Research Proposal</h5>
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-1 gap-2">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-journal-plus me-2 text-success"></i>New Research Proposal</h5>
+                    <a href="{{ route('projects.index') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i> Back to Projects</a>
+                </div>
                 <p class="text-muted small mb-3">Proposals >= 500,000 ETB route to RCSC & VP approval.</p>
 
                 <form method="POST" action="{{ route('projects.store') }}" enctype="multipart/form-data" id="createForm" novalidate>

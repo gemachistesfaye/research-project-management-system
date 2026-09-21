@@ -5,7 +5,10 @@
     <div class="col-md-8">
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
-                <h5 class="fw-bold mb-1"><i class="bi bi-pencil-square me-2 text-warning"></i>Edit Research Proposal</h5>
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-1 gap-2">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-pencil-square me-2 text-warning"></i>Edit Research Proposal</h5>
+                    <a href="{{ route('projects.show', $project->project_id) }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i> Back to Project</a>
+                </div>
                 <p class="text-muted small mb-3">Update your draft or withdrawn proposal.</p>
 
                 <form method="POST" action="{{ route('projects.update', $project->project_id) }}" enctype="multipart/form-data">
