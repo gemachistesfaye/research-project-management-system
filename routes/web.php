@@ -312,7 +312,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['permission:submit_procurement|manage_procurement'])->group(function () {
         Route::get('/procurement', function () {
             $user = \Auth::user();
-            if ($user->role === 'coordinator') {
+            if (in_array($user->role, ['coordinator', 'vparttcs', 'rcsc', 'admin'])) {
                 $requests = \App\Models\ProcurementRequest::with('project')->latest()->get();
                 $activeProjects = \App\Models\Project::whereIn('status', ['Active', 'Approved'])->get();
             } else {
@@ -506,7 +506,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dh/screening/{id}/decision', [GovernanceController::class, 'dhScreeningDecision'])->name('dh.screening.decision');
     });
 
-    Route::middleware(['role:coordinator,admin', 'permission:manage_certificates'])->group(function () {
+    Route::middleware(['role:coordinator,vparttcs,rcsc,admin', 'permission:manage_certificates'])->group(function () {
         Route::get('/certificates', [GovernanceController::class, 'certificates'])->name('certificates');
         Route::post('/certificates', [GovernanceController::class, 'storeCertificate'])->name('certificates.store');
         Route::post('/projects/{id}/complete', [ProjectController::class, 'markComplete'])->name('projects.complete');

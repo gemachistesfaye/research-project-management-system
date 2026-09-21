@@ -100,11 +100,12 @@ class RbacSeeder extends Seeder
                 'view_dashboard', 'manage_profile', 'view_projects', 'sign_contract',
                 'approve_budget', 'approve_extensions', 'approve_amendments',
                 'approve_pi_transfer', 'view_rcsc_portal', 'view_analytics',
+                'manage_certificates', 'manage_procurement',
             ],
             'rcsc' => [
                 'view_dashboard', 'manage_profile', 'view_projects', 'approve_budget',
                 'approve_extensions', 'approve_amendments', 'view_rcsc_portal',
-                'view_analytics',
+                'view_analytics', 'manage_certificates', 'manage_procurement',
             ],
             'finance' => [
                 'view_dashboard', 'manage_profile', 'view_projects', 'process_disbursement',
