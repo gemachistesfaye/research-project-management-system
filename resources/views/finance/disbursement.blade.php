@@ -71,18 +71,18 @@
 <div class="card card-custom mb-4">
     <div class="card-header bg-white border-bottom py-3">
         <div class="row g-2 align-items-center justify-content-between">
-            <div class="col-md-5">
+            <div class="col-12 col-md-6">
                 <h5 class="fw-bold mb-0 text-dark">
                     <i class="bi bi-hourglass-split me-2 text-warning"></i> Pending Disbursements
                     <span class="badge bg-dark rounded-pill ms-1">{{ $pendingRequests->count() }}</span>
                 </h5>
                 <small class="text-muted">Approved tranches awaiting fund release</small>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-5">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
                     <input type="text" id="pendingSearchInput" class="form-control bg-light border-start-0"
-                           placeholder="Filter by Project ID, Title, PI..." onkeyup="filterPendingTable()">
+                           placeholder="Search pending by Project, PI..." onkeyup="filterPendingTable()">
                 </div>
             </div>
         </div>
@@ -238,18 +238,18 @@
 <div class="card card-custom">
     <div class="card-header bg-white border-bottom py-3">
         <div class="row g-2 align-items-center justify-content-between">
-            <div class="col-md-5">
+            <div class="col-12 col-md-6">
                 <h5 class="fw-bold mb-0 text-dark">
                     <i class="bi bi-clock-history me-2 text-dark"></i> Disbursement History
                     <span class="badge bg-secondary rounded-pill ms-1">{{ $disbursedHistory->count() }}</span>
                 </h5>
                 <small class="text-muted">Audit trail of completed releases</small>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-5">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
                     <input type="text" id="historySearchInput" class="form-control bg-light border-start-0"
-                           placeholder="Filter history by Project, PI, Method..." onkeyup="filterHistoryTable()">
+                           placeholder="Search history by Project, PI, Method..." onkeyup="filterHistoryTable()">
                 </div>
             </div>
         </div>
