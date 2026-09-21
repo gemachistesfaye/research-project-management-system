@@ -539,7 +539,7 @@
         @if(in_array($project->status, ['Dean_Review', 'RCSC_Review', 'UnderReview']))
         <div class="card shadow-sm border-0 mb-4 border-top border-4 {{ $project->requested_budget >= 500000 ? 'border-danger' : 'border-dark' }}">
             <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-bank me-2 text-success"></i>Financial Budget Approval (SCR-08)</h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-bank me-2 text-dark"></i>Financial Budget Approval</h5>
                 @if($project->requested_budget >= 500000)
                     <span class="badge bg-danger fs-6">RCSC / VP Tier (&ge;500k ETB)</span>
                 @else
@@ -845,17 +845,77 @@
                 <div class="card-body p-4">
                     <h5 class="fw-bold mb-2 text-dark"><i class="bi bi-pencil-square me-2 text-dark"></i>Submit Peer Critique</h5>
                     <p class="small text-muted mb-3">Score the research methodology, originality, and institutional feasibility.</p>
+                    <h5 class="fw-bold mb-1 text-dark"><i class="bi bi-clipboard-check me-2 text-dark"></i>Standardized 100-Point Evaluation Rubric</h5>
+                    <p class="small text-muted mb-3">Evaluate the proposal across 5 standardized academic dimensions. Total score is computed automatically.</p>
 
                     <form method="POST" action="{{ route('evaluations.submit', $myPendingEval->eval_id) }}">
+                    <form method="POST" action="{{ route('evaluations.submit', $myPendingEval->eval_id) }}" id="rubricEvaluationForm">
                         @csrf
+
+                        {{-- 5-Dimension Rubric Inputs --}}
+                        <div class="p-3 bg-light rounded-3 border mb-3">
+                            <div class="row g-2">
+                                <div class="col-md-6 col-12">
+                                    <label class="form-label small fw-bold mb-1 d-flex justify-content-between">
+                                        <span>1. Methodology &amp; Research Design</span>
+                                        <span class="text-muted">(Max 25)</span>
+                                    </label>
+                                    <input type="number" step="0.5" min="0" max="25" name="rubric_methodology" id="rubric_methodology"
+                                           class="form-control form-control-sm rubric-input" required placeholder="0 - 25" oninput="calculateTotalScore()">
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <label class="form-label small fw-bold mb-1 d-flex justify-content-between">
+                                        <span>2. Background &amp; Literature Review</span>
+                                        <span class="text-muted">(Max 20)</span>
+                                    </label>
+                                    <input type="number" step="0.5" min="0" max="20" name="rubric_literature" id="rubric_literature"
+                                           class="form-control form-control-sm rubric-input" required placeholder="0 - 20" oninput="calculateTotalScore()">
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <label class="form-label small fw-bold mb-1 d-flex justify-content-between">
+                                        <span>3. Work Plan &amp; Feasibility</span>
+                                        <span class="text-muted">(Max 20)</span>
+                                    </label>
+                                    <input type="number" step="0.5" min="0" max="20" name="rubric_feasibility" id="rubric_feasibility"
+                                           class="form-control form-control-sm rubric-input" required placeholder="0 - 20" oninput="calculateTotalScore()">
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <label class="form-label small fw-bold mb-1 d-flex justify-content-between">
+                                        <span>4. Regional Relevance &amp; Impact</span>
+                                        <span class="text-muted">(Max 20)</span>
+                                    </label>
+                                    <input type="number" step="0.5" min="0" max="20" name="rubric_relevance" id="rubric_relevance"
+                                           class="form-control form-control-sm rubric-input" required placeholder="0 - 20" oninput="calculateTotalScore()">
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <label class="form-label small fw-bold mb-1 d-flex justify-content-between">
+                                        <span>5. Budget Justification</span>
+                                        <span class="text-muted">(Max 15)</span>
+                                    </label>
+                                    <input type="number" step="0.5" min="0" max="15" name="rubric_budget" id="rubric_budget"
+                                           class="form-control form-control-sm rubric-input" required placeholder="0 - 15" oninput="calculateTotalScore()">
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Total Score & Recommendation Verdict --}}
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Score (0 - 100) <span class="text-danger">*</span></label>
                                 <input type="number" step="0.01" min="0" max="100" name="score" class="form-control fw-bold" required placeholder="e.g. 85.00">
+                                <label class="form-label small fw-bold mb-1">Computed Total Score (0 - 100) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" step="0.01" min="0" max="100" name="score" id="totalScoreInput"
+                                           class="form-control fw-bold bg-white text-dark fs-5" required placeholder="0.00" readonly>
+                                    <span class="input-group-text bg-light fw-bold">/ 100</span>
+                                </div>
+                                <small class="text-muted" style="font-size:0.75rem;">Calculated automatically from rubric dimensions</small>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Recommendation Verdict <span class="text-danger">*</span></label>
                                 <select name="decision" class="form-select" required>
+                                <label class="form-label small fw-bold mb-1">Recommendation Verdict <span class="text-danger">*</span></label>
+                                <select name="decision" class="form-select fw-bold" required>
                                     <option value="Accepted">Accepted (Fund)</option>
                                     <option value="AcceptedWithMinorMods">Accepted (Minor Mods)</option>
                                     <option value="AcceptedWithMajorMods">Accepted (Major Mods)</option>
@@ -867,12 +927,27 @@
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Constructive Comments & Critique <span class="text-danger">*</span></label>
                             <textarea name="comments" rows="4" class="form-control" required placeholder="Provide technical feedback, strengths, and areas of improvement..."></textarea>
+                            <label class="form-label small fw-bold">Constructive Comments &amp; Technical Critique <span class="text-danger">*</span></label>
+                            <textarea name="comments" rows="4" class="form-control" required placeholder="Provide technical feedback, methodological strengths, and specific areas of required improvement..."></textarea>
                         </div>
 
                         <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
+                        <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your rubric score and recommendation verdict will be recorded under double-blind protocol." data-confirm-icon="bi-send-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit Score" data-confirm-btn-class="btn-dark">
                             <i class="bi bi-send-check me-1"></i> Submit Evaluation Score
                         </button>
                     </form>
+
+                    <script>
+                    function calculateTotalScore() {
+                        const m = parseFloat(document.getElementById('rubric_methodology').value) || 0;
+                        const l = parseFloat(document.getElementById('rubric_literature').value) || 0;
+                        const f = parseFloat(document.getElementById('rubric_feasibility').value) || 0;
+                        const r = parseFloat(document.getElementById('rubric_relevance').value) || 0;
+                        const b = parseFloat(document.getElementById('rubric_budget').value) || 0;
+                        const total = Math.min(100, Math.max(0, m + l + f + r + b));
+                        document.getElementById('totalScoreInput').value = total.toFixed(2);
+                    }
+                    </script>
                 </div>
             </div>
             @elseif($myCompletedEval)
