@@ -272,12 +272,15 @@ class GovernanceController extends Controller
 
     public function analytics()
     {
-        $totalProjects       = Project::count();
+        $submittedProjectsQuery = Project::where('status', '!=', 'Draft');
+
+        $totalProjects       = (clone $submittedProjectsQuery)->count();
         $activeProjects      = Project::where('status', 'Active')->count();
         $completedProjects   = Project::where('status', 'Completed')->count();
-        $underReviewProjects = Project::where('status', 'UnderReview')->count();
+        $underReviewProjects = Project::whereIn('status', ['Submitted', 'DH_Screened', 'UnderReview', 'Dean_Review', 'RCSC_Review'])->count();
 
-        $statusCounts = Project::select('status', DB::raw('count(*) as total'))
+        $statusCounts = Project::where('status', '!=', 'Draft')
+            ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->get();
 
@@ -285,6 +288,7 @@ class GovernanceController extends Controller
         $statusData   = $statusCounts->pluck('total')->toArray();
 
         $budgetByThematic = DB::table('projects')
+            ->where('status', '!=', 'Draft')
             ->join('thematic_areas', 'projects.thematic_id', '=', 'thematic_areas.id')
             ->select(
                 'thematic_areas.title as thematic_title',

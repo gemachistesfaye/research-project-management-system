@@ -92,7 +92,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="5" class="text-center text-muted">No project data available yet.</td></tr>
+                <tr><td colspan="5" class="text-center text-muted py-4"><i class="bi bi-inbox fs-3 d-block mb-2"></i>No submitted research proposals recorded for the active call yet.</td></tr>
                 @endforelse
             </tbody>
         </table>
