@@ -40,7 +40,7 @@
                     <td><code>{{ $d->code }}</code></td>
                     <td class="fw-bold">{{ $d->name }}</td>
                     <td><span class="badge bg-dark">{{ $d->college->name ?? 'N/A' }}</span></td>
-                    <td><span class="badge bg-secondary">{{ $d->users->count() ?? 0 }} staff</span></td>
+                    <td><span class="badge bg-secondary">{{ $d->users_count ?? 0 }} staff</span></td>
                     <td>
                         <div class="btn-group btn-group-sm">
                             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#editDeptModal{{ $d->id }}">

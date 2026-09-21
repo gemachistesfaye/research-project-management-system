@@ -269,7 +269,7 @@ class AdminController extends Controller
     // Department Management
     public function departments()
     {
-        $departments = Department::with('college', 'users')->get();
+        $departments = Department::with('college')->withCount('users')->get();
         $colleges = \App\Models\College::all();
         return view('admin.departments', compact('departments', 'colleges'));
     }

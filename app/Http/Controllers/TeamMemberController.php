@@ -21,14 +21,13 @@ class TeamMemberController extends Controller
             abort(403, 'You can only view team members for your own projects.');
         }
 
-        $allUsers = User::where('id', '!=', $project->pi_id)
+        $currentMemberIds = $project->members->pluck('user_id')->toArray();
+        $availableUsers = User::where('id', '!=', $project->pi_id)
             ->where('status', 'active')
+            ->whereNotIn('id', $currentMemberIds)
             ->get();
 
-        $currentMemberIds = $project->members->pluck('user_id')->toArray();
-        $availableUsers = $allUsers->whereNotIn('id', $currentMemberIds);
-
-        return view('team.index', compact('project', 'allUsers', 'availableUsers'));
+        return view('team.index', compact('project', 'availableUsers'));
     }
 
     public function store(Request $request, $projectId)

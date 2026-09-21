@@ -53,20 +53,26 @@ class GovernanceController extends Controller
 
     public function coordinatorHub()
     {
-        $projects = Project::whereIn('status', ['DH_Screened', 'UnderReview'])->with(['pi', 'evaluations', 'irercClearance'])->get();
+        $projects = Project::whereIn('status', ['DH_Screened', 'UnderReview'])
+            ->with(['pi', 'evaluations', 'irercClearance'])
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
 
         $reviewers = User::where('role', 'reviewer')
             ->with('department', 'evaluations')
             ->get()
             ->map(function ($reviewer) {
-                $activeReviews = $reviewer->evaluations()->where('decision', 'Pending')->count();
-                $totalEvaluations = $reviewer->evaluations()->whereNotNull('score')->count();
-                $avgScore = $reviewer->evaluations()->whereNotNull('score')->avg('score');
+                $evals = $reviewer->evaluations;
+                $activeReviews = $evals->where('decision', 'Pending')->count();
+                $scored = $evals->whereNotNull('score');
+                $totalEvaluations = $scored->count();
+                $avgScore = $totalEvaluations > 0 ? round($scored->avg('score'), 1) : 'N/A';
                 return [
                     'user' => $reviewer,
                     'active_reviews' => $activeReviews,
                     'total_evaluations' => $totalEvaluations,
-                    'avg_score' => $avgScore ? round($avgScore, 1) : 'N/A',
+                    'avg_score' => $avgScore,
                     'workload_percent' => min(100, ($activeReviews / 5) * 100),
                 ];
             });
