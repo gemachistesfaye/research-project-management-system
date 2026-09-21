@@ -138,20 +138,14 @@
 <div class="card card-custom p-4 mb-4">
     <h5 class="fw-bold mb-3"><i class="bi bi-lightning me-2 text-dark"></i>Quick Actions</h5>
     <div class="d-flex flex-wrap gap-2">
-        <a href="{{ route('admin.users') }}" class="btn btn-outline-dark fw-bold">
-            <i class="bi bi-people me-1"></i> User Management
-        </a>
-        <a href="{{ route('analytics') }}" class="btn btn-outline-dark fw-bold">
+        <a href="{{ route('analytics') }}" class="btn btn-dark fw-bold">
             <i class="bi bi-bar-chart-line me-1"></i> Analytics &amp; Reports
-        </a>
-        <a href="{{ route('admin.thematic-areas') }}" class="btn btn-outline-dark fw-bold">
-            <i class="bi bi-diagram-3 me-1"></i> Thematic Areas
-        </a>
-        <a href="{{ route('admin.hrms-sync') }}" class="btn btn-outline-dark fw-bold">
-            <i class="bi bi-hdd-network me-1"></i> HRMS Sync
         </a>
         <a href="{{ route('admin.audit-logs') }}" class="btn btn-outline-dark fw-bold">
             <i class="bi bi-shield-check me-1"></i> Audit Logs
+        </a>
+        <a href="{{ route('admin.hrms-sync') }}" class="btn btn-outline-dark fw-bold">
+            <i class="bi bi-hdd-network me-1"></i> HRMS Sync
         </a>
     </div>
 </div>
@@ -809,15 +803,29 @@
                     <td class="font-monospace text-muted">#EV-{{ $rev->eval_id }}</td>
                     <td class="fw-bold text-dark">{{ $rev->project->title }}</td>
                     <td>
-                        <span class="badge bg-light text-dark border px-2 py-1">{{ $rev->decision }}</span>
+                        @if($rev->decision === 'Pending')
+                            <span class="badge bg-warning-subtle text-dark border border-warning-subtle px-2 py-1"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
+                        @elseif(str_contains($rev->decision, 'Accepted'))
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1"><i class="bi bi-check-circle me-1"></i>{{ $rev->decision }}</span>
+                        @elseif($rev->decision === 'Rejected')
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                        @else
+                            <span class="badge bg-light text-dark border px-2 py-1">{{ $rev->decision }}</span>
+                        @endif
                     </td>
                     <td><span class="fw-bold text-dark">{{ $rev->score }}</span> <span class="text-muted small">/ 100</span></td>
                     <td>
-                        <a href="{{ route('projects.show', $rev->project_id) }}" class="btn btn-sm btn-outline-secondary">
+                        @if($rev->decision === 'Pending')
+                        <a href="{{ route('evaluations.show', $rev->eval_id) }}" class="btn btn-sm btn-dark">
                             <i class="bi bi-pencil-square me-1"></i> Score &amp; Critique
                         </a>
+                        @else
+                        <a href="{{ route('evaluations.show', $rev->eval_id) }}" class="btn btn-sm btn-outline-dark">
+                            <i class="bi bi-eye me-1"></i> View Details
+                        </a>
+                        @endif
                         @if($rev->project->proposal_document_url)
-                        <a href="{{ Storage::url($rev->project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-danger" title="View Document">
+                        <a href="{{ Storage::url($rev->project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-secondary" title="View Document">
                             <i class="bi bi-file-pdf"></i>
                         </a>
                         @endif
@@ -953,9 +961,9 @@
                         @if($req->milestone_phase === 'Tranche 1')
                             <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-1-circle me-1"></i>Tranche 1 (30% Advance)</span>
                         @elseif($req->milestone_phase === 'Tranche 2')
-                            <span class="badge bg-primary text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40% Mid-Term)</span>
+                            <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-2-circle me-1"></i>Tranche 2 (40% Mid-Term)</span>
                         @elseif($req->milestone_phase === 'Tranche 3')
-                            <span class="badge bg-info text-dark px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30% Final)</span>
+                            <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-3-circle me-1"></i>Tranche 3 (30% Final)</span>
                         @else
                             <span class="badge bg-secondary text-white px-2 py-1">{{ $req->milestone_phase }}</span>
                         @endif
@@ -1072,7 +1080,7 @@
                     <td>{{ $hist->project->pi->name ?? 'N/A' }}</td>
                     <td><span class="badge bg-light text-dark border">{{ $hist->milestone_phase ?? 'Tranche' }}</span></td>
                     <td class="fw-bold text-dark">{{ number_format($hist->approved_amount ?? 0, 2) }} ETB</td>
-                    <td><span class="badge bg-info text-dark">{{ $hist->payment_method ?? 'N/A' }}</span></td>
+                    <td><span class="badge bg-light text-dark border">{{ $hist->payment_method ?? 'N/A' }}</span></td>
                     <td>{{ $hist->disbursed_at ? $hist->disbursed_at->format('M d, Y') : 'N/A' }}</td>
                 </tr>
                 @endforeach
