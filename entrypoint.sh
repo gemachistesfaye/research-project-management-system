@@ -10,8 +10,11 @@ chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 # Determine the database path from environment or use default
 DB_PATH="${DB_DATABASE:-/var/www/database/database.sqlite}"
 
-# Ensure the directory for the database exists
-mkdir -p "$(dirname "$DB_PATH")"
+# Ensure the directory for the database exists and is writable
+DB_DIR="$(dirname "$DB_PATH")"
+mkdir -p "$DB_DIR"
+chown -R www-data:www-data "$DB_DIR"
+chmod -R 775 "$DB_DIR"
 
 # Create SQLite database file if it doesn't exist
 touch "$DB_PATH"
@@ -26,6 +29,9 @@ php /var/www/artisan db:seed --force
 php /var/www/artisan config:cache
 php /var/www/artisan route:cache
 php /var/www/artisan view:cache
+
+# Ensure writable paths have correct permissions after cache commands
+chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache "$DB_DIR"
 
 # Start PHP-FPM in background
 php-fpm -D

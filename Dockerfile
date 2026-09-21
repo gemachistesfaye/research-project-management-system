@@ -37,9 +37,10 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Create storage directories and SQLite database file
 RUN mkdir -p /var/www/storage/logs /var/www/storage/framework/{cache,sessions,views} /var/www/bootstrap/cache && \
-    touch /var/www/database/database.sqlite && \
-    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/database/database.sqlite && \
-    chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/database/database.sqlite
+    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+# Ensure /data directory exists for persistent SQLite database
+RUN mkdir -p /data && chown -R www-data:www-data /data
 
 # Set up entrypoint
 COPY entrypoint.sh /usr/local/bin/

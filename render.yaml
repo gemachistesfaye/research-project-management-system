@@ -4,6 +4,10 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     plan: starter
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
     envVars:
       - key: APP_ENV
         value: production
@@ -14,4 +18,4 @@ services:
       - key: DB_CONNECTION
         value: sqlite
       - key: DB_DATABASE
-        value: /var/www/database/database.sqlite
+        value: /data/database.sqlite
