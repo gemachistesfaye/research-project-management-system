@@ -11,9 +11,9 @@
 </nav>
 
 {{-- ── Page Header ────────────────────────────────────────────────────────── --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="fw-bold mb-1 text-dark">{{ $project->title }}</h2>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+    <div class="flex-grow-1">
+        <h2 class="fw-bold mb-1 text-dark fs-5 fs-md-2" style="word-break: break-word;">{{ $project->title }}</h2>
         <div class="d-flex align-items-center flex-wrap gap-2">
             <span class="text-muted small">ID: {{ $project->project_id }}</span>
             @if(in_array($project->status, ['Draft', 'Returned']))
@@ -21,46 +21,46 @@
                 @if(Auth::user()->role === 'pi')
                 <form action="{{ route('projects.submit', $project->project_id) }}" method="POST" class="d-inline">
                     @csrf
-                    <button type="button" class="btn btn-success btn-sm fw-bold confirm-btn" data-confirm-title="Submit Proposal" data-confirm-message="This proposal will be sent to the Department Head for initial screening. You won't be able to edit it after submission." data-confirm-icon="bi-send" data-confirm-color="text-success" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success"><i class="bi bi-send me-1"></i>Submit for Review</button>
+                    <button type="button" class="btn btn-success btn-sm fw-bold confirm-btn" data-confirm-title="Submit Proposal" data-confirm-message="This proposal will be sent to the Department Head for initial screening. You won't be able to edit it after submission." data-confirm-icon="bi-send" data-confirm-color="text-success" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-success"><i class="bi bi-send me-1"></i>Submit</button>
                 </form>
                 @endif
             @elseif($project->status === 'Approved')
                 <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>{{ $project->status }}</span>
                 @if(in_array(Auth::user()->role, ['pi', 'vparttcs']) && (!$project->irercClearance || $project->irercClearance->status === 'Approved'))
                 <a href="{{ route('contracts.show', $project->project_id) }}" class="btn btn-dark btn-sm fw-bold shadow-sm">
-                    <i class="bi bi-pen me-1"></i>View & Sign Contract
+                    <i class="bi bi-pen me-1"></i>Sign Contract
                 </a>
                 @endif
             @elseif($project->status === 'Active')
                 <span class="badge bg-dark fs-6"><i class="bi bi-play-circle me-1"></i>{{ $project->status }}</span>
                 <a href="{{ route('progress.show', $project->project_id) }}" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
-                    <i class="bi bi-graph-up me-1"></i>Progress &amp; Milestones
+                    <i class="bi bi-graph-up me-1"></i>Progress
                 </a>
                 @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
                 <form action="{{ route('projects.mark-complete', $project->project_id) }}" method="POST" class="d-inline">
                     @csrf
                     <button type="button" class="btn btn-success btn-sm fw-bold shadow-sm confirm-btn" data-confirm-title="Mark Project as Complete" data-confirm-message="All tranches have been disbursed and milestones met. Mark this research project as officially Completed?" data-confirm-icon="bi-check-circle" data-confirm-color="text-success" data-confirm-btn-text="Yes, Complete Project" data-confirm-btn-class="btn-success">
-                        <i class="bi bi-check-all me-1"></i>Mark as Completed
+                        <i class="bi bi-check-all me-1"></i>Complete
                     </button>
                 </form>
                 @endif
             @elseif($project->status === 'Completed')
                 <span class="badge bg-success fs-6"><i class="bi bi-check-circle me-1"></i>Completed</span>
                 <a href="{{ route('progress.show', $project->project_id) }}" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
-                    <i class="bi bi-graph-up me-1"></i>Progress History
+                    <i class="bi bi-graph-up me-1"></i>Progress
                 </a>
                 @php $cert = $project->certificates ? $project->certificates->first() : null; @endphp
                 @if($cert)
                     <a href="{{ route('certificates.view', $cert->id) }}" target="_blank" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">
-                        <i class="bi bi-eye me-1"></i>View Certificate
+                        <i class="bi bi-eye me-1"></i>View Cert
                     </a>
                     <a href="{{ route('certificates.download', $cert->id) }}" class="btn btn-dark btn-sm fw-bold shadow-sm">
-                        <i class="bi bi-download me-1"></i>Download PDF
+                        <i class="bi bi-download me-1"></i>Download
                     </a>
                 @elseif(in_array(Auth::user()->role, ['coordinator', 'admin']))
-                    <a href="{{ route('certificates') }}" class="btn btn-success btn-sm fw-bold shadow-sm">
-                        <i class="bi bi-award me-1"></i>Issue Completion Certificate
-                    </a>
+                <a href="{{ route('certificates') }}" class="btn btn-success btn-sm fw-bold shadow-sm">
+                    <i class="bi bi-award me-1"></i>Issue Cert
+                </a>
                 @endif
             @elseif(in_array($project->status, ['Submitted', 'DH_Screened', 'UnderReview']))
                 <span class="badge bg-warning text-dark fs-6"><i class="bi bi-hourglass-split me-1"></i>{{ $project->status }}</span>
@@ -74,27 +74,29 @@
                 <span class="badge bg-secondary fs-6">{{ $project->status }}</span>
             @endif
             @if($project->requested_budget >= 500000)
-                <span class="badge bg-dark fs-6">RCSC Governance Tier (≥500k ETB)</span>
+                <span class="badge bg-dark fs-6">RCSC Tier</span>
             @else
-                <span class="badge bg-secondary fs-6">College Dean Tier (&lt;500k ETB)</span>
+                <span class="badge bg-secondary fs-6">Dean Tier</span>
             @endif
             @if($project->irercClearance)
                 @if($project->irercClearance->status === 'Approved')
-                    <span class="badge bg-success fs-6"><i class="bi bi-shield-check me-1"></i>Ethics Cleared ({{ $project->irercClearance->clearance_code }})</span>
+                    <span class="badge bg-success fs-6"><i class="bi bi-shield-check me-1"></i>Ethics Cleared</span>
                 @elseif($project->irercClearance->status === 'Rejected')
                     <span class="badge bg-danger fs-6"><i class="bi bi-shield-x me-1"></i>Ethics Rejected</span>
                 @else
-                    <span class="badge bg-warning text-dark fs-6"><i class="bi bi-shield-exclamation me-1"></i>Ethics Review Pending</span>
+                    <span class="badge bg-warning text-dark fs-6"><i class="bi bi-shield-exclamation me-1"></i>Ethics Pending</span>
                 @endif
             @endif
-            <span class="text-muted small ms-auto">
+            <span class="text-muted small w-100 d-md-inline w-md-auto ms-md-auto mt-2 mt-md-0">
                 <i class="bi bi-clock me-1"></i>Last updated {{ $project->updated_at ? $project->updated_at->diffForHumans() : $project->created_at->diffForHumans() }}
             </span>
         </div>
     </div>
-    <a href="{{ route('projects.index') }}" class="btn btn-outline-secondary btn-sm flex-shrink-0">
-        <i class="bi bi-arrow-left me-1"></i> Back to Projects
-    </a>
+    <div class="d-flex w-100 w-md-auto justify-content-start justify-content-md-end mt-2 mt-md-0">
+        <a href="{{ route('projects.index') }}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Back to Projects
+        </a>
+    </div>
 </div>
 
 @if(in_array($project->status, ['Returned', 'Rejected']) && $project->feedback)
@@ -139,26 +141,26 @@
     <div class="card-body p-4">
         <div class="timeline-container">
             @foreach($stages as $key => $stage)
-            @php
-                $idx = array_search($key, $stageKeys);
-                $isDone    = ($currentIndex !== false && $idx < $currentIndex) || $currentStatus === $key;
-                $isCurrent = ($currentStatus === $key);
-            @endphp
-            <div class="timeline-item">
-                <div class="timeline-circle {{ $isCurrent ? 'current' : ($isDone ? 'completed' : '') }}">
-                    <i class="bi {{ $stage['icon'] }}"></i>
-                </div>
-                <div class="timeline-label {{ $isCurrent ? 'active' : '' }}">
-                    {{ $stage['label'] }}
-                </div>
-                @if($dates[$key])
-                    <div class="timeline-date">
-                        {{ $dates[$key]->format('M d, Y') }}
+                @php
+                    $idx = array_search($key, $stageKeys);
+                    $isDone    = ($currentIndex !== false && $idx < $currentIndex) || $currentStatus === $key;
+                    $isCurrent = ($currentStatus === $key);
+                @endphp
+                <div class="timeline-item">
+                    <div class="timeline-circle {{ $isCurrent ? 'current' : ($isDone ? 'completed' : '') }}">
+                        <i class="bi {{ $stage['icon'] }}"></i>
                     </div>
-                @endif
+                    <div class="timeline-label {{ $isCurrent ? 'active' : '' }}">
+                        {{ $stage['label'] }}
+                    </div>
+                    @if($dates[$key])
+                        <div class="timeline-date">
+                            {{ $dates[$key]->format('M d, Y') }}
+                        </div>
+                    @endif
+                </div>
+                @endforeach
             </div>
-            @endforeach
-        </div>
     </div>
 </div>
 
