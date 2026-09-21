@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold mb-0">All Research Projects & Proposals</h3>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+    <h3 class="fw-bold mb-0">All Research Projects &amp; Proposals</h3>
     @if(Auth::user()->role === 'pi')
     <a href="{{ route('projects.create') }}" class="btn btn-success fw-bold">
         <i class="bi bi-plus-lg me-1"></i> New Proposal
@@ -13,15 +13,15 @@
 <form method="GET" action="{{ route('projects.index') }}" id="filterForm">
     <div class="card card-custom p-3 mb-4">
         <div class="row g-3 align-items-center">
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
                     <input type="text" name="search" class="form-control border-start-0 ps-0" placeholder="Search project title..." value="{{ request('search') }}" onchange="this.form.submit()">
                 </div>
             </div>
-            <div class="col-md-8">
-                <label class="form-label fw-semibold small text-muted mb-1">Filter by Status</label>
-                <div class="d-flex flex-wrap gap-2">
+            <div class="col-12 col-md-8">
+                <label class="form-label fw-semibold small text-muted mb-1 d-block">Filter by Status</label>
+                <div class="d-flex flex-wrap gap-1 gap-md-2">
                     @php
                         $statuses = [
                             '' => ['label' => 'All', 'color' => 'dark', 'icon' => 'bi-grid'],
@@ -41,7 +41,7 @@
                     @endphp
                     @foreach($statuses as $val => $info)
                         <button type="submit" name="status" value="{{ $val }}"
-                            class="btn btn-sm {{ $current === $val ? 'btn-dark' : 'btn-outline-secondary' }} fw-semibold rounded-pill px-3">
+                            class="btn btn-sm {{ $current === $val ? 'btn-dark' : 'btn-outline-secondary' }} fw-semibold rounded-pill px-2 px-md-3 py-1" style="font-size: 0.78rem;">
                             <i class="bi {{ $info['icon'] }} me-1"></i>{{ $info['label'] }}
                         </button>
                     @endforeach
