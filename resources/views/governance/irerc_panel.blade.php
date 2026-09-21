@@ -3,36 +3,31 @@
 @section('content')
 <h3 class="fw-bold mb-4"><i class="bi bi-shield-exclamation me-2 text-dark"></i>IRERC Institutional Ethics Review Panel</h3>
 
-<div class="alert alert-light border-start border-4 border-dark shadow-sm mb-4">
-    <div class="d-flex align-items-start">
-        <i class="bi bi-info-circle-fill text-dark fs-4 me-3 mt-1"></i>
-        <div class="w-100">
-            <h6 class="fw-bold text-dark mb-2">Risk Level Definitions</h6>
-            <div class="row g-2">
-                <div class="col-6 col-md-3">
-                    <div class="d-flex align-items-center">
-                        <span class="badge bg-success-subtle text-success border border-success me-2 px-2 py-1" style="min-width: 58px;">Low</span>
-                        <small class="text-muted" style="font-size: 0.78rem;">Minimal risk, no sensitive data.</small>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="d-flex align-items-center">
-                        <span class="badge bg-warning-subtle text-dark border border-warning me-2 px-2 py-1" style="min-width: 58px;">Medium</span>
-                        <small class="text-muted" style="font-size: 0.78rem;">Standard protocols needed.</small>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="d-flex align-items-center">
-                        <span class="badge bg-warning text-dark me-2 px-2 py-1" style="min-width: 58px;">High</span>
-                        <small class="text-muted" style="font-size: 0.78rem;">Full review required.</small>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="d-flex align-items-center">
-                        <span class="badge bg-danger text-white me-2 px-2 py-1" style="min-width: 58px;">Critical</span>
-                        <small class="text-muted" style="font-size: 0.78rem;">Board review required.</small>
-                    </div>
-                </div>
+<div class="card card-custom p-3 p-md-4 mb-4">
+    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-info-circle me-1"></i> Risk Level Definitions</h6>
+    <div class="row g-3">
+        <div class="col-6 col-md-3">
+            <div class="d-flex align-items-center">
+                <span class="badge bg-light text-dark border me-2 px-2 py-1" style="min-width: 58px;">Low</span>
+                <small class="text-muted" style="font-size: 0.8rem;">Minimal risk, no sensitive data.</small>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="d-flex align-items-center">
+                <span class="badge bg-light text-dark border me-2 px-2 py-1" style="min-width: 58px;">Medium</span>
+                <small class="text-muted" style="font-size: 0.8rem;">Standard protocols needed.</small>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="d-flex align-items-center">
+                <span class="badge bg-light text-dark border me-2 px-2 py-1" style="min-width: 58px;">High</span>
+                <small class="text-muted" style="font-size: 0.8rem;">Full review required.</small>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="d-flex align-items-center">
+                <span class="badge bg-light text-dark border me-2 px-2 py-1" style="min-width: 58px;">Critical</span>
+                <small class="text-muted" style="font-size: 0.8rem;">Board review required.</small>
             </div>
         </div>
     </div>
