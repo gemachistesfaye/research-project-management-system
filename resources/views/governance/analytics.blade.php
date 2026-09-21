@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
         <h3 class="fw-bold mb-0"><i class="bi bi-bar-chart-line me-2 text-dark"></i>Executive Analytics &amp; Reporting</h3>
         <span class="text-muted small">Real-time research portfolio intelligence dashboard</span>
     </div>
-    <div class="d-flex gap-2">
-        <a href="{{ route('analytics.export.csv') }}" class="btn btn-outline-dark fw-bold shadow-sm">
-            <i class="bi bi-file-earmark-spreadsheet me-1 text-success"></i> Export CSV / Excel
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+        <a href="{{ route('analytics.export.csv') }}" class="btn btn-outline-dark fw-bold shadow-sm flex-grow-1 flex-md-grow-0">
+            <i class="bi bi-file-earmark-spreadsheet me-1 text-success"></i> Export CSV
         </a>
-        <a href="{{ route('analytics.export.pdf') }}" class="btn btn-dark fw-bold shadow-sm">
-            <i class="bi bi-file-earmark-pdf me-1 text-danger"></i> Export PDF Report
+        <a href="{{ route('analytics.export.pdf') }}" class="btn btn-dark fw-bold shadow-sm flex-grow-1 flex-md-grow-0">
+            <i class="bi bi-file-earmark-pdf me-1 text-danger"></i> Export PDF
         </a>
     </div>
 </div>
