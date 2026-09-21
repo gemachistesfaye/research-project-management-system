@@ -725,8 +725,8 @@
                     </div>
 
                     {{-- Academic Call Cycle Badge --}}
-                    <div class="d-none d-xl-flex align-items-center text-warning small border border-warning rounded-pill px-3 py-1 me-3" style="font-size:0.75rem;">
-                        <i class="bi bi-calendar2-check me-1"></i> AY 2026/2027 (Call #1 Active)
+                    <div class="d-none d-xl-flex align-items-center small rounded-pill px-3 py-1 me-3" style="font-size:0.75rem; cursor:pointer; transition: transform 0.2s; background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%); border: 1px solid #1ecbff33;" data-bs-toggle="modal" data-bs-target="#calendarModal" title="View Academic Calendar">
+                        <i class="bi bi-calendar2-check me-1 text-info"></i> <span class="text-white">AY 2026/2027</span> <span class="badge bg-success ms-2" style="font-size: 0.65rem; padding: 2px 6px;">Call #1 Active</span>
                     </div>
 
                     {{-- User Profile & Demo Role Switcher Dropdown --}}
@@ -845,6 +845,11 @@
                         <i class="bi bi-person-circle"></i> View Profile
                     </a>
                 </div>
+            </div>
+
+            {{-- Mobile Academic Call Badge --}}
+            <div class="mb-3 p-2 rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%); border: 1px solid #1ecbff33; font-size: 0.8rem; font-weight: 600; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#calendarModal" data-bs-dismiss="offcanvas">
+                <i class="bi bi-calendar2-check me-2 text-info"></i> <span class="text-white">AY 2026/2027</span> <span class="badge bg-success ms-2" style="font-size: 0.65rem; padding: 2px 6px;">Call #1 Active</span>
             </div>
 
             {{-- Main Navigation Links --}}
@@ -1251,9 +1256,100 @@
                         Yes, Confirm
                     </button>
                 </div>
+                </div>
             </div>
         </div>
     </div>
+
+    {{-- Mini Calendar Modal --}}
+    <div class="modal fade" id="calendarModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width:320px;">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-dark text-white border-0 py-2">
+                    <h6 class="modal-title mb-0 fw-bold"><i class="bi bi-calendar2-check me-2"></i>Research Calendar</h6>
+                    <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <button class="btn btn-sm btn-light py-0 px-2 text-muted" id="calPrevBtn"><i class="bi bi-chevron-left"></i></button>
+                        <span class="fw-bold text-dark small" id="calendarMonthLabel" style="font-size:0.85rem;"></span>
+                        <button class="btn btn-sm btn-light py-0 px-2 text-muted" id="calNextBtn"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                    <!-- Days of week -->
+                    <div class="d-flex justify-content-between text-muted fw-bold mb-2 text-center" style="font-size:0.7rem;">
+                        <div style="width:14%;">Su</div><div style="width:14%;">Mo</div><div style="width:14%;">Tu</div><div style="width:14%;">We</div><div style="width:14%;">Th</div><div style="width:14%;">Fr</div><div style="width:14%;">Sa</div>
+                    </div>
+                    <!-- Grid -->
+                    <div id="miniCalendarGrid" class="d-flex flex-wrap text-center" style="font-size:0.8rem;"></div>
+                    
+                    <hr class="my-3 border-secondary opacity-25">
+                    
+                    <div class="text-center py-1">
+                        <div class="fw-bold text-dark mb-1" style="font-size:0.85rem;">Role-based research calendar</div>
+                        <div class="text-dark fw-bold" style="font-size:1rem; letter-spacing:0.5px;">COMING SOON</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calGrid = document.getElementById('miniCalendarGrid');
+        const monthLabel = document.getElementById('calendarMonthLabel');
+        const prevBtn = document.getElementById('calPrevBtn');
+        const nextBtn = document.getElementById('calNextBtn');
+        if(!calGrid || !monthLabel) return;
+        
+        let currentDate = new Date(); // Date used for navigation
+        const actualToday = new Date(); // Always strictly today
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            monthLabel.textContent = monthNames[month] + " " + year;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            let html = '';
+            for(let i=0; i<firstDay; i++) {
+                html += '<div style="width:14%; padding: 6px 0;"></div>';
+            }
+            
+            for(let i=1; i<=daysInMonth; i++) {
+                let extraStyle = 'cursor:pointer; border-radius:6px; padding: 6px 0; margin-bottom: 2px; transition: background 0.2s;';
+                let cls = 'fw-semibold text-dark hover-cal-bg';
+                
+                // Highlight if it's the actual current day in real life
+                if(i === actualToday.getDate() && month === actualToday.getMonth() && year === actualToday.getFullYear()) {
+                    extraStyle += 'background: #212529; color:#fff !important; box-shadow: 0 2px 4px rgba(0,0,0,0.3);';
+                    cls = 'fw-bold text-white';
+                }
+                
+                html += `<div style="width:14%; ${extraStyle}" class="${cls}" title="${monthNames[month]} ${i}, ${year}">${i}</div>`;
+            }
+            calGrid.innerHTML = html;
+        }
+
+        prevBtn.addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        nextBtn.addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        // Initial render
+        renderCalendar();
+    });
+    </script>
+    <style>
+    .hover-cal-bg:hover { background-color: #f1f5f9 !important; color: #000 !important; }
+    </style>
 
     @stack('scripts')
 </body>
