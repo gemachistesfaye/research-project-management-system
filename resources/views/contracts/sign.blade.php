@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-pen me-2 text-success"></i> Contract Signing (SCR-08)</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-pen me-2 text-dark"></i> Contract Signing</h3>
         <span class="text-muted">Sign the research contract to activate the project</span>
     </div>
     <div class="d-flex gap-2">

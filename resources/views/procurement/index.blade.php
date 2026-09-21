@@ -35,7 +35,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-cart-check me-2 text-dark"></i> Procurement Tracker (SCR-20)</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-cart-check me-2 text-dark"></i> Procurement Tracker</h3>
         <span class="text-muted">
             @if(Auth::user()->role === 'pi')
                 Submit and track purchase requests for your active research projects

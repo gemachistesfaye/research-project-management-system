@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-calendar-range me-2 text-warning"></i> Extensions & Amendments (SCR-10)</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-calendar-range me-2 text-dark"></i> Extensions &amp; Amendments</h3>
         <span class="text-muted">Request time extensions or budget adjustments for your projects</span>
     </div>
 </div>

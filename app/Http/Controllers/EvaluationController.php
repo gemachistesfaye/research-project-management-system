@@ -55,6 +55,8 @@ class EvaluationController extends Controller
             'evaluated_at' => now(),
         ]);
 
+        \App\Services\AuditService::log('EVALUATION_SCORED', 'Evaluation', $evaluation->eval_id, "Blind peer review scored ({$request->score}/100 - {$request->decision}) for Project #{$evaluation->project_id}");
+
         $project = $evaluation->project;
         $allEvaluated = $project->evaluations()->where('decision', 'Pending')->count() === 0;
 

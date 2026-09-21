@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-arrow-left-right me-2 text-warning"></i> PI Transfer (SCR-22)</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-arrow-left-right me-2 text-dark"></i> PI Transfer</h3>
         <span class="text-muted">Transfer Principal Investigator role to another staff member</span>
     </div>
 </div>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-people me-2 text-info"></i> Team Members (SCR-23)</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-people me-2 text-dark"></i> Team Members</h3>
         <span class="text-muted">{{ $project->title }}</span>
         @if($project->proposal_document_url)
         <a href="{{ Storage::url($project->proposal_document_url) }}" target="_blank" class="btn btn-sm btn-outline-danger ms-2" title="View Proposal Document">

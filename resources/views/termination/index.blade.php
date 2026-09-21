@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold mb-0"><i class="bi bi-exclamation-triangle me-2 text-danger"></i> Termination & Refund (SCR-11)</h3>
+        <h3 class="fw-bold mb-0"><i class="bi bi-exclamation-triangle me-2 text-danger"></i> Termination &amp; Refund</h3>
         <span class="text-muted">Manage project terminations and refund calculations</span>
     </div>
 </div>

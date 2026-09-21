@@ -86,6 +86,8 @@ class ProjectController extends Controller
 
         $project->update(['status' => 'Submitted', 'current_stage' => 1, 'dh_screened_at' => null, 'under_review_at' => null, 'approved_at' => null, 'activated_at' => null, 'completed_at' => null]);
 
+        \App\Services\AuditService::log('PROPOSAL_SUBMITTED', 'Project', $project->project_id, "PI submitted research proposal '{$project->title}' (ETB " . number_format($project->requested_budget, 2) . ")");
+
         return back()->with('success', 'Proposal submitted for Department Head screening.');
     }
 
