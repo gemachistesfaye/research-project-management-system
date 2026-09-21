@@ -20,40 +20,63 @@
     $disbursementPercentage = $totalApproved > 0 ? round(($totalDisbursed / $totalApproved) * 100, 1) : 0;
 @endphp
 
-<div class="row g-3 mb-4">
-    <div class="col-6 col-md-4">
-        <div class="card card-custom p-3 border-0 shadow-sm h-100">
-            <div class="text-muted small text-uppercase fw-bold">Total Disbursed</div>
-            <div class="fs-3 fw-bold text-dark my-1">{{ number_format($totalDisbursed, 2) }} ETB</div>
-            <div class="small text-muted">Of {{ number_format($totalApproved, 2) }} ETB approved</div>
+<div class="row g-2 g-md-3 mb-4">
+    <div class="col-4 col-md-4">
+        <div class="card card-custom p-2 p-md-3 border-0 shadow-sm h-100">
+            <div class="text-muted small text-uppercase fw-bold text-truncate d-none d-md-block">Total Disbursed</div>
+            <div class="text-muted fw-bold text-truncate d-md-none" style="font-size: 0.7rem;">DISBURSED</div>
+            
+            <div class="fs-2 fw-bold text-dark my-1 text-nowrap d-none d-md-block">
+                {{ number_format($totalDisbursed, 2) }} <span class="fs-6 text-muted fw-normal">ETB</span>
+            </div>
+            <div class="fw-bold text-dark my-1 text-nowrap d-md-none" style="font-size: 0.95rem;">
+                {{ number_format($totalDisbursed, 0) }} <span class="fw-normal text-muted" style="font-size: 0.65rem;">ETB</span>
+            </div>
+
+            <div class="small text-muted d-none d-md-block">Of {{ number_format($totalApproved, 2) }} ETB approved</div>
+            <div class="text-muted text-truncate d-md-none" style="font-size: 0.65rem;">Of {{ number_format($totalApproved, 0) }} ETB</div>
         </div>
     </div>
-    <div class="col-6 col-md-4">
-        <div class="card card-custom p-3 border-0 shadow-sm h-100">
-            <div class="text-muted small text-uppercase fw-bold">Pending Requests</div>
-            <div class="fs-3 fw-bold text-dark my-1">{{ $pendingRequests->count() }}</div>
-            <div class="small text-muted">Awaiting fund transfer</div>
+    <div class="col-4 col-md-4">
+        <div class="card card-custom p-2 p-md-3 border-0 shadow-sm h-100">
+            <div class="text-muted small text-uppercase fw-bold text-truncate d-none d-md-block">Pending Requests</div>
+            <div class="text-muted fw-bold text-truncate d-md-none" style="font-size: 0.7rem;">PENDING</div>
+
+            <div class="fs-2 fw-bold text-dark my-1 d-none d-md-block">
+                {{ $pendingRequests->count() }}
+            </div>
+            <div class="fw-bold text-dark my-1 d-md-none" style="font-size: 0.95rem;">
+                {{ $pendingRequests->count() }}
+            </div>
+
+            <div class="small text-muted d-none d-md-block">Awaiting fund transfer</div>
+            <div class="text-muted text-truncate d-md-none" style="font-size: 0.65rem;">Awaiting transfer</div>
         </div>
     </div>
-    <div class="col-12 col-md-4">
-        <div class="card card-custom p-3 border-0 shadow-sm h-100">
+    <div class="col-4 col-md-4">
+        <div class="card card-custom p-2 p-md-3 border-0 shadow-sm h-100">
             <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="text-muted small text-uppercase fw-bold">Fund Release Progress</span>
+                <span class="text-muted small text-uppercase fw-bold text-truncate d-none d-md-block">Fund Release Progress</span>
+                <span class="text-muted fw-bold text-truncate d-md-none" style="font-size: 0.7rem;">PROGRESS</span>
                 <span class="badge bg-dark rounded-pill">{{ $disbursementPercentage }}%</span>
             </div>
             <div class="progress my-2" style="height: 8px; border-radius: 4px;">
                 <div class="progress-bar bg-dark" style="width: {{ $disbursementPercentage }}%;"></div>
             </div>
-            <div class="d-flex justify-content-between text-muted" style="font-size: 0.75rem;">
+            <div class="d-flex justify-content-between text-muted small d-none d-md-flex">
                 <span>0 ETB</span>
-                <span>{{ number_format($totalApproved, 0) }} ETB</span>
+                <span>{{ number_format($totalApproved, 2) }} ETB</span>
+            </div>
+            <div class="d-flex justify-content-between text-muted d-md-none" style="font-size: 0.65rem;">
+                <span>0</span>
+                <span>{{ number_format($totalApproved, 0) }}</span>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Compact Horizontal Tranche Guide Bar --}}
-<div class="card card-custom p-2 mb-4 bg-light border-0">
+{{-- Compact Horizontal Tranche Guide Bar (Hidden on Mobile) --}}
+<div class="card card-custom p-2 mb-4 bg-light border-0 d-none d-md-block">
     <div class="d-flex justify-content-between align-items-center flex-wrap px-2 py-1 gap-2">
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-info-circle text-dark"></i>
