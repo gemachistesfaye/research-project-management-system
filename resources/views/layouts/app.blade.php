@@ -196,6 +196,50 @@
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.12);
             border-radius: 10px;
         }
+        /* Select Dropdowns - Modern Dark Theme */
+        .form-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230f172a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 10px 10px;
+            padding-right: 2.25rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #0f172a;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .form-select:hover {
+            border-color: #94a3b8;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+        .form-select:focus {
+            border-color: var(--gmu-primary, #0f3e2e);
+            box-shadow: 0 0 0 3px rgba(15, 62, 46, 0.12);
+            outline: none;
+        }
+        .form-select-sm {
+            font-size: 0.82rem;
+            padding: 0.35rem 2rem 0.35rem 0.65rem;
+            border-radius: 6px;
+        }
+        .form-select option {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            background: #ffffff;
+            color: #0f172a;
+        }
+        .form-select option:hover,
+        .form-select option:checked {
+            background: var(--gmu-primary, #0f3e2e);
+            color: #ffffff;
+        }
         /* Profile dropdown: fixed so it doesn't shift page content */
         .profile-dropdown-menu.show {
             position: fixed !important;
