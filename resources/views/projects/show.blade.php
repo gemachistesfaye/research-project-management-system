@@ -850,7 +850,6 @@
                     <h5 class="fw-bold mb-1 text-dark"><i class="bi bi-clipboard-check me-2 text-dark"></i>Standardized 100-Point Evaluation Rubric</h5>
                     <p class="small text-muted mb-3">Evaluate the proposal across 5 standardized academic dimensions. Total score is computed automatically.</p>
 
-                    <form method="POST" action="{{ route('evaluations.submit', $myPendingEval->eval_id) }}">
                     <form method="POST" action="{{ route('evaluations.submit', $myPendingEval->eval_id) }}" id="rubricEvaluationForm">
                         @csrf
 
@@ -903,8 +902,6 @@
                         {{-- Total Score & Recommendation Verdict --}}
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold">Score (0 - 100) <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" min="0" max="100" name="score" class="form-control fw-bold" required placeholder="e.g. 85.00">
                                 <label class="form-label small fw-bold mb-1">Computed Total Score (0 - 100) <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" step="0.01" min="0" max="100" name="score" id="totalScoreInput"
@@ -914,8 +911,6 @@
                                 <small class="text-muted" style="font-size:0.75rem;">Calculated automatically from rubric dimensions</small>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold">Recommendation Verdict <span class="text-danger">*</span></label>
-                                <select name="decision" class="form-select" required>
                                 <label class="form-label small fw-bold mb-1">Recommendation Verdict <span class="text-danger">*</span></label>
                                 <select name="decision" class="form-select fw-bold" required>
                                     <option value="Accepted">Accepted (Fund)</option>
@@ -927,13 +922,10 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-bold">Constructive Comments & Critique <span class="text-danger">*</span></label>
-                            <textarea name="comments" rows="4" class="form-control" required placeholder="Provide technical feedback, strengths, and areas of improvement..."></textarea>
                             <label class="form-label small fw-bold">Constructive Comments &amp; Technical Critique <span class="text-danger">*</span></label>
                             <textarea name="comments" rows="4" class="form-control" required placeholder="Provide technical feedback, methodological strengths, and specific areas of required improvement..."></textarea>
                         </div>
 
-                        <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your score and recommendation will be final." data-confirm-icon="bi-send-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit" data-confirm-btn-class="btn-dark">
                         <button type="button" class="btn btn-dark w-100 fw-bold confirm-btn" data-confirm-title="Submit Evaluation" data-confirm-message="This action cannot be undone. Your rubric score and recommendation verdict will be recorded under double-blind protocol." data-confirm-icon="bi-send-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Submit Score" data-confirm-btn-class="btn-dark">
                             <i class="bi bi-send-check me-1"></i> Submit Evaluation Score
                         </button>

@@ -1263,7 +1263,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Mini Calendar Modal --}}
     <div class="modal fade" id="calendarModal" tabindex="-1" aria-hidden="true">

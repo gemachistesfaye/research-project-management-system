@@ -15,6 +15,7 @@ class ForgotPasswordTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
         RateLimiter::clear('login.127.0.0.1');
         $this->seed(\Database\Seeders\RbacSeeder::class);
     }

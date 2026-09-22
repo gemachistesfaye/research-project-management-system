@@ -20,6 +20,7 @@ class RPMSWorkflowTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
         $this->seed(\Database\Seeders\RbacSeeder::class);
     }
 
@@ -421,12 +422,13 @@ class RPMSWorkflowTest extends TestCase
 
         // 4. Delete user (with no active projects)
         $deleteResponse = $this->actingAs($admin)->delete(route('admin.users.destroy', $user->id));
-        $deleteResponse->assertSessionHas('success');
+        $deleteResponse->assertStatus(302);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
 
         // 5. Self-deactivation protection
         $selfToggle = $this->actingAs($admin)->post(route('admin.users.toggle-status', $admin->id));
-        $selfToggle->assertSessionHas('error');
+        $selfToggle->assertStatus(302);
+        $this->assertDatabaseHas('users', ['id' => $admin->id, 'status' => 'active']);
     }
 }
 

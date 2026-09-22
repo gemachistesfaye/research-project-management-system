@@ -174,11 +174,11 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Drafts</div>
-                    <div class="fs-2 fw-bold mt-1" text-dark>{{ $stats['draft'] ?? 0 }}</div>
+                    <div class="fs-2 fw-bold mt-1 text-dark">{{ $stats['draft'] ?? 0 }}</div>
                     <div class="small text-muted" style="font-size: 0.75rem;">Not yet submitted</div>
                 </div>
                 <div class="stat-bubble">
-                    <i class="bi bi-pencil-square" text-dark></i>
+                    <i class="bi bi-pencil-square text-dark"></i>
                 </div>
             </div>
         </div>

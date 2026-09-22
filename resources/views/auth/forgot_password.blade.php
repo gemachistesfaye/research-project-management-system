@@ -16,7 +16,7 @@
                 <strong>Two-factor identity check:</strong> You must provide your Staff ID <em>and</em> registered email before a new password can be set.
             </div>
 
-            <form method="POST" action="{{ route('password.reset.submit') }}">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
 
                 {{-- Staff ID --}}
