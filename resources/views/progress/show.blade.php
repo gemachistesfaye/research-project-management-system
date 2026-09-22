@@ -165,7 +165,7 @@
                             <i class="bi bi-file-earmark-arrow-up me-1 text-dark"></i>Deliverable Document File (Optional)
                         </label>
                         <input type="file" name="deliverable_file" class="form-control form-control-sm @error('deliverable_file') is-invalid @enderror" accept=".pdf,.doc,.docx,.zip,.rar,.xlsx,.csv,.txt">
-                        <div class="form-text small text-muted">Upload PDF, Word document, datasets, or ZIP archive (max 20MB)</div>
+                        <div class="form-text small text-muted">Upload PDF, Word document, datasets, or ZIP archive (max 50MB)</div>
                         @error('deliverable_file') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 

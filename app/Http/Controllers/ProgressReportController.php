@@ -92,7 +92,7 @@ class ProgressReportController extends Controller
             'milestone_name'          => 'required|string|max:255',
             'progress_percentage'     => 'required|numeric|min:0|max:100',
             'summary_text'            => 'required|string',
-            'deliverable_file'        => 'nullable|file|mimes:pdf,doc,docx,zip,rar,txt,xlsx,csv|max:20480',
+            'deliverable_file'        => 'nullable|file|mimes:pdf,doc,docx,zip,rar,txt,xlsx,csv|max:51200',
             'deliverable_link_url'    => 'nullable|url|max:500',
             'deliverable_document_url'=> 'nullable|string|max:500',
         ]);
