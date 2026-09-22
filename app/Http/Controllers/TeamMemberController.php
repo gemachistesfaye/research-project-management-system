@@ -23,6 +23,7 @@ class TeamMemberController extends Controller
 
         $currentMemberIds = $project->members->pluck('user_id')->toArray();
         $availableUsers = User::where('id', '!=', $project->pi_id)
+            ->where('role', 'tm')
             ->where('status', 'active')
             ->whereNotIn('id', $currentMemberIds)
             ->get();
