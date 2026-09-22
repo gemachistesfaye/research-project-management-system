@@ -68,7 +68,7 @@
                                 <input type="file" name="proposal_document" accept=".pdf,.doc,.docx" class="d-none" id="fileInput">
                                 <div id="fileName" class="text-success fw-bold small d-none mt-1"><i class="bi bi-check-circle me-1"></i><span></span></div>
                             </div>
-                            <small class="text-muted">PDF, DOC, or DOCX, max 10MB</small>
+                            <small class="text-muted">PDF, DOC, or DOCX, max 50MB</small>
                             <div id="fileError" class="alert alert-danger small py-1 mb-0 mt-1 d-none"><i class="bi bi-exclamation-triangle me-1"></i>Please select a proposal document (PDF, DOC, or DOCX).</div>
                             @error('proposal_document')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                         </div>
