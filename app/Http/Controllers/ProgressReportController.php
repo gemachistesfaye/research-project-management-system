@@ -130,6 +130,10 @@ class ProgressReportController extends Controller
             abort(403, 'Only Research Coordinators and Administrators are authorized to audit and approve progress reports.');
         }
 
+        if (in_array($report->status, ['Approved', 'Coordinator_Audited'])) {
+            return back()->with('error', 'This progress report has already been audited or approved and cannot be modified further.');
+        }
+
         $request->validate([
             'coordinator_feedback' => 'required|string',
             'status'               => 'required|in:Coordinator_Audited,Approved,Needs_Revision',

@@ -335,7 +335,7 @@
                                         @endif
 
                                         {{-- Coordinator Review Form (strictly coordinator and admin) --}}
-                                        @if(in_array(Auth::user()->role, ['coordinator', 'admin']))
+                                        @if(in_array(Auth::user()->role, ['coordinator', 'admin']) && !in_array($report->status, ['Approved', 'Coordinator_Audited']))
                                         <div class="card border-dark border-opacity-25 mt-2">
                                             <div class="card-header bg-dark bg-opacity-10 py-2">
                                                 <small class="fw-bold text-dark"><i class="bi bi-pencil-square me-1"></i>Coordinator Milestone Audit &amp; Review</small>
