@@ -18,6 +18,24 @@ A full-featured web application for managing the complete lifecycle of academic 
 - **Audit Trail:** Complete action logging for compliance
 - **Mobile Responsive:** Dark-themed, professional UI with collapsible sidebar on mobile
 
+## Test Accounts / Demo Logins
+
+If you have run the database seeders (`php artisan migrate --seed`), you can log in with any of the following demo accounts. **All accounts share the same password:** `GMU@Demo1`
+
+| Role | Email Address |
+| :--- | :--- |
+| **System Administrator** | `admin@gmu.edu.et` |
+| **Principal Investigator** | `pi@gmu.edu.et` |
+| **Team Member** | `tm@gmu.edu.et` |
+| **Department Head** | `dh@gmu.edu.et` |
+| **Research Coordinator** | `coordinator@gmu.edu.et` |
+| **Blind Reviewer** | `reviewer@gmu.edu.et` |
+| **College Dean** | `dean@gmu.edu.et` |
+| **Ethics Committee (IRERC)** | `irerc@gmu.edu.et` |
+| **VP Academic (ARTTCS)** | `vp@gmu.edu.et` |
+| **RCSC Chair** | `rcsc@gmu.edu.et` |
+| **Finance Office** | `finance@gmu.edu.et` |
+
 ## Tech Stack
 
 - **Backend:** Laravel 9 (PHP 8.1)
@@ -83,15 +101,15 @@ Visit `http://localhost:8000`
 
 Key variables in `.env`:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `APP_KEY` | Encryption key | Pre-configured |
-| `APP_URL` | Application URL | Auto-detected |
-| `APP_DEBUG` | Debug mode | `false` in production |
-| `DB_CONNECTION` | Database driver | `sqlite` |
-| `DB_DATABASE` | Database path | `/data/database.sqlite` |
-| `CACHE_DRIVER` | Cache backend | `file` |
-| `SESSION_DRIVER` | Session storage | `file` |
+| Variable           | Description     | Default                   |
+| ------------------ | --------------- | ------------------------- |
+| `APP_KEY`        | Encryption key  | Pre-configured            |
+| `APP_URL`        | Application URL | Auto-detected             |
+| `APP_DEBUG`      | Debug mode      | `false` in production   |
+| `DB_CONNECTION`  | Database driver | `sqlite`                |
+| `DB_DATABASE`    | Database path   | `/data/database.sqlite` |
+| `CACHE_DRIVER`   | Cache backend   | `file`                  |
+| `SESSION_DRIVER` | Session storage | `file`                  |
 
 ## Docker Deployment
 
@@ -103,6 +121,7 @@ docker run -p 8000:8000 -v data:/data rpms
 ```
 
 The container handles automatically on startup:
+
 1. Environment variable overrides for production
 2. Database migration and seeding
 3. Config, route, and view cache rebuild
@@ -112,19 +131,19 @@ The container handles automatically on startup:
 
 The system enforces 60+ granular permissions across 12 roles:
 
-| Role | Key Permissions |
-|------|----------------|
-| Principal Investigator | Create/manage own projects, submit progress reports |
-| Team Member | View assigned projects, submit contributions |
-| Department Head | Screen proposals within department |
-| Coordinator | Assign reviewers, manage review workflow |
-| Reviewer | Conduct blind evaluations, submit scores |
-| College Dean | Approve/reject projects (<500k ETB), view college analytics |
-| IRERC Ethics Committee | Ethics review and approval |
-| VP Academic (ARTTCS) | Final approval, amendment review, certificate issuance |
-| RCSC Chair | Financial governance (≥500k ETB), budget approval |
-| Finance Office | Process disbursements, financial tracking |
-| System Administrator | Full access: users, colleges, departments, thematic areas, audit logs |
+| Role                   | Key Permissions                                                       |
+| ---------------------- | --------------------------------------------------------------------- |
+| Principal Investigator | Create/manage own projects, submit progress reports                   |
+| Team Member            | View assigned projects, submit contributions                          |
+| Department Head        | Screen proposals within department                                    |
+| Coordinator            | Assign reviewers, manage review workflow                              |
+| Reviewer               | Conduct blind evaluations, submit scores                              |
+| College Dean           | Approve/reject projects (<500k ETB), view college analytics           |
+| IRERC Ethics Committee | Ethics review and approval                                            |
+| VP Academic (ARTTCS)   | Final approval, amendment review, certificate issuance                |
+| RCSC Chair             | Financial governance (≥500k ETB), budget approval                    |
+| Finance Office         | Process disbursements, financial tracking                             |
+| System Administrator   | Full access: users, colleges, departments, thematic areas, audit logs |
 
 ## License
 
