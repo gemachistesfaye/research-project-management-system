@@ -143,6 +143,7 @@ class GovernanceController extends Controller
             $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget, 'approved_at' => now()]);
         } else {
             $project->update(['status' => 'Rejected', 'feedback' => $request->comments]);
+            \Illuminate\Support\Facades\DB::table('irerc_clearances')->where('project_id', $project->project_id)->delete();
         }
 
         return back()->with('success', "Budget request {$request->decision} successfully by Dean.");
@@ -211,6 +212,7 @@ class GovernanceController extends Controller
             $project->update(['status' => 'Approved', 'approved_budget' => $request->approved_amount ?? $project->requested_budget, 'approved_at' => now()]);
         } else {
             $project->update(['status' => 'Rejected', 'feedback' => $request->comments]);
+            \Illuminate\Support\Facades\DB::table('irerc_clearances')->where('project_id', $project->project_id)->delete();
         }
 
         return back()->with('success', "Budget request {$request->decision} successfully by RCSC.");

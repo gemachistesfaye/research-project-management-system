@@ -73,6 +73,7 @@ class EvaluationController extends Controller
                     'status' => 'Rejected',
                     'feedback' => $comments,
                 ]);
+                \Illuminate\Support\Facades\DB::table('irerc_clearances')->where('project_id', $project->project_id)->delete();
             } elseif ($hasMajorMods) {
                 $comments = $project->evaluations()
                     ->where('decision', 'AcceptedWithMajorMods')

@@ -82,6 +82,7 @@ class ProjectController extends Controller
 
         if (in_array($project->status, ['Returned', 'Rejected', 'Withdrawn'])) {
             Evaluation::where('project_id', $project->project_id)->delete();
+            \Illuminate\Support\Facades\DB::table('irerc_clearances')->where('project_id', $project->project_id)->delete();
         }
 
         $project->update(['status' => 'Submitted', 'current_stage' => 1, 'submitted_at' => now(), 'dh_screened_at' => null, 'under_review_at' => null, 'approved_at' => null, 'activated_at' => null, 'completed_at' => null]);
