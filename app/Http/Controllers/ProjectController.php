@@ -104,7 +104,7 @@ class ProjectController extends Controller
             'abstract_text'     => 'required|string',
             'thematic_id'       => 'required|exists:thematic_areas,id',
             'requested_budget'  => 'required|numeric|min:0',
-            'proposal_document' => 'required|file|mimes:pdf,doc,docx|max:10240',
+            'proposal_document' => 'required|file|mimes:pdf,doc,docx|max:51200',
         ]);
 
         $user = Auth::user();
@@ -139,7 +139,7 @@ class ProjectController extends Controller
             'abstract_text'     => 'required|string',
             'thematic_id'       => 'required|exists:thematic_areas,id',
             'requested_budget'  => 'required|numeric|min:0',
-            'proposal_document' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'proposal_document' => 'nullable|file|mimes:pdf,doc,docx|max:51200',
         ]);
 
         $user = Auth::user();
@@ -202,7 +202,7 @@ class ProjectController extends Controller
             'abstract_text'     => 'required|string',
             'thematic_id'       => 'required|exists:thematic_areas,id',
             'requested_budget'  => 'required|numeric|min:0',
-            'proposal_document' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'proposal_document' => 'nullable|file|mimes:pdf,doc,docx|max:51200',
         ]);
 
         $data = [
