@@ -125,7 +125,7 @@
     $stageKeys = array_keys($stages);
     $currentIndex = array_search($currentStatus, $stageKeys);
     $dates = [
-        'Submitted'   => $project->created_at,
+        'Submitted'   => $project->submitted_at ?? null,
         'DH_Screened' => $project->dh_screened_at ?? null,
         'UnderReview' => $project->under_review_at ?? null,
         'Approved'    => $project->approved_at ?? null,
