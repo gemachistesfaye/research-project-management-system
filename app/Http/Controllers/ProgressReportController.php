@@ -88,9 +88,11 @@ class ProgressReportController extends Controller
             }
         }
 
+        $minProgress = $project->milestoneReports()->max('progress_percentage') ?? 0;
+
         $request->validate([
             'milestone_name'          => 'required|string|max:255',
-            'progress_percentage'     => 'required|numeric|min:0|max:100',
+            'progress_percentage'     => 'required|numeric|min:' . $minProgress . '|max:100',
             'summary_text'            => 'required|string',
             'deliverable_file'        => 'nullable|file|mimes:pdf,doc,docx,zip,rar,txt,xlsx,csv|max:51200',
             'deliverable_link_url'    => 'nullable|url|max:500',

@@ -140,10 +140,10 @@
                         <label class="form-label fw-bold small text-muted text-uppercase">Progress Percentage *</label>
                         <div class="input-group">
                             <input type="range" name="progress_percentage" id="progressSlider" 
-                                   class="form-range" min="0" max="100" value="0" required
+                                   class="form-range" min="{{ $overallProgress }}" max="100" value="{{ $overallProgress }}" required
                                    oninput="document.getElementById('progressValue').textContent = this.value + '%'; updateSliderColor(this);">
                             <span class="input-group-text bg-light" style="min-width: 60px; justify-content: center;">
-                                <span id="progressValue" class="fw-bold">0%</span>
+                                <span id="progressValue" class="fw-bold">{{ $overallProgress }}%</span>
                             </span>
                         </div>
                         <div class="progress mt-2" style="height: 8px;">
