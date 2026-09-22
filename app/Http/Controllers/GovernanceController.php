@@ -221,9 +221,15 @@ class GovernanceController extends Controller
     public function irercPanel()
     {
         $pending = IRERCClearance::where('status', 'Pending')
+            ->whereHas('project', function ($query) {
+                $query->whereNotIn('status', ['Rejected', 'Returned', 'Withdrawn']);
+            })
             ->with('project.pi')
             ->get();
         $completed = IRERCClearance::whereIn('status', ['Approved', 'Rejected'])
+            ->whereHas('project', function ($query) {
+                $query->whereNotIn('status', ['Rejected', 'Returned', 'Withdrawn']);
+            })
             ->with('project.pi')
             ->latest('updated_at')
             ->get();
