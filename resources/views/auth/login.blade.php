@@ -26,7 +26,7 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold">Email Address</label>
                     <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                           required autofocus placeholder="user@university.edu"
+                           required autofocus placeholder="user@institution.org"
                            value="{{ old('email') }}"
                            autocomplete="username">
                 </div>
@@ -62,7 +62,7 @@
             <div class="text-center mt-3">
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="email" value="admin@university.edu">
+                    <input type="hidden" name="email" value="admin@institution.org">
                     <input type="hidden" name="password" value="UNI@Demo1">
                     <button type="submit" class="btn btn-outline-dark btn-sm fw-bold">
                         <i class="bi bi-gear me-1"></i> Login as Admin

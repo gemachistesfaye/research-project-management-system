@@ -2,7 +2,7 @@
 
 ## 1. High-Level Overview
 
-The University Research Project Management System (RPMS) is an enterprise-grade web application built on the **Laravel Framework** (PHP). It follows the **MVC (Model-View-Controller)** architectural pattern to ensure clean separation of concerns.
+The Institution Research Project Management System (RPMS) is an enterprise-grade web application built on the **Laravel Framework** (PHP). It follows the **MVC (Model-View-Controller)** architectural pattern to ensure clean separation of concerns.
 
 ## 2. Core Architecture
 

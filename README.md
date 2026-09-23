@@ -1,6 +1,6 @@
 # Research Project Management System
 
-A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance. Built for University.
+A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance. Built for Institution.
 
 ## Features
 
@@ -11,7 +11,7 @@ A full-featured web application for managing the complete lifecycle of academic 
 - **Budget Management:** Tranche-based disbursement tracking with approval workflows
 - **Progress Reports:** Quarterly/semi-annual/annual reporting with team member contributions
 - **Contract Signing:** Digital contract generation and tracking
-- **PDF Certificates:** University-branded completion certificates with PDF download
+- **PDF Certificates:** Institution-branded completion certificates with PDF download
 - **Project Lifecycle:** Extensions, amendments, PI transfers, and termination with refund calculations
 - **Procurement Requests:** Equipment and supplies procurement tied to projects
 - **Analytics Dashboard:** Real-time project statistics, budget charts, and departmental metrics
@@ -22,19 +22,19 @@ A full-featured web application for managing the complete lifecycle of academic 
 
 If you have run the database seeders (`php artisan migrate --seed`), you can log in with any of the following demo accounts. **All accounts share the same password:** `UNI@Demo1`
 
-| Role                               | Email Address              |
-| :--------------------------------- | :------------------------- |
-| **System Administrator**     | `admin@university.edu`       |
-| **Principal Investigator**   | `pi@university.edu`          |
-| **Team Member**              | `tm@university.edu`          |
-| **Department Head**          | `dh@university.edu`          |
-| **Research Coordinator**     | `coordinator@university.edu` |
-| **Blind Reviewer**           | `reviewer@university.edu`    |
-| **College Dean**             | `dean@university.edu`        |
-| **Ethics Committee (IRERC)** | `irerc@university.edu`       |
-| **VP Academic (ARTTCS)**     | `vp@university.edu`          |
-| **RCSC Chair**               | `rcsc@university.edu`        |
-| **Finance Office**           | `finance@university.edu`     |
+| Role                               | Email Address                   |
+| :--------------------------------- | :------------------------------ |
+| **System Administrator**     | `admin@institution.org`       |
+| **Principal Investigator**   | `pi@institution.org`          |
+| **Team Member**              | `tm@institution.org`          |
+| **Department Head**          | `dh@institution.org`          |
+| **Research Coordinator**     | `coordinator@institution.org` |
+| **Blind Reviewer**           | `reviewer@institution.org`    |
+| **College Dean**             | `dean@institution.org`        |
+| **Ethics Committee (IRERC)** | `irerc@institution.org`       |
+| **VP Academic (ARTTCS)**     | `vp@institution.org`          |
+| **RCSC Chair**               | `rcsc@institution.org`        |
+| **Finance Office**           | `finance@institution.org`     |
 
 ## Tech Stack
 

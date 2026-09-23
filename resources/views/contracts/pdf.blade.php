@@ -26,7 +26,7 @@
 <body>
 <div class="contract-container">
     <div class="header">
-        <div class="uni-name">University</div>
+        <div class="uni-name">Institution</div>
         <div class="uni-office">Office of the Vice President for Academic, Research, Technology Transfer &amp; Community Service (ARTTCS)</div>
         <div class="contract-title">Institutional Research Grant Agreement</div>
     </div>
@@ -71,7 +71,7 @@
 
     <div class="section-title">3. Institutional Obligations &amp; Compliance</div>
     <ul class="terms-list">
-        <li>The Principal Investigator agrees to conduct the research in accordance with University research guidelines and ethics codes.</li>
+        <li>The Principal Investigator agrees to conduct the research in accordance with Institution research guidelines and ethics codes.</li>
         <li>Progress reports and financial receipts must be submitted before subsequent budget tranches are disbursed.</li>
         <li>All research publications and deliverables generated under this grant remain institutional property subject to UNI IP policy.</li>
     </ul>
@@ -123,7 +123,7 @@
 
     @if($project->pi_signature_date && $project->vp_signature_date)
     <div style="margin-top: 25px; padding: 10px; background: #e8f5e9; border: 1px solid #2e7d32; text-align: center; color: #1b5e20; font-size: 11px; font-weight: bold; letter-spacing: 0.5px;">
-        &#10003; FULLY EXECUTED &amp; ACTIVE INSTITUTIONAL RESEARCH CONTRACT &mdash; University
+        &#10003; FULLY EXECUTED &amp; ACTIVE INSTITUTIONAL RESEARCH CONTRACT &mdash; Institution
     </div>
     @elseif($project->pi_signature_date)
     <div style="margin-top: 25px; padding: 8px; background: #fff8e1; border: 1px dashed #f57f17; text-align: center; color: #b78103; font-size: 11px; font-weight: bold;">

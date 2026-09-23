@@ -68,7 +68,7 @@
                     <ul class="list-unstyled small text-muted mb-3 ps-1">
                         <li><i class="bi bi-shield-lock text-dark me-1"></i> Protocol: <strong>TLS 1.3 REST API (HMAC-SHA256)</strong></li>
                         <li><i class="bi bi-clock-history text-dark me-1"></i> Auto-Heartbeat: <strong>Every 15 minutes</strong></li>
-                        <li><i class="bi bi-database text-dark me-1"></i> Directory: <strong>University Central HR</strong></li>
+                        <li><i class="bi bi-database text-dark me-1"></i> Directory: <strong>Institution Central HR</strong></li>
                     </ul>
                 </div>
                 <form method="POST" action="{{ route('admin.hrms-sync.ping') }}" class="mt-2">

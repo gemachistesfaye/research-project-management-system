@@ -338,7 +338,7 @@
                 <div>
                     <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Total Projects</div>
                     <div class="fs-2 fw-bold text-dark mt-1">{{ $stats['total_projects'] ?? 0 }}</div>
-                    <div class="small text-muted" style="font-size: 0.75rem;">University-wide</div>
+                    <div class="small text-muted" style="font-size: 0.75rem;">Institution-wide</div>
                 </div>
                 <div class="stat-bubble">
                     <i class="bi bi-folder2 text-secondary" style="font-size: 1.35rem;"></i>

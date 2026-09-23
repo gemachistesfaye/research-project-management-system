@@ -278,7 +278,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small mb-1 text-start d-block">Department &amp; College</label>
                                 <select name="dept_id" class="form-select form-select-sm">
-                                    <option value="">-- Central Admin / University-wide --</option>
+                                    <option value="">-- Central Admin / Institution-wide --</option>
                                     @foreach($departments as $d)
                                         <option value="{{ $d->id }}" {{ $u->dept_id == $d->id ? 'selected' : '' }}>{{ $d->name }} ({{ $d->code }} - {{ $d->college->name ?? '' }})</option>
                                     @endforeach
@@ -362,7 +362,7 @@
                     <div class="row g-2 mb-2 text-start">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1 text-start d-block">Email Address</label>
-                            <input type="email" name="email" class="form-control form-control-sm text-start" required placeholder="johndoe@university.edu">
+                            <input type="email" name="email" class="form-control form-control-sm text-start" required placeholder="johndoe@institution.org">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1 text-start d-block">Initial Password <span class="text-danger">*</span></label>
@@ -401,7 +401,7 @@
                                 Academic Department <span id="deptRequiredBadge" class="badge bg-primary-subtle text-primary border ms-1">Required for Academic</span>
                             </label>
                             <select name="dept_id" id="createUserDeptSelect" class="form-select form-select-sm">
-                                <option value="">-- Central Admin / University-wide --</option>
+                                <option value="">-- Central Admin / Institution-wide --</option>
                                 @foreach($departments as $d)
                                     <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->code }} - {{ $d->college->name ?? '' }})</option>
                                 @endforeach
@@ -458,7 +458,7 @@
         } else {
             deptBadge.className = 'badge bg-secondary-subtle text-secondary border ms-1';
             deptBadge.textContent = 'Central Admin (Optional)';
-            deptHelp.textContent = 'Central institutional and finance roles operate university-wide across all colleges.';
+            deptHelp.textContent = 'Central institutional and finance roles operate Institution-wide across all colleges.';
         }
     }
 

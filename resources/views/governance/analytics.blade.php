@@ -22,7 +22,7 @@
         <div class="card card-custom p-3 text-center border-0 shadow-sm">
             <div class="text-muted small text-uppercase fw-bold">Total Grants</div>
             <div class="fs-1 fw-bold text-dark">{{ $totalProjects }}</div>
-            <div class="small text-muted">University-wide</div>
+            <div class="small text-muted">Institution-wide</div>
         </div>
     </div>
     <div class="col-6 col-md-3">

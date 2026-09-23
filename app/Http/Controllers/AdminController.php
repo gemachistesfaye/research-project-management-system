@@ -263,7 +263,7 @@ class AdminController extends Controller
         }
 
         \App\Services\AuditService::log('HRMS_SYNC_PROBE', 'HRMSBridge', null, 'Manual health probe sent to UNI HRMS Staff Payroll Bridge: Response 200 OK (Latency 28ms)');
-        return back()->with('success', 'UNI HRMS Staff Payroll API ping successful. Verified connection to University Enterprise Directory (Latency: 28ms).');
+        return back()->with('success', 'UNI HRMS Staff Payroll API ping successful. Verified connection to Institution Enterprise Directory (Latency: 28ms).');
     }
 
     // Department Management
