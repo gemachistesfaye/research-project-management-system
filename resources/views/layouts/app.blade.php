@@ -551,7 +551,7 @@
             <a class="navbar-brand d-flex align-items-center me-4" href="{{ route('dashboard') }}">
                 <i class="bi bi-journal-bookmark-fill fs-2 text-warning me-2"></i>
                 <div>
-                    <div class="brand-text fs-6">Research Project Management System</div>
+                    <div class="brand-text fs-6">RPMS</div>
                     <div class="brand-sub">Research Project Management System</div>
                 </div>
             </a>
@@ -848,7 +848,7 @@
             <div class="d-flex align-items-center">
                 <i class="bi bi-journal-bookmark-fill fs-3 text-warning me-2"></i>
                 <div>
-                    <div class="fw-bold text-white small lh-1">Research Project Management System</div>
+                    <div class="fw-bold text-white small lh-1">RPMS</div>
                     <div class="text-warning" style="font-size: 0.68rem;">RPMS Mobile Portal</div>
                 </div>
             </div>

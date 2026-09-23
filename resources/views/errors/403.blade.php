@@ -57,7 +57,7 @@
             <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
                 <i class="bi bi-journal-bookmark-fill fs-2 text-warning me-2"></i>
                 <div>
-                    <div class="brand-text fs-6">Research Project Management System</div>
+                    <div class="brand-text fs-6">RPMS</div>
                     <div class="brand-sub">Research Project Management System</div>
                 </div>
             </a>
