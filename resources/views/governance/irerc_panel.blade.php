@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h3 class="fw-bold mb-4"><i class="bi bi-shield-exclamation me-2 text-dark"></i>IRERC Institutional Ethics Review Panel</h3>
+<h3 class="fw-bold mb-4"><i class="bi bi-shield-exclamation me-2 text-dark"></i>IRERC System Ethics Review Panel</h3>
 
 <div class="card card-custom p-3 p-md-4 mb-4">
     <h6 class="fw-bold text-dark mb-3"><i class="bi bi-info-circle me-1"></i> Risk Level Definitions</h6>

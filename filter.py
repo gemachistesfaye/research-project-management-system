@@ -1,0 +1,1 @@
+import sys; text = sys.stdin.read(); text = text.replace("Gambella", "Institution").replace("GMU", "RPMS").replace("University", "Institution").replace("gambella", "institution").replace("gmu", "rpms").replace("university", "institution"); print(text)

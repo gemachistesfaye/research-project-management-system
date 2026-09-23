@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
     <div>
         <h3 class="fw-bold mb-0"><i class="bi bi-cash-stack me-2 text-dark"></i> Finance &amp; Grant Disbursement</h3>
-        <span class="text-muted small">Process approved budget requests and track institutional releases</span>
+        <span class="text-muted small">Process approved budget requests and track System releases</span>
     </div>
     <div>
         <a href="{{ route('finance.export.csv') }}" class="btn btn-outline-dark btn-sm fw-bold shadow-sm">

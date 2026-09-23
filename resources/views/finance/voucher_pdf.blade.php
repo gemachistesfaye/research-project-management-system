@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Institution - Payment Disbursement Voucher</title>
+<title>Research Project Management System - Payment Disbursement Voucher</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: #1e293b; padding: 30px; }
@@ -33,7 +33,7 @@
 
 <div class="voucher-box">
     <div class="header">
-        <h2>Institution</h2>
+        <h2>Research Project Management System</h2>
         <h4>Finance &amp; Grant Disbursement Directorate</h4>
         <div class="doc-title">Official Grant Disbursement Voucher</div>
     </div>
@@ -45,7 +45,7 @@
         </tr>
         <tr>
             <td><strong>Project Code:</strong> {{ $request->project->project_code ?? ('UNI-PRJ-' . $request->project->project_id) }}</td>
-            <td style="text-align: right;"><strong>Governance Tier:</strong> {{ $request->approval_tier ?? 'Institution Tier' }}</td>
+            <td style="text-align: right;"><strong>Governance Tier:</strong> {{ $request->approval_tier ?? 'Research Project Management System Tier' }}</td>
         </tr>
     </table>
 
@@ -124,7 +124,7 @@
     </table>
 
     <div class="footer">
-        This is an official financial disbursement document issued by the Institution Research Project Management System (RPMS).
+        This is an official financial disbursement document issued by the Research Project Management System Research Project Management System (RPMS).
     </div>
 </div>
 

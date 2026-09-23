@@ -40,7 +40,7 @@
             @if(Auth::user()->role === 'pi')
                 Submit and track purchase requests for your active research projects
             @elseif(in_array(Auth::user()->role, ['vparttcs', 'rcsc']))
-                Executive oversight of Institution-wide faculty equipment &amp; supply requisitions (View &amp; Audit)
+                Executive oversight of Research Project Management System-wide faculty equipment &amp; supply requisitions (View &amp; Audit)
             @elseif(Auth::user()->role === 'coordinator')
                 Review, approve, and track faculty equipment &amp; supply requisitions
             @else

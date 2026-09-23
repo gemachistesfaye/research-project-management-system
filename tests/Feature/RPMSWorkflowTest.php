@@ -140,7 +140,7 @@ class RPMSWorkflowTest extends TestCase
         $thematic = ThematicArea::create(['title' => 'Renewable Energy']);
 
         $project = Project::create([
-            'title' => 'Solar Microgrid Institution',
+            'title' => 'Solar Microgrid Research Project Management System',
             'abstract_text' => 'Renewable solar implementation',
             'thematic_id' => $thematic->id,
             'pi_id' => $pi->id,
@@ -176,7 +176,7 @@ class RPMSWorkflowTest extends TestCase
         $thematic = ThematicArea::create(['title' => 'Public Health & Epidemiology']);
 
         $project = Project::create([
-            'title' => 'Clinical Study on Malaria Vector Resistance in Institution',
+            'title' => 'Clinical Study on Malaria Vector Resistance in Research Project Management System',
             'abstract_text' => 'Clinical diagnostic study involving patient blood samples',
             'thematic_id' => $thematic->id,
             'pi_id' => User::factory()->create(['role' => 'pi'])->id,
@@ -219,7 +219,7 @@ class RPMSWorkflowTest extends TestCase
         $thematic = ThematicArea::create(['title' => 'Agronomy']);
 
         $project = Project::create([
-            'title' => 'Soil Nutrition Analysis Institution',
+            'title' => 'Soil Nutrition Analysis Research Project Management System',
             'abstract_text' => 'Soil quality assessment',
             'thematic_id' => $thematic->id,
             'pi_id' => $pi->id,
@@ -314,7 +314,7 @@ class RPMSWorkflowTest extends TestCase
 
         $thematic = ThematicArea::create(['title' => 'Renewable Energy']);
         $project = Project::create([
-            'title' => 'Solar Microgrid Institution Campus',
+            'title' => 'Solar Microgrid Research Project Management System Campus',
             'abstract_text' => 'Deployment of off-grid solar panels',
             'thematic_id' => $thematic->id,
             'pi_id' => $pi->id,
@@ -336,7 +336,7 @@ class RPMSWorkflowTest extends TestCase
         // 1. Visit disbursement page
         $pageResponse = $this->actingAs($financeOfficer)->get(route('finance.disbursement'));
         $pageResponse->assertStatus(200);
-        $pageResponse->assertSee('Solar Microgrid Institution Campus');
+        $pageResponse->assertSee('Solar Microgrid Research Project Management System Campus');
         $this->assertNotNull($tranche1);
         $this->assertEquals(150000.00, (float)$tranche1->approved_amount);
         $this->assertEquals('Approved', $tranche1->status);
@@ -376,7 +376,7 @@ class RPMSWorkflowTest extends TestCase
         $user = User::factory()->create([
             'role' => 'pi',
             'name' => 'Original Name',
-            'email' => 'original@institution.org',
+            'email' => 'original@rpms.local',
             'status' => 'active',
             'staff_id' => 'UNI-TEST-001',
         ]);
@@ -385,7 +385,7 @@ class RPMSWorkflowTest extends TestCase
         $updateResponse = $this->actingAs($admin)->put(route('admin.users.update', $user->id), [
             'staff_id' => 'UNI-TEST-001-MOD',
             'name' => 'Updated Name',
-            'email' => 'updated@institution.org',
+            'email' => 'updated@rpms.local',
             'role' => 'dh',
             'status' => 'active',
         ]);
@@ -393,7 +393,7 @@ class RPMSWorkflowTest extends TestCase
 
         $user->refresh();
         $this->assertEquals('Updated Name', $user->name);
-        $this->assertEquals('updated@institution.org', $user->email);
+        $this->assertEquals('updated@rpms.local', $user->email);
         $this->assertEquals('dh', $user->role);
         $this->assertEquals('UNI-TEST-001-MOD', $user->staff_id);
 
@@ -407,7 +407,7 @@ class RPMSWorkflowTest extends TestCase
         // Verify deactivated user cannot log in
         $this->post('/logout');
         $loginAttempt = $this->post('/login', [
-            'email' => 'updated@institution.org',
+            'email' => 'updated@rpms.local',
             'password' => 'password',
         ]);
         $loginAttempt->assertSessionHasErrors(['email']);

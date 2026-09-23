@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Institution - Institutional Research Portfolio Report</title>
+<title>Research Project Management System - System Research Portfolio Report</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: #212529; padding: 25px; }
@@ -33,10 +33,10 @@
 <body>
 
     <div class="header">
-        <h2>Institution</h2>
+        <h2>Research Project Management System</h2>
         <h4>Research &amp; Community Service Directorate (RPMS)</h4>
         <div style="font-size: 13px; font-weight: bold; color: #1a5632; margin-top: 4px;">
-            Institutional Research Portfolio &amp; Financial Governance Report
+            System Research Portfolio &amp; Financial Governance Report
         </div>
     </div>
 
@@ -47,7 +47,7 @@
         </tr>
         <tr>
             <td><strong>Export Authority:</strong> {{ $generatedBy }} (VP-ARTTCS / RCSC Governance)</td>
-            <td style="text-align: right;"><strong>Reporting Standard:</strong> Institution Research Governance Standards</td>
+            <td style="text-align: right;"><strong>Reporting Standard:</strong> Research Project Management System Research Governance Standards</td>
         </tr>
     </table>
 
@@ -56,7 +56,7 @@
             <td class="kpi-box">
                 <div class="kpi-title">Total Grants</div>
                 <div class="kpi-val">{{ $totalProjects }}</div>
-                <div class="kpi-sub">Institution-wide</div>
+                <div class="kpi-sub">Research Project Management System-wide</div>
             </td>
             <td class="kpi-box">
                 <div class="kpi-title">Active Research</div>
@@ -131,7 +131,7 @@
     </table>
 
     <div class="footer">
-        Official Document &bull; Institution Research Project Management System (RPMS) &bull; Verified by Office of the Vice President for ARTTCS
+        Official Document &bull; Research Project Management System Research Project Management System (RPMS) &bull; Verified by Office of the Vice President for ARTTCS
     </div>
 
 </body>

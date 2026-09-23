@@ -115,10 +115,10 @@
     <div class="card-body">
         <div class="border rounded p-3 mb-4" style="max-height: 400px; overflow-y: auto; background-color: #fafbfc;">
             <div class="text-center mb-4">
-                <h5 class="fw-bold">Institution</h5>
+                <h5 class="fw-bold">Research Project Management System</h5>
                 <h6 class="text-muted">Office of the Vice President for ARTTCS</h6>
                 <hr class="my-3">
-                <h6 class="fw-bold">INSTITUTIONAL RESEARCH GRANT AGREEMENT</h6>
+                <h6 class="fw-bold">System RESEARCH GRANT AGREEMENT</h6>
                 <p class="text-muted small">Contract Reference: SCR-{{ $project->project_id }}</p>
             </div>
 
@@ -128,7 +128,7 @@
                     This Research Grant Agreement ("Agreement") is entered into for the research project titled 
                     <strong>"{{ $project->title }}"</strong>. The primary objectives of this research are to advance 
                     scientific knowledge in the thematic area of <strong>{{ $project->thematicArea->title ?? 'N/A' }}</strong>, 
-                    develop innovative solutions, and contribute to the academic and technological advancement of the Institution. 
+                    develop innovative solutions, and contribute to the academic and technological advancement of the Research Project Management System. 
                     The Principal Investigator shall conduct the research in accordance with the approved research proposal 
                     and adhere to the highest standards of academic integrity and ethical research practices.
                 </p>
@@ -139,7 +139,7 @@
                 <p>
                     The total budget for this research project is <strong>{{ number_format($project->requested_budget, 2) }} ETB</strong> 
                     ({{ $project->approved_budget ? 'approved: ' . number_format($project->approved_budget, 2) . ' ETB' : 'pending approval' }}). 
-                    The funds shall be allocated in accordance with the Institution's financial regulations and the approved 
+                    The funds shall be allocated in accordance with the Research Project Management System's financial regulations and the approved 
                     budget breakdown. The Principal Investigator is responsible for the prudent management of funds and must 
                     submit financial reports as required. Any budget modifications exceeding 10% of the approved amount 
                     must receive prior written approval from the Research Directorate.
@@ -150,7 +150,7 @@
                 <h6 class="fw-bold text-primary"><i class="bi bi-journal-text me-2"></i>3. Reporting Requirements</h6>
                 <p>
                     The Principal Investigator shall submit progress reports on a quarterly basis and a final comprehensive 
-                    report upon completion of the research. All reports must comply with the Institution's research reporting 
+                    report upon completion of the research. All reports must comply with the Research Project Management System's research reporting 
                     format and guidelines. The final report must include:
                 </p>
                 <ul>
@@ -167,9 +167,9 @@
                 <p>
                     All intellectual property rights arising from this research, including but not limited to inventions, 
                     discoveries, software, publications, and other scholarly works, shall be jointly owned by the 
-                    Principal Investigator and Institution, in accordance with the 
-                    Institution's Intellectual Property Policy. Neither party shall commercialize or license any 
-                    intellectual property without the prior written consent of the other party. The Institution reserves 
+                    Principal Investigator and Research Project Management System, in accordance with the 
+                    Research Project Management System's Intellectual Property Policy. Neither party shall commercialize or license any 
+                    intellectual property without the prior written consent of the other party. The Research Project Management System reserves 
                     the right to use research findings for academic and non-commercial purposes.
                 </p>
             </div>
@@ -196,8 +196,8 @@
                 <h6 class="fw-bold text-primary"><i class="bi bi-building me-2"></i>6. General Provisions</h6>
                 <p>
                     This Agreement shall be governed by the laws of the Federal Democratic Republic of Ethiopia and 
-                    the regulations of Institution. Any disputes arising from this 
-                    Agreement shall be resolved through the Institution's conflict resolution mechanisms. The parties 
+                    the regulations of Research Project Management System. Any disputes arising from this 
+                    Agreement shall be resolved through the Research Project Management System's conflict resolution mechanisms. The parties 
                     agree to act in good faith and cooperate fully to achieve the objectives of this research project.
                 </p>
             </div>
@@ -242,7 +242,7 @@
                     <div>
                         <h6 class="fw-bold mb-1">Ethics Clearance Pending (IRERC)</h6>
                         <p class="small text-muted mb-0">
-                            This project was routed for Institutional Research Ethics Review. The contract cannot be signed or activated until the IRERC panel grants formal approval.
+                            This project was routed for System Research Ethics Review. The contract cannot be signed or activated until the IRERC panel grants formal approval.
                         </p>
                     </div>
                 </div>

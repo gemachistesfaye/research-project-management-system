@@ -5,7 +5,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <span class="text-muted small">
         @if(in_array(Auth::user()->role, ['vparttcs', 'rcsc']))
-            Executive registry &amp; validation of official Institution research completion certificates
+            Executive registry &amp; validation of official Research Project Management System research completion certificates
         @else
             Digital completion certificates and journal award letters issued to PIs
         @endif

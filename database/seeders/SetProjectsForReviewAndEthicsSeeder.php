@@ -18,13 +18,13 @@ class SetProjectsForReviewAndEthicsSeeder extends Seeder
 
         // Ensure we have reviewer 1 and reviewer 2
         $rev1 = User::firstOrCreate(
-            ['email' => 'reviewer@institution.org'],
+            ['email' => 'reviewer@rpms.local'],
             ['staff_id' => 'UNI-EXAM-201', 'name' => 'Prof. Kebede Tassew (Reviewer)', 'password' => $pass, 'role' => 'reviewer', 'dept_id' => 2]
         );
         \App\Services\RbacService::syncUserRole($rev1);
 
         $rev2 = User::firstOrCreate(
-            ['email' => 'reviewer2@institution.org'],
+            ['email' => 'reviewer2@rpms.local'],
             ['staff_id' => 'UNI-EXAM-202', 'name' => 'Dr. Berhanu Nega (Reviewer 2)', 'password' => $pass, 'role' => 'reviewer', 'dept_id' => 3]
         );
         \App\Services\RbacService::syncUserRole($rev2);

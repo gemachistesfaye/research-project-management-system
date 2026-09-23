@@ -57,7 +57,7 @@
             <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
                 <i class="bi bi-journal-bookmark-fill fs-2 text-warning me-2"></i>
                 <div>
-                    <div class="brand-text fs-6">Institution</div>
+                    <div class="brand-text fs-6">Research Project Management System</div>
                     <div class="brand-sub">Research Project Management System</div>
                 </div>
             </a>
@@ -112,7 +112,7 @@
                     <div class="mt-3 p-3 bg-light rounded-3">
                         <small class="text-muted">
                             <i class="bi bi-envelope me-1"></i> Need help? Contact us at
-                            <a href="mailto:admin@institution.org" class="fw-bold text-decoration-none">admin@institution.org</a>
+                            <a href="mailto:admin@rpms.local" class="fw-bold text-decoration-none">admin@rpms.local</a>
                         </small>
                     </div>
 
@@ -131,7 +131,7 @@
 
     <footer class="bg-white border-top py-3 text-center text-muted small mt-auto">
         <div class="container">
-            &copy; {{ date('Y') }} Institution &mdash; Office of the Vice President for ARTTCS. SDD v3.0 Compliant.
+            &copy; {{ date('Y') }} Research Project Management System &mdash; Office of the Vice President for ARTTCS. SDD v3.0 Compliant.
         </div>
     </footer>
 

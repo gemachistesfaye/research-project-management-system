@@ -27,7 +27,7 @@ return new class extends Migration
                 'dh',           // Department Head
                 'coordinator',  // College Research Coordinator
                 'dean',         // School / College Dean
-                'irerc',        // Institutional Research Ethics Review Committee
+                'irerc',        // System Research Ethics Review Committee
                 'vparttcs',     // Vice President Office (ARTTCS)
                 'rcsc',         // Research & Community Service Committee / President
                 'finance',      // Finance Office (SDD SCR-14)

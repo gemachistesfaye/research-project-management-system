@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $d3 = Department::firstOrCreate(['code' => 'PS'], ['college_id' => $c2->id, 'name' => 'Plant Science']);
 
         $t1 = ThematicArea::firstOrCreate(
-            ['title' => 'Climate Resilience & Agricultural Productivity in Institution Region'],
+            ['title' => 'Climate Resilience & Agricultural Productivity in Rural Region'],
             ['category' => 'Agriculture & Environment', 'description' => 'Research focusing on flood resistance and modern farming techniques.']
         );
         $t2 = ThematicArea::firstOrCreate(
@@ -48,17 +48,17 @@ class DatabaseSeeder extends Seeder
         // 3. Seed Users for 11 System Roles
         $pass = Hash::make('UNI@Demo1');
 
-        $admin = User::firstOrCreate(['email' => 'admin@institution.org'], ['staff_id' => 'UNI-ADM-01', 'name' => 'System Administrator', 'password' => $pass, 'role' => 'admin']);
-        $pi = User::firstOrCreate(['email' => 'pi@institution.org'], ['staff_id' => 'UNI-STAFF-101', 'name' => 'Dr. Abebe Bikila', 'password' => $pass, 'role' => 'pi', 'dept_id' => $d1->id]);
-        $tm = User::firstOrCreate(['email' => 'tm@institution.org'], ['staff_id' => 'UNI-STAFF-102', 'name' => 'Tigist Assefa', 'password' => $pass, 'role' => 'tm', 'dept_id' => $d1->id]);
-        $reviewer = User::firstOrCreate(['email' => 'reviewer@institution.org'], ['staff_id' => 'UNI-EXAM-201', 'name' => 'Prof. Kebede Tassew', 'password' => $pass, 'role' => 'reviewer', 'dept_id' => $d2->id]);
-        $dh = User::firstOrCreate(['email' => 'dh@institution.org'], ['staff_id' => 'UNI-DH-301', 'name' => 'Dr. Chala Gemechu', 'password' => $pass, 'role' => 'dh', 'dept_id' => $d1->id]);
-        $coordinator = User::firstOrCreate(['email' => 'coordinator@institution.org'], ['staff_id' => 'UNI-COORD-401', 'name' => 'Alemayehu Worku', 'password' => $pass, 'role' => 'coordinator', 'dept_id' => $d1->id]);
-        $dean = User::firstOrCreate(['email' => 'dean@institution.org'], ['staff_id' => 'UNI-DEAN-501', 'name' => 'Dr. Mesfin Haile', 'password' => $pass, 'role' => 'dean', 'dept_id' => $d1->id]);
-        $irerc = User::firstOrCreate(['email' => 'irerc@institution.org'], ['staff_id' => 'UNI-ETHIC-601', 'name' => 'Dr. Sara Mohammed', 'password' => $pass, 'role' => 'irerc', 'dept_id' => $d3->id]);
-        $vparttcs = User::firstOrCreate(['email' => 'vp@institution.org'], ['staff_id' => 'UNI-VP-701', 'name' => 'Prof. Kassahun Zewdie', 'password' => $pass, 'role' => 'vparttcs']);
-        $rcsc = User::firstOrCreate(['email' => 'rcsc@institution.org'], ['staff_id' => 'UNI-PRES-801', 'name' => 'Institution President', 'password' => $pass, 'role' => 'rcsc']);
-        $finance = User::firstOrCreate(['email' => 'finance@institution.org'], ['staff_id' => 'UNI-FIN-901', 'name' => 'Finance Office', 'password' => $pass, 'role' => 'finance']);
+        $admin = User::firstOrCreate(['email' => 'admin@rpms.local'], ['staff_id' => 'UNI-ADM-01', 'name' => 'System Administrator', 'password' => $pass, 'role' => 'admin']);
+        $pi = User::firstOrCreate(['email' => 'pi@rpms.local'], ['staff_id' => 'UNI-STAFF-101', 'name' => 'Dr. Abebe Bikila', 'password' => $pass, 'role' => 'pi', 'dept_id' => $d1->id]);
+        $tm = User::firstOrCreate(['email' => 'tm@rpms.local'], ['staff_id' => 'UNI-STAFF-102', 'name' => 'Tigist Assefa', 'password' => $pass, 'role' => 'tm', 'dept_id' => $d1->id]);
+        $reviewer = User::firstOrCreate(['email' => 'reviewer@rpms.local'], ['staff_id' => 'UNI-EXAM-201', 'name' => 'Prof. Kebede Tassew', 'password' => $pass, 'role' => 'reviewer', 'dept_id' => $d2->id]);
+        $dh = User::firstOrCreate(['email' => 'dh@rpms.local'], ['staff_id' => 'UNI-DH-301', 'name' => 'Dr. Chala Gemechu', 'password' => $pass, 'role' => 'dh', 'dept_id' => $d1->id]);
+        $coordinator = User::firstOrCreate(['email' => 'coordinator@rpms.local'], ['staff_id' => 'UNI-COORD-401', 'name' => 'Alemayehu Worku', 'password' => $pass, 'role' => 'coordinator', 'dept_id' => $d1->id]);
+        $dean = User::firstOrCreate(['email' => 'dean@rpms.local'], ['staff_id' => 'UNI-DEAN-501', 'name' => 'Dr. Mesfin Haile', 'password' => $pass, 'role' => 'dean', 'dept_id' => $d1->id]);
+        $irerc = User::firstOrCreate(['email' => 'irerc@rpms.local'], ['staff_id' => 'UNI-ETHIC-601', 'name' => 'Dr. Sara Mohammed', 'password' => $pass, 'role' => 'irerc', 'dept_id' => $d3->id]);
+        $vparttcs = User::firstOrCreate(['email' => 'vp@rpms.local'], ['staff_id' => 'UNI-VP-701', 'name' => 'Prof. Kassahun Zewdie', 'password' => $pass, 'role' => 'vparttcs']);
+        $rcsc = User::firstOrCreate(['email' => 'rcsc@rpms.local'], ['staff_id' => 'UNI-PRES-801', 'name' => 'System President', 'password' => $pass, 'role' => 'rcsc']);
+        $finance = User::firstOrCreate(['email' => 'finance@rpms.local'], ['staff_id' => 'UNI-FIN-901', 'name' => 'Finance Office', 'password' => $pass, 'role' => 'finance']);
 
         User::each(function ($user) {
             \App\Services\RbacService::syncUserRole($user);
@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             Project::create([
-                'title' => 'Sustainable Agro-Forestry and Soil Carbon Sequestration Modeling in Institution National Park Buffer Zones',
+                'title' => 'Sustainable Agro-Forestry and Soil Carbon Sequestration Modeling in National Park Buffer Zones',
                 'abstract_text' => 'An empirical investigation into indigenous agro-forestry practices, measuring soil organic carbon dynamics and evaluating community-led reforestation strategies across protected buffer corridors.',
                 'thematic_id' => $t1->id,
                 'pi_id' => $pi->id,
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
 
         // 5. Seed Initial System Audit Logs (if empty)
         if (\App\Models\AuditLog::count() === 0) {
-            \App\Services\AuditService::log('SYSTEM_INIT', 'System', null, 'RPMS Institutional Governance Database Initialized with RBAC v3.0 matrix', $admin->id);
+            \App\Services\AuditService::log('SYSTEM_INIT', 'System', null, 'RPMS System Governance Database Initialized with RBAC v3.0 matrix', $admin->id);
             \App\Services\AuditService::log('USER_SEED', 'User', $admin->id, 'System Administrator account provisioned (UNI-ADM-01)', $admin->id);
             \App\Services\AuditService::log('USER_SEED', 'User', $pi->id, 'Academic PI account provisioned (UNI-STAFF-101)', $admin->id);
             \App\Services\AuditService::log('THEMATIC_SETUP', 'ThematicArea', $t1->id, 'Thematic Area: Climate Resilience & Agriculture established', $admin->id);

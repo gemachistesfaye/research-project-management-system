@@ -592,7 +592,7 @@
                     @if(!$project->irercClearance)
                     <form action="{{ route('projects.create-irerc-clearance', $project->project_id) }}" method="POST" class="d-inline">
                         @csrf
-                        <button type="button" class="btn btn-sm btn-outline-dark fw-bold confirm-btn" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to the Institutional Research Ethics Review Committee (IRERC) for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Request" data-confirm-btn-class="btn-dark">
+                        <button type="button" class="btn btn-sm btn-outline-dark fw-bold confirm-btn" data-confirm-title="Request Ethics Clearance" data-confirm-message="Route this project to the System Research Ethics Review Committee (IRERC) for ethics clearance?" data-confirm-icon="bi-shield-check" data-confirm-color="text-dark" data-confirm-btn-text="Yes, Request" data-confirm-btn-class="btn-dark">
                             <i class="bi bi-shield-plus me-1"></i>Send to Ethics (IRERC)
                         </button>
                     </form>
@@ -846,7 +846,7 @@
             <div class="card shadow-sm border-0 mb-4 border-top border-dark border-4">
                 <div class="card-body p-4">
                     <h5 class="fw-bold mb-2 text-dark"><i class="bi bi-pencil-square me-2 text-dark"></i>Submit Peer Critique</h5>
-                    <p class="small text-muted mb-3">Score the research methodology, originality, and institutional feasibility.</p>
+                    <p class="small text-muted mb-3">Score the research methodology, originality, and System feasibility.</p>
                     <h5 class="fw-bold mb-1 text-dark"><i class="bi bi-clipboard-check me-2 text-dark"></i>Standardized 100-Point Evaluation Rubric</h5>
                     <p class="small text-muted mb-3">Evaluate the proposal across 5 standardized academic dimensions. Total score is computed automatically.</p>
 

@@ -338,7 +338,7 @@
                 <div>
                     <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Total Projects</div>
                     <div class="fs-2 fw-bold text-dark mt-1">{{ $stats['total_projects'] ?? 0 }}</div>
-                    <div class="small text-muted" style="font-size: 0.75rem;">Institution-wide</div>
+                    <div class="small text-muted" style="font-size: 0.75rem;">Research Project Management System-wide</div>
                 </div>
                 <div class="stat-bubble">
                     <i class="bi bi-folder2 text-secondary" style="font-size: 1.35rem;"></i>
@@ -848,7 +848,7 @@
 @if(in_array($role, ['coordinator', 'dean', 'vparttcs', 'rcsc', 'dh', 'irerc']))
 <div class="card card-custom p-4 mb-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0"><i class="bi bi-shield-check me-2 text-dark"></i>Institutional Governance Queue</h5>
+        <h5 class="fw-bold mb-0"><i class="bi bi-shield-check me-2 text-dark"></i>System Governance Queue</h5>
     </div>
 
     <div class="table-responsive">

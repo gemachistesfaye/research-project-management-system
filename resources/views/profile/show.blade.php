@@ -283,7 +283,7 @@
         <ul class="nav nav-pills nav-pills-custom gap-2 mb-4 bg-white p-2 rounded-3 shadow-sm" id="profileTabs" role="tablist">
             <li class="nav-item flex-grow-1 flex-md-grow-0" role="presentation">
                 <button class="nav-link active w-100 text-center" id="personal-tab" data-bs-toggle="pill" data-bs-target="#personalPane" type="button" role="tab">
-                    <i class="bi bi-person-lines-fill me-1"></i> Personal &amp; Institutional Info
+                    <i class="bi bi-person-lines-fill me-1"></i> Personal &amp; System Info
                 </button>
             </li>
             <li class="nav-item flex-grow-1 flex-md-grow-0" role="presentation">

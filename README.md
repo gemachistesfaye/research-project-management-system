@@ -1,6 +1,6 @@
 # Research Project Management System
 
-A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance. Built for Institution.
+A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance. Built for Research Project Management System.
 
 ## Features
 
@@ -11,7 +11,7 @@ A full-featured web application for managing the complete lifecycle of academic 
 - **Budget Management:** Tranche-based disbursement tracking with approval workflows
 - **Progress Reports:** Quarterly/semi-annual/annual reporting with team member contributions
 - **Contract Signing:** Digital contract generation and tracking
-- **PDF Certificates:** Institution-branded completion certificates with PDF download
+- **PDF Certificates:** Research Project Management System-branded completion certificates with PDF download
 - **Project Lifecycle:** Extensions, amendments, PI transfers, and termination with refund calculations
 - **Procurement Requests:** Equipment and supplies procurement tied to projects
 - **Analytics Dashboard:** Real-time project statistics, budget charts, and departmental metrics
@@ -24,17 +24,17 @@ If you have run the database seeders (`php artisan migrate --seed`), you can log
 
 | Role                               | Email Address                   |
 | :--------------------------------- | :------------------------------ |
-| **System Administrator**     | `admin@institution.org`       |
-| **Principal Investigator**   | `pi@institution.org`          |
-| **Team Member**              | `tm@institution.org`          |
-| **Department Head**          | `dh@institution.org`          |
-| **Research Coordinator**     | `coordinator@institution.org` |
-| **Blind Reviewer**           | `reviewer@institution.org`    |
-| **College Dean**             | `dean@institution.org`        |
-| **Ethics Committee (IRERC)** | `irerc@institution.org`       |
-| **VP Academic (ARTTCS)**     | `vp@institution.org`          |
-| **RCSC Chair**               | `rcsc@institution.org`        |
-| **Finance Office**           | `finance@institution.org`     |
+| **System Administrator**     | `admin@rpms.local`       |
+| **Principal Investigator**   | `pi@rpms.local`          |
+| **Team Member**              | `tm@rpms.local`          |
+| **Department Head**          | `dh@rpms.local`          |
+| **Research Coordinator**     | `coordinator@rpms.local` |
+| **Blind Reviewer**           | `reviewer@rpms.local`    |
+| **College Dean**             | `dean@rpms.local`        |
+| **Ethics Committee (IRERC)** | `irerc@rpms.local`       |
+| **VP Academic (ARTTCS)**     | `vp@rpms.local`          |
+| **RCSC Chair**               | `rcsc@rpms.local`        |
+| **Finance Office**           | `finance@rpms.local`     |
 
 ## Tech Stack
 
