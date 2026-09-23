@@ -10,7 +10,7 @@
             <div class="text-center mb-4">
                 <i class="bi bi-shield-lock-fill fs-1 text-success"></i>
                 <h4 class="fw-bold mt-2">Sign In to RPMS</h4>
-                <p class="text-muted small">Academic Research & Governance Portal</p>
+                <p class="text-muted small">Research Management Portal</p>
             </div>
 
             <form method="POST" action="{{ route('login') }}" autocomplete="off">
