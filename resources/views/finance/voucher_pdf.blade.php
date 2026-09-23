@@ -124,7 +124,7 @@
     </table>
 
     <div class="footer">
-        This is an official financial disbursement document issued by the Research Project Management System Research Project Management System (RPMS).
+        This is an official financial disbursement document issued by the Research Project Management System (RPMS).
     </div>
 </div>
 

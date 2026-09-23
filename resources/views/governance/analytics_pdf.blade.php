@@ -131,7 +131,7 @@
     </table>
 
     <div class="footer">
-        Official Document &bull; Research Project Management System Research Project Management System (RPMS) &bull; Verified by Office of the Vice President for ARTTCS
+        Official Document &bull; Research Project Management System (RPMS) &bull; Verified by Office of the Vice President for ARTTCS
     </div>
 
 </body>
