@@ -31,7 +31,7 @@ class FinanceSampleDataSeeder extends Seeder
                     'status'           => 'Released',
                     'payment_method'   => 'Bank Transfer',
                     'disbursed_at'     => now()->subMonths(2),
-                    'notes'            => 'CBE Transfer Ref #CBE-GMU-2026-8819 / Advance Payment',
+                    'notes'            => 'CBE Transfer Ref #CBE-UNI-2026-8819 / Advance Payment',
                     'approved_by'      => 9,
                 ]
             );
@@ -70,7 +70,7 @@ class FinanceSampleDataSeeder extends Seeder
                     'status'           => 'Released',
                     'payment_method'   => 'Check',
                     'disbursed_at'     => now()->subDays(15),
-                    'notes'            => 'Commercial Bank of Ethiopia Check #GMU-CHK-009241',
+                    'notes'            => 'Commercial Bank of Ethiopia Check #UNI-CHK-009241',
                     'approved_by'      => 9,
                 ]
             );

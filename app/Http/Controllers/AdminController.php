@@ -258,12 +258,12 @@ class AdminController extends Controller
         $gateway = $request->input('gateway', 'hrms');
 
         if ($gateway === 'procurement') {
-            \App\Services\AuditService::log('INTEGRATION_PING', 'ProcurementGateway', null, 'Manual health probe sent to GMU Procurement & Property Inventory API: Response 200 OK (Latency 42ms)');
-            return back()->with('success', 'GMU Procurement Gateway heartbeat confirmed. TLS 1.3 encrypted handshake OK (Latency: 42ms).');
+            \App\Services\AuditService::log('INTEGRATION_PING', 'ProcurementGateway', null, 'Manual health probe sent to UNI Procurement & Property Inventory API: Response 200 OK (Latency 42ms)');
+            return back()->with('success', 'UNI Procurement Gateway heartbeat confirmed. TLS 1.3 encrypted handshake OK (Latency: 42ms).');
         }
 
-        \App\Services\AuditService::log('HRMS_SYNC_PROBE', 'HRMSBridge', null, 'Manual health probe sent to GMU HRMS Staff Payroll Bridge: Response 200 OK (Latency 28ms)');
-        return back()->with('success', 'GMU HRMS Staff Payroll API ping successful. Verified connection to Gambella University Enterprise Directory (Latency: 28ms).');
+        \App\Services\AuditService::log('HRMS_SYNC_PROBE', 'HRMSBridge', null, 'Manual health probe sent to UNI HRMS Staff Payroll Bridge: Response 200 OK (Latency 28ms)');
+        return back()->with('success', 'UNI HRMS Staff Payroll API ping successful. Verified connection to University Enterprise Directory (Latency: 28ms).');
     }
 
     // Department Management

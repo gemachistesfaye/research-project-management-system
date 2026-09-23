@@ -9,7 +9,7 @@
         <div class="card card-custom p-4">
             <div class="text-center mb-4">
                 <i class="bi bi-shield-lock-fill fs-1 text-success"></i>
-                <h4 class="fw-bold mt-2">Sign In to GMU-RPMS</h4>
+                <h4 class="fw-bold mt-2">Sign In to RPMS</h4>
                 <p class="text-muted small">Academic Research & Governance Portal</p>
             </div>
 
@@ -26,7 +26,7 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold">Email Address</label>
                     <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                           required autofocus placeholder="user@gmu.edu.et"
+                           required autofocus placeholder="user@university.edu"
                            value="{{ old('email') }}"
                            autocomplete="username">
                 </div>
@@ -62,8 +62,8 @@
             <div class="text-center mt-3">
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="email" value="admin@gmu.edu.et">
-                    <input type="hidden" name="password" value="GMU@Demo1">
+                    <input type="hidden" name="email" value="admin@university.edu">
+                    <input type="hidden" name="password" value="UNI@Demo1">
                     <button type="submit" class="btn btn-outline-dark btn-sm fw-bold">
                         <i class="bi bi-gear me-1"></i> Login as Admin
                     </button>

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Gambella University - Institutional Research Portfolio Report</title>
+<title>University - Institutional Research Portfolio Report</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: #212529; padding: 25px; }
@@ -33,7 +33,7 @@
 <body>
 
     <div class="header">
-        <h2>Gambella University</h2>
+        <h2>University</h2>
         <h4>Research &amp; Community Service Directorate (RPMS)</h4>
         <div style="font-size: 13px; font-weight: bold; color: #1a5632; margin-top: 4px;">
             Institutional Research Portfolio &amp; Financial Governance Report
@@ -131,7 +131,7 @@
     </table>
 
     <div class="footer">
-        Official Document &bull; Gambella University Research Project Management System (GMU-RPMS) &bull; Verified by Office of the Vice President for ARTTCS
+        Official Document &bull; University Research Project Management System (RPMS) &bull; Verified by Office of the Vice President for ARTTCS
     </div>
 
 </body>

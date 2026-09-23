@@ -1,8 +1,8 @@
-# GMU-RPMS System Architecture
+# RPMS System Architecture
 
 ## 1. High-Level Overview
 
-The Gambella University Research Project Management System (GMU-RPMS) is an enterprise-grade web application built on the **Laravel Framework** (PHP). It follows the **MVC (Model-View-Controller)** architectural pattern to ensure clean separation of concerns.
+The University Research Project Management System (RPMS) is an enterprise-grade web application built on the **Laravel Framework** (PHP). It follows the **MVC (Model-View-Controller)** architectural pattern to ensure clean separation of concerns.
 
 ## 2. Core Architecture
 

@@ -129,7 +129,7 @@
     }
 
     .profile-hero {
-        background: linear-gradient(135deg, var(--gmu-primary) 0%, var(--gmu-secondary) 100%);
+        background: linear-gradient(135deg, var(--UNI-primary) 0%, var(--UNI-secondary) 100%);
         border-radius: 14px;
         padding: 1.75rem 1.75rem 1.5rem;
         color: #fff;
@@ -212,7 +212,7 @@
                                         $initials = collect(explode(' ', preg_replace('/\s*\([^)]*\)/', '', $user->name)))->map(fn($part) => substr($part, 0, 1))->take(2)->join('');
                                     @endphp
                                     <div class="avatar-initials">
-                                        {{ $initials ?: 'GMU' }}
+                                        {{ $initials ?: 'UNI' }}
                                     </div>
                                 @endif
                                 <div class="avatar-overlay">

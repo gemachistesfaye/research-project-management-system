@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $d3 = Department::firstOrCreate(['code' => 'PS'], ['college_id' => $c2->id, 'name' => 'Plant Science']);
 
         $t1 = ThematicArea::firstOrCreate(
-            ['title' => 'Climate Resilience & Agricultural Productivity in Gambella Region'],
+            ['title' => 'Climate Resilience & Agricultural Productivity in University Region'],
             ['category' => 'Agriculture & Environment', 'description' => 'Research focusing on flood resistance and modern farming techniques.']
         );
         $t2 = ThematicArea::firstOrCreate(
@@ -46,19 +46,19 @@ class DatabaseSeeder extends Seeder
         );
 
         // 3. Seed Users for 11 System Roles
-        $pass = Hash::make('GMU@Demo1');
+        $pass = Hash::make('UNI@Demo1');
 
-        $admin = User::firstOrCreate(['email' => 'admin@gmu.edu.et'], ['staff_id' => 'GMU-ADM-01', 'name' => 'System Administrator', 'password' => $pass, 'role' => 'admin']);
-        $pi = User::firstOrCreate(['email' => 'pi@gmu.edu.et'], ['staff_id' => 'GMU-STAFF-101', 'name' => 'Dr. Abebe Bikila', 'password' => $pass, 'role' => 'pi', 'dept_id' => $d1->id]);
-        $tm = User::firstOrCreate(['email' => 'tm@gmu.edu.et'], ['staff_id' => 'GMU-STAFF-102', 'name' => 'Tigist Assefa', 'password' => $pass, 'role' => 'tm', 'dept_id' => $d1->id]);
-        $reviewer = User::firstOrCreate(['email' => 'reviewer@gmu.edu.et'], ['staff_id' => 'GMU-EXAM-201', 'name' => 'Prof. Kebede Tassew', 'password' => $pass, 'role' => 'reviewer', 'dept_id' => $d2->id]);
-        $dh = User::firstOrCreate(['email' => 'dh@gmu.edu.et'], ['staff_id' => 'GMU-DH-301', 'name' => 'Dr. Chala Gemechu', 'password' => $pass, 'role' => 'dh', 'dept_id' => $d1->id]);
-        $coordinator = User::firstOrCreate(['email' => 'coordinator@gmu.edu.et'], ['staff_id' => 'GMU-COORD-401', 'name' => 'Alemayehu Worku', 'password' => $pass, 'role' => 'coordinator', 'dept_id' => $d1->id]);
-        $dean = User::firstOrCreate(['email' => 'dean@gmu.edu.et'], ['staff_id' => 'GMU-DEAN-501', 'name' => 'Dr. Mesfin Haile', 'password' => $pass, 'role' => 'dean', 'dept_id' => $d1->id]);
-        $irerc = User::firstOrCreate(['email' => 'irerc@gmu.edu.et'], ['staff_id' => 'GMU-ETHIC-601', 'name' => 'Dr. Sara Mohammed', 'password' => $pass, 'role' => 'irerc', 'dept_id' => $d3->id]);
-        $vparttcs = User::firstOrCreate(['email' => 'vp@gmu.edu.et'], ['staff_id' => 'GMU-VP-701', 'name' => 'Prof. Kassahun Zewdie', 'password' => $pass, 'role' => 'vparttcs']);
-        $rcsc = User::firstOrCreate(['email' => 'rcsc@gmu.edu.et'], ['staff_id' => 'GMU-PRES-801', 'name' => 'University President', 'password' => $pass, 'role' => 'rcsc']);
-        $finance = User::firstOrCreate(['email' => 'finance@gmu.edu.et'], ['staff_id' => 'GMU-FIN-901', 'name' => 'Finance Office', 'password' => $pass, 'role' => 'finance']);
+        $admin = User::firstOrCreate(['email' => 'admin@university.edu'], ['staff_id' => 'UNI-ADM-01', 'name' => 'System Administrator', 'password' => $pass, 'role' => 'admin']);
+        $pi = User::firstOrCreate(['email' => 'pi@university.edu'], ['staff_id' => 'UNI-STAFF-101', 'name' => 'Dr. Abebe Bikila', 'password' => $pass, 'role' => 'pi', 'dept_id' => $d1->id]);
+        $tm = User::firstOrCreate(['email' => 'tm@university.edu'], ['staff_id' => 'UNI-STAFF-102', 'name' => 'Tigist Assefa', 'password' => $pass, 'role' => 'tm', 'dept_id' => $d1->id]);
+        $reviewer = User::firstOrCreate(['email' => 'reviewer@university.edu'], ['staff_id' => 'UNI-EXAM-201', 'name' => 'Prof. Kebede Tassew', 'password' => $pass, 'role' => 'reviewer', 'dept_id' => $d2->id]);
+        $dh = User::firstOrCreate(['email' => 'dh@university.edu'], ['staff_id' => 'UNI-DH-301', 'name' => 'Dr. Chala Gemechu', 'password' => $pass, 'role' => 'dh', 'dept_id' => $d1->id]);
+        $coordinator = User::firstOrCreate(['email' => 'coordinator@university.edu'], ['staff_id' => 'UNI-COORD-401', 'name' => 'Alemayehu Worku', 'password' => $pass, 'role' => 'coordinator', 'dept_id' => $d1->id]);
+        $dean = User::firstOrCreate(['email' => 'dean@university.edu'], ['staff_id' => 'UNI-DEAN-501', 'name' => 'Dr. Mesfin Haile', 'password' => $pass, 'role' => 'dean', 'dept_id' => $d1->id]);
+        $irerc = User::firstOrCreate(['email' => 'irerc@university.edu'], ['staff_id' => 'UNI-ETHIC-601', 'name' => 'Dr. Sara Mohammed', 'password' => $pass, 'role' => 'irerc', 'dept_id' => $d3->id]);
+        $vparttcs = User::firstOrCreate(['email' => 'vp@university.edu'], ['staff_id' => 'UNI-VP-701', 'name' => 'Prof. Kassahun Zewdie', 'password' => $pass, 'role' => 'vparttcs']);
+        $rcsc = User::firstOrCreate(['email' => 'rcsc@university.edu'], ['staff_id' => 'UNI-PRES-801', 'name' => 'University President', 'password' => $pass, 'role' => 'rcsc']);
+        $finance = User::firstOrCreate(['email' => 'finance@university.edu'], ['staff_id' => 'UNI-FIN-901', 'name' => 'Finance Office', 'password' => $pass, 'role' => 'finance']);
 
         User::each(function ($user) {
             \App\Services\RbacService::syncUserRole($user);
@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             Project::create([
-                'title' => 'Sustainable Agro-Forestry and Soil Carbon Sequestration Modeling in Gambella National Park Buffer Zones',
+                'title' => 'Sustainable Agro-Forestry and Soil Carbon Sequestration Modeling in University National Park Buffer Zones',
                 'abstract_text' => 'An empirical investigation into indigenous agro-forestry practices, measuring soil organic carbon dynamics and evaluating community-led reforestation strategies across protected buffer corridors.',
                 'thematic_id' => $t1->id,
                 'pi_id' => $pi->id,
@@ -117,9 +117,9 @@ class DatabaseSeeder extends Seeder
 
         // 5. Seed Initial System Audit Logs (if empty)
         if (\App\Models\AuditLog::count() === 0) {
-            \App\Services\AuditService::log('SYSTEM_INIT', 'System', null, 'GMU-RPMS Institutional Governance Database Initialized with RBAC v3.0 matrix', $admin->id);
-            \App\Services\AuditService::log('USER_SEED', 'User', $admin->id, 'System Administrator account provisioned (GMU-ADM-01)', $admin->id);
-            \App\Services\AuditService::log('USER_SEED', 'User', $pi->id, 'Academic PI account provisioned (GMU-STAFF-101)', $admin->id);
+            \App\Services\AuditService::log('SYSTEM_INIT', 'System', null, 'RPMS Institutional Governance Database Initialized with RBAC v3.0 matrix', $admin->id);
+            \App\Services\AuditService::log('USER_SEED', 'User', $admin->id, 'System Administrator account provisioned (UNI-ADM-01)', $admin->id);
+            \App\Services\AuditService::log('USER_SEED', 'User', $pi->id, 'Academic PI account provisioned (UNI-STAFF-101)', $admin->id);
             \App\Services\AuditService::log('THEMATIC_SETUP', 'ThematicArea', $t1->id, 'Thematic Area: Climate Resilience & Agriculture established', $admin->id);
         }
     }

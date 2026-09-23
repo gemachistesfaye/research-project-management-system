@@ -274,7 +274,7 @@ Route::middleware(['auth'])->group(function () {
                 'request' => $request,
             ])->setPaper('a4', 'portrait');
 
-            return $pdf->download('GMU_Payment_Voucher_' . $request->request_id . '.pdf');
+            return $pdf->download('UNI_Payment_Voucher_' . $request->request_id . '.pdf');
         })->name('finance.voucher');
 
         Route::get('/finance/disbursement/{id}/voucher/view', function ($id) {
@@ -283,7 +283,7 @@ Route::middleware(['auth'])->group(function () {
                 'request' => $request,
             ])->setPaper('a4', 'portrait');
 
-            return $pdf->stream('GMU_Payment_Voucher_' . $request->request_id . '.pdf');
+            return $pdf->stream('UNI_Payment_Voucher_' . $request->request_id . '.pdf');
         })->name('finance.voucher.view');
 
         Route::get('/finance/export/csv', function () {
@@ -292,7 +292,7 @@ Route::middleware(['auth'])->group(function () {
                 ->latest()
                 ->get();
 
-            $filename = 'GMU_Finance_Disbursement_Audit_' . date('Y_m_d_His') . '.csv';
+            $filename = 'UNI_Finance_Disbursement_Audit_' . date('Y_m_d_His') . '.csv';
             $headers = [
                 'Content-Type'        => 'text/csv; charset=UTF-8',
                 'Content-Disposition' => "attachment; filename=\"$filename\"",
@@ -319,7 +319,7 @@ Route::middleware(['auth'])->group(function () {
                 foreach ($disbursed as $d) {
                     fputcsv($handle, [
                         'REQ-' . $d->request_id,
-                        $d->project->project_code ?? ('GMU-PRJ-' . $d->project_id),
+                        $d->project->project_code ?? ('UNI-PRJ-' . $d->project_id),
                         $d->project->title ?? 'N/A',
                         $d->project->pi->name ?? 'N/A',
                         $d->project->thematicArea->title ?? 'General',

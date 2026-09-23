@@ -152,7 +152,7 @@
                                     <h6 class="mb-0 fw-bold text-dark">Prof. Kebede Tassew (Reviewer 1)</h6>
                                     <small class="text-muted">Water Resource Engineering</small>
                                 </div>
-                                <span class="badge bg-white text-dark border">GMU-EXAM-201</span>
+                                <span class="badge bg-white text-dark border">UNI-EXAM-201</span>
                             </div>
                             <div class="d-flex gap-3 mb-2 small">
                                 <span><i class="bi bi-clipboard-check text-dark me-1"></i><strong>1</strong> Active</span>

@@ -44,7 +44,7 @@ class ResetProjectsToDraftSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = ON;');
 
         // 3. Find PI user and department
-        $pi = User::where('email', 'pi@gmu.edu.et')->first() ?? User::where('role', 'pi')->first();
+        $pi = User::where('email', 'pi@university.edu')->first() ?? User::where('role', 'pi')->first();
         if (!$pi) {
             throw new \Exception('PI user not found. Please run DatabaseSeeder first.');
         }
@@ -54,7 +54,7 @@ class ResetProjectsToDraftSeeder extends Seeder
         $thematics = ThematicArea::all();
         if ($thematics->count() < 3) {
             $t1 = ThematicArea::firstOrCreate(
-                ['title' => 'Climate Resilience & Agricultural Productivity in Gambella Region'],
+                ['title' => 'Climate Resilience & Agricultural Productivity in University Region'],
                 ['category' => 'Agriculture & Environment', 'description' => 'Research focusing on flood resistance and modern farming techniques.']
             );
             $t2 = ThematicArea::firstOrCreate(
@@ -86,7 +86,7 @@ class ResetProjectsToDraftSeeder extends Seeder
         ]);
 
         Project::create([
-            'title' => 'Sustainable Agro-Forestry and Soil Carbon Sequestration Modeling in Gambella National Park Buffer Zones',
+            'title' => 'Sustainable Agro-Forestry and Soil Carbon Sequestration Modeling in University National Park Buffer Zones',
             'abstract_text' => 'An empirical investigation into indigenous agro-forestry practices, measuring soil organic carbon dynamics and evaluating community-led reforestation strategies across protected buffer corridors.',
             'thematic_id' => $tAgriculture->id,
             'pi_id' => $pi->id,

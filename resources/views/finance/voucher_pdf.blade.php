@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Gambella University - Payment Disbursement Voucher</title>
+<title>University - Payment Disbursement Voucher</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: #1e293b; padding: 30px; }
@@ -33,7 +33,7 @@
 
 <div class="voucher-box">
     <div class="header">
-        <h2>Gambella University</h2>
+        <h2>University</h2>
         <h4>Finance &amp; Grant Disbursement Directorate</h4>
         <div class="doc-title">Official Grant Disbursement Voucher</div>
     </div>
@@ -44,7 +44,7 @@
             <td style="width: 50%; text-align: right;"><strong>Disbursement Date:</strong> {{ $request->disbursed_at ? $request->disbursed_at->format('M d, Y H:i') : now()->format('M d, Y') }}</td>
         </tr>
         <tr>
-            <td><strong>Project Code:</strong> {{ $request->project->project_code ?? ('GMU-PRJ-' . $request->project->project_id) }}</td>
+            <td><strong>Project Code:</strong> {{ $request->project->project_code ?? ('UNI-PRJ-' . $request->project->project_id) }}</td>
             <td style="text-align: right;"><strong>Governance Tier:</strong> {{ $request->approval_tier ?? 'University Tier' }}</td>
         </tr>
     </table>
@@ -57,7 +57,7 @@
         </tr>
         <tr>
             <th>PI Staff ID / Email:</th>
-            <td>{{ $request->project->pi->staff_id ?? 'GMU-STAFF' }} &bull; {{ $request->project->pi->email ?? 'N/A' }}</td>
+            <td>{{ $request->project->pi->staff_id ?? 'UNI-STAFF' }} &bull; {{ $request->project->pi->email ?? 'N/A' }}</td>
         </tr>
         <tr>
             <th>Project Title:</th>
@@ -124,7 +124,7 @@
     </table>
 
     <div class="footer">
-        This is an official financial disbursement document issued by the Gambella University Research Project Management System (GMU-RPMS).
+        This is an official financial disbursement document issued by the University Research Project Management System (RPMS).
     </div>
 </div>
 

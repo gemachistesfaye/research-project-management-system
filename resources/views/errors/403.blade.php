@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>403 - Access Denied | GMU-RPMS</title>
+    <title>403 - Access Denied | RPMS</title>
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/bootstrap/css/bootstrap-icons.css') }}" rel="stylesheet">
     <style>
         :root {
-            --gmu-primary: #0f3e2e;
-            --gmu-primary-dark: #0a2b20;
-            --gmu-gold: #d4af37;
-            --gmu-bg: #f6f8fa;
+            --UNI-primary: #0f3e2e;
+            --UNI-primary-dark: #0a2b20;
+            --UNI-gold: #d4af37;
+            --UNI-bg: #f6f8fa;
         }
         body {
-            background-color: var(--gmu-bg);
+            background-color: var(--UNI-bg);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             color: #1e293b;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        .navbar-gmu {
-            background: linear-gradient(135deg, var(--gmu-primary) 0%, var(--gmu-primary-dark) 100%);
+        .navbar-UNI {
+            background: linear-gradient(135deg, var(--UNI-primary) 0%, var(--UNI-primary-dark) 100%);
             box-shadow: 0 4px 20px -2px rgba(15, 62, 46, 0.35);
-            border-bottom: 2px solid var(--gmu-gold);
+            border-bottom: 2px solid var(--UNI-gold);
         }
         .brand-text { color: #ffffff; font-weight: 800; letter-spacing: 0.8px; font-size: 0.95rem; }
-        .brand-sub { color: var(--gmu-gold); font-size: 0.72rem; font-weight: 500; }
+        .brand-sub { color: var(--UNI-gold); font-size: 0.72rem; font-weight: 500; }
         .error-card {
             border: 1px solid #e2e8f0;
             border-radius: 12px;
@@ -42,22 +42,22 @@
             border: 2px solid #fecaca;
         }
         .error-icon i { font-size: 2.5rem; color: #dc2626; }
-        .btn-gmu {
+        .btn-UNI {
             background-color: #0f172a; border-color: #0f172a; color: #ffffff;
         }
-        .btn-gmu:hover {
+        .btn-UNI:hover {
             background-color: #334155; border-color: #334155; color: #ffffff;
         }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-gmu py-2">
+    <nav class="navbar navbar-expand-lg navbar-UNI py-2">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
                 <i class="bi bi-journal-bookmark-fill fs-2 text-warning me-2"></i>
                 <div>
-                    <div class="brand-text fs-6">GAMBELLA UNIVERSITY</div>
+                    <div class="brand-text fs-6">University</div>
                     <div class="brand-sub">Research Project Management System</div>
                 </div>
             </a>
@@ -87,12 +87,12 @@
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                             <input type="text" name="search" class="form-control" placeholder="Search projects, reports...">
-                            <button type="submit" class="btn btn-gmu">Search</button>
+                            <button type="submit" class="btn btn-UNI">Search</button>
                         </div>
                     </form>
 
                     <div class="d-flex gap-2 justify-content-center flex-wrap mb-3">
-                        <a href="{{ route('dashboard') }}" class="btn btn-gmu px-3 py-2 fw-bold">
+                        <a href="{{ route('dashboard') }}" class="btn btn-UNI px-3 py-2 fw-bold">
                             <i class="bi bi-house-door me-1"></i> Dashboard
                         </a>
                         @auth
@@ -112,7 +112,7 @@
                     <div class="mt-3 p-3 bg-light rounded-3">
                         <small class="text-muted">
                             <i class="bi bi-envelope me-1"></i> Need help? Contact us at
-                            <a href="mailto:admin@gmu.edu.et" class="fw-bold text-decoration-none">admin@gmu.edu.et</a>
+                            <a href="mailto:admin@university.edu" class="fw-bold text-decoration-none">admin@university.edu</a>
                         </small>
                     </div>
 
@@ -131,7 +131,7 @@
 
     <footer class="bg-white border-top py-3 text-center text-muted small mt-auto">
         <div class="container">
-            &copy; {{ date('Y') }} Gambella University &mdash; Office of the Vice President for ARTTCS. SDD v3.0 Compliant.
+            &copy; {{ date('Y') }} University &mdash; Office of the Vice President for ARTTCS. SDD v3.0 Compliant.
         </div>
     </footer>
 

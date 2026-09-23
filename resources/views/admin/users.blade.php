@@ -351,7 +351,7 @@
                     <div class="row g-2 mb-2 text-start">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1 text-start d-block">Staff / Employee ID</label>
-                            <input type="text" name="staff_id" class="form-control form-control-sm text-start" required placeholder="e.g. GMU-STAFF-999">
+                            <input type="text" name="staff_id" class="form-control form-control-sm text-start" required placeholder="e.g. UNI-STAFF-999">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1 text-start d-block">Full Name</label>
@@ -362,7 +362,7 @@
                     <div class="row g-2 mb-2 text-start">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1 text-start d-block">Email Address</label>
-                            <input type="email" name="email" class="form-control form-control-sm text-start" required placeholder="johndoe@gmu.edu.et">
+                            <input type="email" name="email" class="form-control form-control-sm text-start" required placeholder="johndoe@university.edu">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small mb-1 text-start d-block">Initial Password <span class="text-danger">*</span></label>

@@ -333,7 +333,7 @@ class GovernanceController extends Controller
             ->with(['thematicArea', 'pi'])
             ->get();
 
-        $filename = 'GMU_Research_Portfolio_Data_' . date('Y_m_d_His') . '.csv';
+        $filename = 'UNI_Research_Portfolio_Data_' . date('Y_m_d_His') . '.csv';
 
         $headers = [
             'Content-Type'        => 'text/csv; charset=UTF-8',
@@ -367,7 +367,7 @@ class GovernanceController extends Controller
                 $tier = ($reqBudget >= 500000) ? 'RCSC / VP Tier' : 'College Dean Tier';
 
                 fputcsv($handle, [
-                    $p->project_code ?? ('GMU-PRJ-' . $p->project_id),
+                    $p->project_code ?? ('UNI-PRJ-' . $p->project_id),
                     $p->title,
                     $p->thematicArea->title ?? 'General Thematic Area',
                     $p->pi->name ?? 'N/A',
@@ -422,7 +422,7 @@ class GovernanceController extends Controller
             'generatedBy'         => Auth::user()->name,
         ])->setPaper('a4', 'portrait');
 
-        return $pdf->download('GMU_Research_Portfolio_Report_' . date('Y_m_d_His') . '.pdf');
+        return $pdf->download('UNI_Research_Portfolio_Report_' . date('Y_m_d_His') . '.pdf');
     }
 
     public function certificates()
@@ -470,7 +470,7 @@ class GovernanceController extends Controller
 
         Certificate::create([
             'project_id'      => $request->project_id,
-            'certificate_code' => 'GMU-CERT-' . strtoupper(uniqid()),
+            'certificate_code' => 'UNI-CERT-' . strtoupper(uniqid()),
             'type'            => $request->type,
             'issued_to_name'  => $request->issued_to_name,
             'issued_at'       => now(),

@@ -50,13 +50,13 @@
 <div class="card card-custom p-4 mb-4">
     <h5 class="fw-bold mb-3"><i class="bi bi-broadcast me-2 text-success"></i>Live Gateway Connectors</h5>
     <div class="row g-3">
-        {{-- 1. GMU HRMS Staff API --}}
+        {{-- 1. UNI HRMS Staff API --}}
         <div class="col-md-6">
             <div class="p-3 border rounded-3 bg-light h-100 d-flex flex-column justify-content-between">
                 <div>
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div class="fw-bold fs-6 text-dark">
-                            <i class="bi bi-person-vcard-fill text-success me-2 fs-5"></i>GMU HRMS Staff Payroll API
+                            <i class="bi bi-person-vcard-fill text-success me-2 fs-5"></i>UNI HRMS Staff Payroll API
                         </div>
                         <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
                             <i class="bi bi-circle-fill me-1" style="font-size: 0.55rem;"></i>Healthy
@@ -68,7 +68,7 @@
                     <ul class="list-unstyled small text-muted mb-3 ps-1">
                         <li><i class="bi bi-shield-lock text-dark me-1"></i> Protocol: <strong>TLS 1.3 REST API (HMAC-SHA256)</strong></li>
                         <li><i class="bi bi-clock-history text-dark me-1"></i> Auto-Heartbeat: <strong>Every 15 minutes</strong></li>
-                        <li><i class="bi bi-database text-dark me-1"></i> Directory: <strong>Gambella University Central HR</strong></li>
+                        <li><i class="bi bi-database text-dark me-1"></i> Directory: <strong>University Central HR</strong></li>
                     </ul>
                 </div>
                 <form method="POST" action="{{ route('admin.hrms-sync.ping') }}" class="mt-2">
@@ -81,13 +81,13 @@
             </div>
         </div>
 
-        {{-- 2. GMU Procurement Gateway --}}
+        {{-- 2. UNI Procurement Gateway --}}
         <div class="col-md-6">
             <div class="p-3 border rounded-3 bg-light h-100 d-flex flex-column justify-content-between">
                 <div>
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div class="fw-bold fs-6 text-dark">
-                            <i class="bi bi-cart-check-fill text-primary me-2 fs-5"></i>GMU Procurement &amp; Inventory Gateway
+                            <i class="bi bi-cart-check-fill text-primary me-2 fs-5"></i>UNI Procurement &amp; Inventory Gateway
                         </div>
                         <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
                             <i class="bi bi-circle-fill me-1" style="font-size: 0.55rem;"></i>Healthy
@@ -99,7 +99,7 @@
                     <ul class="list-unstyled small text-muted mb-3 ps-1">
                         <li><i class="bi bi-shield-lock text-dark me-1"></i> Protocol: <strong>JSON Webhooks &amp; REST</strong></li>
                         <li><i class="bi bi-clock-history text-dark me-1"></i> Event Trigger: <strong>Purchase Approval / Delivery</strong></li>
-                        <li><i class="bi bi-building text-dark me-1"></i> Destination: <strong>GMU Property Administration</strong></li>
+                        <li><i class="bi bi-building text-dark me-1"></i> Destination: <strong>UNI Property Administration</strong></li>
                     </ul>
                 </div>
                 <form method="POST" action="{{ route('admin.hrms-sync.ping') }}" class="mt-2">

@@ -39,7 +39,7 @@ class ForgotPasswordTest extends TestCase
         $admin = User::factory()->create(['role' => 'admin']);
         \App\Services\RbacService::syncUserRole($admin);
         $user  = User::factory()->create([
-            'email'    => 'target@gmu.edu.et',
+            'email'    => 'target@university.edu',
             'password' => Hash::make('OldPass1!'),
         ]);
 
@@ -88,20 +88,20 @@ class ForgotPasswordTest extends TestCase
     public function test_login_locked_after_five_failed_attempts()
     {
         $user = User::factory()->create([
-            'email'    => 'lockme@gmu.edu.et',
+            'email'    => 'lockme@university.edu',
             'password' => Hash::make('RealPass1!'),
         ]);
 
         for ($i = 0; $i < 5; $i++) {
             $this->post('/login', [
-                'email'    => 'lockme@gmu.edu.et',
+                'email'    => 'lockme@university.edu',
                 'password' => 'wrongpassword',
             ]);
         }
 
         // 6th attempt — even correct password — must be blocked
         $response = $this->post('/login', [
-            'email'    => 'lockme@gmu.edu.et',
+            'email'    => 'lockme@university.edu',
             'password' => 'RealPass1!',
         ]);
 
@@ -113,21 +113,21 @@ class ForgotPasswordTest extends TestCase
     public function test_successful_login_clears_lockout_counter()
     {
         $user = User::factory()->create([
-            'email'    => 'gooduser@gmu.edu.et',
+            'email'    => 'gooduser@university.edu',
             'password' => Hash::make('GoodPass1@'),
         ]);
 
         // 3 wrong attempts (below lockout)
         for ($i = 0; $i < 3; $i++) {
             $this->post('/login', [
-                'email'    => 'gooduser@gmu.edu.et',
+                'email'    => 'gooduser@university.edu',
                 'password' => 'wrongpassword',
             ]);
         }
 
         // Correct login — must succeed and clear counter
         $response = $this->post('/login', [
-            'email'    => 'gooduser@gmu.edu.et',
+            'email'    => 'gooduser@university.edu',
             'password' => 'GoodPass1@',
         ]);
 
@@ -137,7 +137,7 @@ class ForgotPasswordTest extends TestCase
     public function test_user_can_change_password_from_profile_with_valid_current_password()
     {
         $user = User::factory()->create([
-            'email'    => 'profileuser@gmu.edu.et',
+            'email'    => 'profileuser@university.edu',
             'password' => Hash::make('Current@123'),
         ]);
 
@@ -155,7 +155,7 @@ class ForgotPasswordTest extends TestCase
     public function test_profile_change_password_rejects_wrong_current_password()
     {
         $user = User::factory()->create([
-            'email'    => 'profileuser2@gmu.edu.et',
+            'email'    => 'profileuser2@university.edu',
             'password' => Hash::make('Current@123'),
         ]);
 

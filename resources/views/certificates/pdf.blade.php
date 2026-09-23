@@ -141,10 +141,10 @@
     <div class="corner-ornament corner-tr"></div>
     <div class="corner-ornament corner-bl"></div>
     <div class="corner-ornament corner-br"></div>
-    <div class="watermark">GAMBELLA UNIVERSITY</div>
+    <div class="watermark">University</div>
 
     <div class="header">
-        <div class="uni-name">Gambella University</div>
+        <div class="uni-name">University</div>
         <div class="uni-motto">Excellence in Research, Technology Transfer &amp; Community Service</div>
     </div>
     <div class="divider"></div>
@@ -188,7 +188,7 @@
         <div class="footer-col">
             <div class="signature-line"></div>
             <div class="signer-name">Vice President (ARTTCS)</div>
-            <div class="signer-title">Gambella University</div>
+            <div class="signer-title">University</div>
         </div>
     </div>
 

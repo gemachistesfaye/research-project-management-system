@@ -140,7 +140,7 @@ class RPMSWorkflowTest extends TestCase
         $thematic = ThematicArea::create(['title' => 'Renewable Energy']);
 
         $project = Project::create([
-            'title' => 'Solar Microgrid Gambella',
+            'title' => 'Solar Microgrid University',
             'abstract_text' => 'Renewable solar implementation',
             'thematic_id' => $thematic->id,
             'pi_id' => $pi->id,
@@ -158,7 +158,7 @@ class RPMSWorkflowTest extends TestCase
 
         $cert = \App\Models\Certificate::where('project_id', $project->project_id)->first();
         $this->assertNotNull($cert);
-        $this->assertStringStartsWith('GMU-CERT-', $cert->certificate_code);
+        $this->assertStringStartsWith('UNI-CERT-', $cert->certificate_code);
 
         // PI downloads certificate PDF
         $downloadResponse = $this->actingAs($pi)->get(route('certificates.download', $cert->id));
@@ -176,7 +176,7 @@ class RPMSWorkflowTest extends TestCase
         $thematic = ThematicArea::create(['title' => 'Public Health & Epidemiology']);
 
         $project = Project::create([
-            'title' => 'Clinical Study on Malaria Vector Resistance in Gambella',
+            'title' => 'Clinical Study on Malaria Vector Resistance in University',
             'abstract_text' => 'Clinical diagnostic study involving patient blood samples',
             'thematic_id' => $thematic->id,
             'pi_id' => User::factory()->create(['role' => 'pi'])->id,
@@ -219,7 +219,7 @@ class RPMSWorkflowTest extends TestCase
         $thematic = ThematicArea::create(['title' => 'Agronomy']);
 
         $project = Project::create([
-            'title' => 'Soil Nutrition Analysis Gambella',
+            'title' => 'Soil Nutrition Analysis University',
             'abstract_text' => 'Soil quality assessment',
             'thematic_id' => $thematic->id,
             'pi_id' => $pi->id,
@@ -314,7 +314,7 @@ class RPMSWorkflowTest extends TestCase
 
         $thematic = ThematicArea::create(['title' => 'Renewable Energy']);
         $project = Project::create([
-            'title' => 'Solar Microgrid Gambella Campus',
+            'title' => 'Solar Microgrid University Campus',
             'abstract_text' => 'Deployment of off-grid solar panels',
             'thematic_id' => $thematic->id,
             'pi_id' => $pi->id,
@@ -336,7 +336,7 @@ class RPMSWorkflowTest extends TestCase
         // 1. Visit disbursement page
         $pageResponse = $this->actingAs($financeOfficer)->get(route('finance.disbursement'));
         $pageResponse->assertStatus(200);
-        $pageResponse->assertSee('Solar Microgrid Gambella Campus');
+        $pageResponse->assertSee('Solar Microgrid University Campus');
         $this->assertNotNull($tranche1);
         $this->assertEquals(150000.00, (float)$tranche1->approved_amount);
         $this->assertEquals('Approved', $tranche1->status);
@@ -344,14 +344,14 @@ class RPMSWorkflowTest extends TestCase
         // 2. Process disbursement release
         $processResponse = $this->actingAs($financeOfficer)->post(route('finance.process-disbursement', $tranche1->request_id), [
             'payment_method' => 'Bank Transfer',
-            'notes' => 'CBE Transfer Ref #GMU-TEST-2026',
+            'notes' => 'CBE Transfer Ref #UNI-TEST-2026',
         ]);
         $processResponse->assertSessionHas('success');
 
         $tranche1->refresh();
         $this->assertEquals('Released', $tranche1->status);
         $this->assertEquals('Bank Transfer', $tranche1->payment_method);
-        $this->assertEquals('CBE Transfer Ref #GMU-TEST-2026', $tranche1->notes);
+        $this->assertEquals('CBE Transfer Ref #UNI-TEST-2026', $tranche1->notes);
         $this->assertNotNull($tranche1->disbursed_at);
 
         // 3. Test Voucher PDF Download
@@ -376,16 +376,16 @@ class RPMSWorkflowTest extends TestCase
         $user = User::factory()->create([
             'role' => 'pi',
             'name' => 'Original Name',
-            'email' => 'original@gmu.edu.et',
+            'email' => 'original@university.edu',
             'status' => 'active',
-            'staff_id' => 'GMU-TEST-001',
+            'staff_id' => 'UNI-TEST-001',
         ]);
 
         // 1. Update user details & role
         $updateResponse = $this->actingAs($admin)->put(route('admin.users.update', $user->id), [
-            'staff_id' => 'GMU-TEST-001-MOD',
+            'staff_id' => 'UNI-TEST-001-MOD',
             'name' => 'Updated Name',
-            'email' => 'updated@gmu.edu.et',
+            'email' => 'updated@university.edu',
             'role' => 'dh',
             'status' => 'active',
         ]);
@@ -393,9 +393,9 @@ class RPMSWorkflowTest extends TestCase
 
         $user->refresh();
         $this->assertEquals('Updated Name', $user->name);
-        $this->assertEquals('updated@gmu.edu.et', $user->email);
+        $this->assertEquals('updated@university.edu', $user->email);
         $this->assertEquals('dh', $user->role);
-        $this->assertEquals('GMU-TEST-001-MOD', $user->staff_id);
+        $this->assertEquals('UNI-TEST-001-MOD', $user->staff_id);
 
         // 2. Toggle status to inactive
         $toggleResponse = $this->actingAs($admin)->post(route('admin.users.toggle-status', $user->id));
@@ -407,7 +407,7 @@ class RPMSWorkflowTest extends TestCase
         // Verify deactivated user cannot log in
         $this->post('/logout');
         $loginAttempt = $this->post('/login', [
-            'email' => 'updated@gmu.edu.et',
+            'email' => 'updated@university.edu',
             'password' => 'password',
         ]);
         $loginAttempt->assertSessionHasErrors(['email']);

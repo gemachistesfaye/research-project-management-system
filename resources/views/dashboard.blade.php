@@ -1025,7 +1025,7 @@
                                     <div class="mb-2">
                                         <label class="form-label small fw-bold mb-1">Reference / Note</label>
                                         <input type="text" name="notes" class="form-control form-control-sm @error('notes') is-invalid @enderror"
-                                               placeholder="e.g. CBE Ref #GMU-2026-9812" value="{{ old('notes') }}">
+                                               placeholder="e.g. CBE Ref #UNI-2026-9812" value="{{ old('notes') }}">
                                         @error('notes')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                 </div>

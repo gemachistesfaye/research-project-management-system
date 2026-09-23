@@ -27,7 +27,7 @@
                            class="form-control @error('staff_id') is-invalid @enderror"
                            value="{{ old('staff_id') }}"
                            required
-                           placeholder="e.g. GMU/STAFF/001"
+                           placeholder="e.g. UNI/STAFF/001"
                            autofocus>
                     @error('staff_id')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -42,7 +42,7 @@
                            class="form-control @error('email') is-invalid @enderror"
                            value="{{ old('email') }}"
                            required
-                           placeholder="user@gmu.edu.et">
+                           placeholder="user@university.edu">
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

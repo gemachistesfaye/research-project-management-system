@@ -1,6 +1,6 @@
 # Research Project Management System
 
-A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance. Built for Gambella University.
+A full-featured web application for managing the complete lifecycle of academic research projects, from proposal submission to completion and certificate issuance. Built for University.
 
 ## Features
 
@@ -20,21 +20,21 @@ A full-featured web application for managing the complete lifecycle of academic 
 
 ## Test Accounts / Demo Logins
 
-If you have run the database seeders (`php artisan migrate --seed`), you can log in with any of the following demo accounts. **All accounts share the same password:** `GMU@Demo1`
+If you have run the database seeders (`php artisan migrate --seed`), you can log in with any of the following demo accounts. **All accounts share the same password:** `UNI@Demo1`
 
-| Role                         | Email Address            |
-| :--------------------------- | :----------------------- |
-| **System Administrator**     | `admin@gmu.edu.et`       |
-| **Principal Investigator**   | `pi@gmu.edu.et`          |
-| **Team Member**              | `tm@gmu.edu.et`          |
-| **Department Head**          | `dh@gmu.edu.et`          |
-| **Research Coordinator**     | `coordinator@gmu.edu.et` |
-| **Blind Reviewer**           | `reviewer@gmu.edu.et`    |
-| **College Dean**             | `dean@gmu.edu.et`        |
-| **Ethics Committee (IRERC)** | `irerc@gmu.edu.et`       |
-| **VP Academic (ARTTCS)**     | `vp@gmu.edu.et`          |
-| **RCSC Chair**               | `rcsc@gmu.edu.et`        |
-| **Finance Office**           | `finance@gmu.edu.et`     |
+| Role                               | Email Address              |
+| :--------------------------------- | :------------------------- |
+| **System Administrator**     | `admin@university.edu`       |
+| **Principal Investigator**   | `pi@university.edu`          |
+| **Team Member**              | `tm@university.edu`          |
+| **Department Head**          | `dh@university.edu`          |
+| **Research Coordinator**     | `coordinator@university.edu` |
+| **Blind Reviewer**           | `reviewer@university.edu`    |
+| **College Dean**             | `dean@university.edu`        |
+| **Ethics Committee (IRERC)** | `irerc@university.edu`       |
+| **VP Academic (ARTTCS)**     | `vp@university.edu`          |
+| **RCSC Chair**               | `rcsc@university.edu`        |
+| **Finance Office**           | `finance@university.edu`     |
 
 ## Tech Stack
 
@@ -101,10 +101,10 @@ Visit `http://localhost:8000`
 
 Key variables in `.env`:
 
-| Variable         | Description     | Default                 |
-| ---------------- | --------------- | ----------------------- |
-| `APP_KEY`        | Encryption key  | Pre-configured          |
-| `APP_URL`        | Application URL | Auto-detected           |
+| Variable           | Description     | Default                   |
+| ------------------ | --------------- | ------------------------- |
+| `APP_KEY`        | Encryption key  | Pre-configured            |
+| `APP_URL`        | Application URL | Auto-detected             |
 | `APP_DEBUG`      | Debug mode      | `false` in production   |
 | `DB_CONNECTION`  | Database driver | `sqlite`                |
 | `DB_DATABASE`    | Database path   | `/data/database.sqlite` |
@@ -141,7 +141,7 @@ The system enforces 60+ granular permissions across 12 roles:
 | College Dean           | Approve/reject projects (<500k ETB), view college analytics           |
 | IRERC Ethics Committee | Ethics review and approval                                            |
 | VP Academic (ARTTCS)   | Final approval, amendment review, certificate issuance                |
-| RCSC Chair             | Financial governance (≥500k ETB), budget approval                     |
+| RCSC Chair             | Financial governance (≥500k ETB), budget approval                    |
 | Finance Office         | Process disbursements, financial tracking                             |
 | System Administrator   | Full access: users, colleges, departments, thematic areas, audit logs |
 

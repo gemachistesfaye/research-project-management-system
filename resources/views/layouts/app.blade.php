@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GMU - Research Project Management System</title>
+    <title>UNI - Research Project Management System</title>
     <!-- Bootstrap 5.3 CSS (CDN) -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Bootstrap Icons (CDN) -->
@@ -11,30 +11,30 @@
     <!-- Page Transition Loader Removed -->
     <style>
         :root {
-            --gmu-primary: #0f3e2e;
-            --gmu-primary-dark: #0a2b20;
-            --gmu-secondary: #1e5641;
-            --gmu-accent: #2e8b57;
-            --gmu-gold: #d4af37;
-            --gmu-gold-dark: #b89324;
-            --gmu-gold-light: #fef9e7;
-            --gmu-bg: #f6f8fa;
-            --gmu-card-border: #e2e8f0;
+            --UNI-primary: #0f3e2e;
+            --UNI-primary-dark: #0a2b20;
+            --UNI-secondary: #1e5641;
+            --UNI-accent: #2e8b57;
+            --UNI-gold: #d4af37;
+            --UNI-gold-dark: #b89324;
+            --UNI-gold-light: #fef9e7;
+            --UNI-bg: #f6f8fa;
+            --UNI-card-border: #e2e8f0;
         }
         html {
             overflow-x: hidden;
         }
         body {
-            background-color: var(--gmu-bg);
+            background-color: var(--UNI-bg);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             color: #1e293b;
             letter-spacing: -0.01em;
         }
         /* Navbar Styling */
-        .navbar-gmu {
-            background: linear-gradient(135deg, var(--gmu-primary) 0%, var(--gmu-primary-dark) 100%);
+        .navbar-UNI {
+            background: linear-gradient(135deg, var(--UNI-primary) 0%, var(--UNI-primary-dark) 100%);
             box-shadow: 0 4px 20px -2px rgba(15, 62, 46, 0.35);
-            border-bottom: 2px solid var(--gmu-gold);
+            border-bottom: 2px solid var(--UNI-gold);
         }
         /* Fixed navbar on desktop */
 
@@ -45,14 +45,14 @@
             font-size: 0.95rem;
         }
         .brand-sub {
-            color: var(--gmu-gold);
+            color: var(--UNI-gold);
             font-size: 0.72rem;
             font-weight: 500;
             letter-spacing: 0.2px;
         }
         .badge-call-cycle {
             background: rgba(212, 175, 55, 0.15);
-            color: var(--gmu-gold);
+            color: var(--UNI-gold);
             border: 1px solid rgba(212, 175, 55, 0.4);
             font-weight: 600;
         }
@@ -64,7 +64,7 @@
             letter-spacing: 0.5px;
         }
         /* Navigation Links */
-        .navbar-gmu .nav-link {
+        .navbar-UNI .nav-link {
             color: rgba(255, 255, 255, 0.85) !important;
             font-weight: 500;
             font-size: 0.88rem;
@@ -73,24 +73,24 @@
             transition: all 0.2s ease-in-out;
             white-space: nowrap;
         }
-        .navbar-gmu .nav-link:hover {
+        .navbar-UNI .nav-link:hover {
             color: #ffffff !important;
             background: rgba(255, 255, 255, 0.08);
         }
-        .navbar-gmu .nav-link.active-link {
-            color: var(--gmu-gold) !important;
+        .navbar-UNI .nav-link.active-link {
+            color: var(--UNI-gold) !important;
             background: rgba(212, 175, 55, 0.15);
             font-weight: 700 !important;
         }
         #navbarOffcanvas .nav-link.active-link {
-            color: var(--gmu-gold) !important;
+            color: var(--UNI-gold) !important;
             background: rgba(212, 175, 55, 0.2);
-            border-left: 3px solid var(--gmu-gold);
+            border-left: 3px solid var(--UNI-gold);
             font-weight: 700 !important;
         }
         /* Card Styling */
         .card-custom {
-            border: 1px solid var(--gmu-card-border);
+            border: 1px solid var(--UNI-card-border);
             border-radius: 12px;
             background: #ffffff;
             box-shadow: 0 2px 12px rgba(15, 62, 46, 0.04);
@@ -153,7 +153,7 @@
         }
         .badge-call-cycle {
             background: rgba(212, 175, 55, 0.15) !important;
-            color: var(--gmu-gold) !important;
+            color: var(--UNI-gold) !important;
             border: 1px solid rgba(212, 175, 55, 0.4) !important;
         }
         /* Clean Dark / White Buttons across all pages */
@@ -236,7 +236,7 @@
         box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
     }
     .custom-select-trigger.open {
-        border-color: var(--gmu-primary, #0f3e2e) !important;
+        border-color: var(--UNI-primary, #0f3e2e) !important;
         box-shadow: 0 0 0 3px rgba(15,62,46,0.12) !important;
     }
     .custom-select-trigger .placeholder {
@@ -280,10 +280,10 @@
     }
     .custom-select-option:hover {
         background: #f1f5f9;
-        color: var(--gmu-primary, #0f3e2e);
+        color: var(--UNI-primary, #0f3e2e);
     }
     .custom-select-option.selected {
-        background: var(--gmu-primary, #0f3e2e);
+        background: var(--UNI-primary, #0f3e2e);
         color: #ffffff;
     }
     .custom-select-option.selected:hover {
@@ -321,7 +321,7 @@
         }
         .dropdown-item:hover {
             background-color: #f1f5f9;
-            color: var(--gmu-primary);
+            color: var(--UNI-primary);
         }
 
         /* Mobile Responsive Media Queries */
@@ -358,7 +358,7 @@
                 display: none !important;
             }
             /* Fixed navbar on mobile */
-            .navbar-gmu {
+            .navbar-UNI {
                 position: fixed !important;
                 top: 0;
                 left: 0;
@@ -383,7 +383,7 @@
                 padding: 0.3em 0.55em !important;
             }
             /* Hide subtitle text on mobile header */
-            .navbar-gmu .d-flex .text-muted.small {
+            .navbar-UNI .d-flex .text-muted.small {
                 display: none !important;
             }
             /* Stack buttons cleanly with wrapping */
@@ -545,13 +545,13 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-lg navbar-gmu py-2 sticky-lg-top @yield('navbar-class')" style="z-index: 1050;">
+    <nav class="navbar navbar-expand-lg navbar-UNI py-2 sticky-lg-top @yield('navbar-class')" style="z-index: 1050;">
         <div class="container @yield('navbar-container-class')">
             <!-- Brand Identity -->
             <a class="navbar-brand d-flex align-items-center me-4" href="{{ route('dashboard') }}">
                 <i class="bi bi-journal-bookmark-fill fs-2 text-warning me-2"></i>
                 <div>
-                    <div class="brand-text fs-6">GAMBELLA UNIVERSITY</div>
+                    <div class="brand-text fs-6">University</div>
                     <div class="brand-sub">Research Project Management System</div>
                 </div>
             </a>
@@ -770,7 +770,7 @@
                             <li class="p-2 mb-2 rounded bg-light border">
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px; font-size: 0.85rem;">
-                                        {{ collect(explode(' ', preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name)))->map(fn($p) => substr($p, 0, 1))->take(2)->join('') ?: 'GMU' }}
+                                        {{ collect(explode(' ', preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name)))->map(fn($p) => substr($p, 0, 1))->take(2)->join('') ?: 'UNI' }}
                                     </div>
                                     <div class="flex-grow-1 text-truncate">
                                         <div class="fw-bold text-dark small text-truncate">{{ preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name) }}</div>
@@ -778,8 +778,8 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 pt-2 border-top d-flex justify-content-between align-items-center">
-                                    <span class="badge bg-dark font-monospace" style="font-size: 0.65rem;">{{ Auth::user()->staff_id ?? 'GMU-STAFF' }}</span>
-                                    <a href="{{ route('profile') }}" class="btn btn-sm d-flex align-items-center gap-1 fw-semibold text-white" style="font-size: 0.75rem; background: var(--gmu-secondary); border: 1px solid rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 6px;">
+                                    <span class="badge bg-dark font-monospace" style="font-size: 0.65rem;">{{ Auth::user()->staff_id ?? 'UNI-STAFF' }}</span>
+                                    <a href="{{ route('profile') }}" class="btn btn-sm d-flex align-items-center gap-1 fw-semibold text-white" style="font-size: 0.75rem; background: var(--UNI-secondary); border: 1px solid rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 6px;">
                                         <i class="bi bi-person-circle"></i> View Profile
                                     </a>
                                 </div>
@@ -843,12 +843,12 @@
 
     @auth
     <!-- Mobile Offcanvas Right Sidebar -->
-    <div class="offcanvas offcanvas-end text-white d-lg-none" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel" style="background-color: var(--gmu-primary-dark); max-width: 320px; width: 78vw;">
+    <div class="offcanvas offcanvas-end text-white d-lg-none" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel" style="background-color: var(--UNI-primary-dark); max-width: 320px; width: 78vw;">
         <div class="offcanvas-header border-bottom border-secondary pb-2 pt-3 px-3">
             <div class="d-flex align-items-center">
                 <i class="bi bi-journal-bookmark-fill fs-3 text-warning me-2"></i>
                 <div>
-                    <div class="fw-bold text-white small lh-1">GAMBELLA UNIVERSITY</div>
+                    <div class="fw-bold text-white small lh-1">University</div>
                     <div class="text-warning" style="font-size: 0.68rem;">RPMS Mobile Portal</div>
                 </div>
             </div>
@@ -860,7 +860,7 @@
             <div class="p-2 mb-3 rounded-3 border" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15) !important;">
                 <div class="d-flex align-items-center gap-2">
                     <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0" style="width: 42px; height: 42px; font-size: 0.9rem;">
-                        {{ collect(explode(' ', preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name)))->map(fn($p) => substr($p, 0, 1))->take(2)->join('') ?: 'GMU' }}
+                        {{ collect(explode(' ', preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name)))->map(fn($p) => substr($p, 0, 1))->take(2)->join('') ?: 'UNI' }}
                     </div>
                     <div class="flex-grow-1 text-truncate">
                         <div class="fw-bold text-white small text-truncate">{{ preg_replace('/\s*\([^)]*\)/', '', Auth::user()->name) }}</div>
@@ -868,8 +868,8 @@
                     </div>
                 </div>
                 <div class="mt-2 pt-2 d-flex justify-content-between align-items-center" style="border-top: 1px solid rgba(255,255,255,0.15);">
-                    <span class="badge bg-dark font-monospace" style="font-size: 0.65rem;">{{ Auth::user()->staff_id ?? 'GMU-STAFF' }}</span>
-                    <a href="{{ route('profile') }}" class="btn btn-sm d-flex align-items-center gap-1 fw-semibold text-white" style="font-size: 0.75rem; background: var(--gmu-secondary); border: 1px solid rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 6px;">
+                    <span class="badge bg-dark font-monospace" style="font-size: 0.65rem;">{{ Auth::user()->staff_id ?? 'UNI-STAFF' }}</span>
+                    <a href="{{ route('profile') }}" class="btn btn-sm d-flex align-items-center gap-1 fw-semibold text-white" style="font-size: 0.75rem; background: var(--UNI-secondary); border: 1px solid rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 6px;">
                         <i class="bi bi-person-circle"></i> View Profile
                     </a>
                 </div>
@@ -1091,7 +1091,7 @@
     <!-- Institutional Footer -->
     <footer class="bg-white border-top py-3 text-center text-muted small mt-auto">
         <div class="container">
-            &copy; {{ date('Y') }} Gambella University &mdash; Office of the Vice President for ARTTCS. SDD v3.0 Compliant.
+            &copy; {{ date('Y') }} University &mdash; Office of the Vice President for ARTTCS. SDD v3.0 Compliant.
         </div>
     </footer>
 
@@ -1392,13 +1392,13 @@
     }
 
     /* Navbar sticky */
-    .navbar-gmu {
+    .navbar-UNI {
         position: sticky !important;
         top: 0 !important;
         z-index: 1050 !important;
     }
     @media (max-width: 991.98px) {
-        .navbar-gmu {
+        .navbar-UNI {
             position: fixed !important;
             top: 0;
             left: 0;

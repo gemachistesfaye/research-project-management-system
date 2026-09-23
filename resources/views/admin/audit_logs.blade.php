@@ -118,7 +118,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'gmu_audit_logs_' + new Date().toISOString().slice(0, 10) + '.csv';
+        a.download = 'UNI_audit_logs_' + new Date().toISOString().slice(0, 10) + '.csv';
         a.click();
         URL.revokeObjectURL(url);
     });
