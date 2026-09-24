@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: gmu-rpms
+    name: rpms
     env: docker
     dockerfilePath: ./Dockerfile
     plan: starter

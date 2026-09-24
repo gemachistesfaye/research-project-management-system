@@ -1091,7 +1091,7 @@
     <!-- System Footer -->
     <footer class="bg-white border-top py-3 text-center text-muted small mt-auto">
         <div class="container">
-            &copy; {{ date('Y') }} Research Project Management System &mdash; Office of the Vice President for ARTTCS. SDD v3.0 Compliant.
+            &copy; {{ date('Y') }} Research Project Management System (RPMS).
         </div>
     </footer>
 
