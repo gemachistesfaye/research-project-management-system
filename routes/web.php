@@ -204,7 +204,7 @@ Route::middleware(['auth'])->group(function () {
                 return back()->with('error', 'Project is undergoing ethics review (IRERC). Contract cannot be signed until ethics clearance is Approved.');
             }
             $project->update(['pi_signature_date' => now()]);
-            return back()->with('success', 'PI signature recorded successfully.');
+            return redirect()->route('projects.show', $project->project_id)->with('success', 'PI signature recorded successfully.');
         })->name('contracts.sign-pi');
         Route::post('/contracts/{id}/sign-vp', function ($id) {
             $project = \App\Models\Project::with('irercClearance')->findOrFail($id);
@@ -247,7 +247,7 @@ Route::middleware(['auth'])->group(function () {
                 ]);
             }
 
-            return back()->with('success', 'VP signature recorded. Project is now Active and Tranche 1 (30% Advance) is queued for finance disbursement.');
+            return redirect()->route('projects.show', $project->project_id)->with('success', 'VP signature recorded. Project is now Active and Tranche 1 (30% Advance) is queued for finance disbursement.');
         })->name('contracts.sign-vp');
     });
 

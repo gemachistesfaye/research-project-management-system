@@ -30,7 +30,12 @@
 
     <div class="login-panel">
         <div class="login-panel-inner">
-            <span class="login-form-kicker">Welcome back</span>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="login-form-kicker mb-0">Welcome back</span>
+                <a href="{{ route('home') }}" class="text-decoration-none text-muted small" title="Return to Home">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Home
+                </a>
+            </div>
             <h2 id="login-title">Sign in to your account</h2>
             <p class="login-form-description">Enter your university account details to continue.</p>
 
