@@ -405,6 +405,40 @@
             border-color: var(--UNI-accent);
             box-shadow: 0 0 0 0.2rem var(--UNI-focus);
         }
+
+        /* Direct, Instant Checkbox Rendering across All Browsers */
+        .form-check-input {
+            cursor: pointer;
+            width: 1.25em;
+            height: 1.25em;
+            margin-top: 0.15em;
+            border: 1.5px solid #94a3b8;
+            border-radius: 0.35rem;
+            background-color: #ffffff;
+            transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+        }
+        .form-check-input:hover {
+            border-color: var(--UNI-accent);
+        }
+        .form-check-input:focus {
+            border-color: var(--UNI-accent);
+            box-shadow: 0 0 0 0.2rem var(--UNI-focus);
+            outline: none;
+        }
+        .form-check-input:checked,
+        .form-check-input:checked[type=checkbox] {
+            background-color: var(--UNI-primary) !important;
+            border-color: var(--UNI-primary) !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m5 10 3.5 3.5 7-7'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: 75% !important;
+        }
+        .form-check-label {
+            cursor: pointer;
+            user-select: none;
+            padding-left: 0.35rem;
+        }
         .form-control-sm,
         .form-select-sm {
             min-height: 36px;

@@ -362,7 +362,12 @@
         }
 
         if (agreeCheckbox) {
-            agreeCheckbox.addEventListener('change', toggleButtons);
+            ['change', 'click', 'input'].forEach(function(evt) {
+                agreeCheckbox.addEventListener(evt, function() {
+                    // Small microtask timeout ensures checked state has resolved
+                    setTimeout(toggleButtons, 0);
+                });
+            });
             // Run on load in case browser restored checkbox state
             toggleButtons();
         }
