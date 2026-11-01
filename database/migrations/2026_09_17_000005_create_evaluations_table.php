@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('eval_id');
             $table->foreignId('project_id')->constrained('projects', 'project_id')->onDelete('cascade');
             $table->foreignId('examiner_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('score', 5, 2)->default(0.00);
+            $table->decimal('score', 5, 2)->nullable()->default(null);
             $table->enum('decision', [
                 'Pending',
                 'Accepted',
@@ -32,4 +32,3 @@ return new class extends Migration
         Schema::dropIfExists('evaluations');
     }
 };
-
