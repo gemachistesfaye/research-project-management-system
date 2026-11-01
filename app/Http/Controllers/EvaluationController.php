@@ -25,8 +25,10 @@ class EvaluationController extends Controller
         $legacyPending = $assigned->filter(fn($e) => empty($e->evaluation_type))->where('decision', 'Pending');
         $pendingProposal = $pendingProposal->merge($legacyPending);
 
+        $pending = $assigned->where('decision', 'Pending');
+
         return view('evaluations.index', compact(
-            'pendingProposal', 'pendingProgress', 'pendingFinal', 'completed'
+            'pending', 'pendingProposal', 'pendingProgress', 'pendingFinal', 'completed'
         ));
     }
 

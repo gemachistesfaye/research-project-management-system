@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    $pending = $pending ?? ($pendingProposal ?? collect());
+    $completed = $completed ?? collect();
+@endphp
 <div class="page-heading">
     <h1 class="h3 fw-bold"><i class="bi bi-clipboard-check me-2 text-dark"></i>My Review Assignments</h1>
     <p class="text-muted">Review assigned proposals and revisit completed evaluations.</p>
@@ -14,6 +18,7 @@
                 <tr>
                     <th>Eval ID</th>
                     <th>Project ID</th>
+                    <th>Type</th>
                     <th>Proposal Title</th>
                     <th>Assigned Date</th>
                     <th>Action</th>
@@ -24,6 +29,7 @@
                 <tr>
                     <td>#{{ $eval->eval_id }}</td>
                     <td>#{{ $eval->project_id }}</td>
+                    <td><span class="badge bg-secondary">{{ $eval->evaluation_type ?? 'Proposal' }}</span></td>
                     <td class="fw-bold">{{ $eval->project->title ?? 'N/A' }}</td>
                     <td>{{ $eval->created_at ? $eval->created_at->format('M d, Y') : 'N/A' }}</td>
                     <td>
@@ -32,7 +38,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center text-muted py-4">
+                    <td colspan="6" class="text-center text-muted py-4">
                         <i class="bi bi-check2-circle fs-3 d-block text-secondary mb-2"></i>
                         No pending review assignments.
                     </td>
@@ -51,6 +57,7 @@
                 <tr>
                     <th>Eval ID</th>
                     <th>Project ID</th>
+                    <th>Type</th>
                     <th>Proposal Title</th>
                     <th>Score</th>
                     <th>Decision</th>
