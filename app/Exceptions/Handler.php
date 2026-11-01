@@ -47,9 +47,7 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        // -------------------------------------------------------------------
         // ModelNotFoundException → 404
-        // -------------------------------------------------------------------
         $this->renderable(function (ModelNotFoundException $e, $request) {
             $model = class_basename($e->getModel());
             $message = "The requested {$model} was not found.";
@@ -64,10 +62,7 @@ class Handler extends ExceptionHandler
 
             return response()->view('errors.404', ['message' => $message], 404);
         });
-
-        // -------------------------------------------------------------------
         // AccessDeniedHttpException → 403
-        // -------------------------------------------------------------------
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
             $message = $e->getMessage() ?: 'You do not have permission to perform this action.';
 
@@ -81,10 +76,7 @@ class Handler extends ExceptionHandler
 
             return response()->view('errors.403', ['message' => $message], 403);
         });
-
-        // -------------------------------------------------------------------
         // ValidationException → 422 with structured field errors (API only)
-        // -------------------------------------------------------------------
         $this->renderable(function (ValidationException $e, $request) {
             if ($request->expectsJson()) {
                 return response()->json([
@@ -96,10 +88,7 @@ class Handler extends ExceptionHandler
             // Let Laravel handle web redirects normally
             return null;
         });
-
-        // -------------------------------------------------------------------
         // AuthenticationException → 401
-        // -------------------------------------------------------------------
         $this->renderable(function (AuthenticationException $e, $request) {
             if ($request->expectsJson()) {
                 return response()->json([
@@ -110,10 +99,7 @@ class Handler extends ExceptionHandler
             }
             return null; // Let Laravel handle the web redirect to /login
         });
-
-        // -------------------------------------------------------------------
         // TokenMismatchException (419 Page Expired) → Redirect to login
-        // -------------------------------------------------------------------
         $this->renderable(function (\Illuminate\Session\TokenMismatchException $e, $request) {
             if ($request->expectsJson()) {
                 return response()->json([
@@ -126,10 +112,7 @@ class Handler extends ExceptionHandler
                 'email' => 'Your session has expired. Please refresh and sign in again.',
             ]);
         });
-
-        // -------------------------------------------------------------------
         // Generic HTTP exceptions
-        // -------------------------------------------------------------------
         $this->renderable(function (HttpException $e, $request) {
             if ($request->expectsJson()) {
                 return response()->json([
@@ -140,10 +123,7 @@ class Handler extends ExceptionHandler
             }
             return null;
         });
-
-        // -------------------------------------------------------------------
         // Reportable: log ALL exceptions to the RPMS log channel
-        // -------------------------------------------------------------------
         $this->reportable(function (Throwable $e) {
             Log::channel('rpms')->error($e->getMessage(), [
                 'exception' => get_class($e),

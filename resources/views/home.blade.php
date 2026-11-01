@@ -12,7 +12,7 @@
                 Research Project Management System
             </h1>
 
-            {{-- Lead Text: Comprehensive on Desktop, Minimized on Mobile --}}
+            {{-- Lead Subtitle --}}
             <p class="lead text-muted mb-4 mx-auto d-none d-md-block" style="max-width: 680px; font-size: 1.15rem; line-height: 1.6;">
                 A centralized institutional portal for authoring research proposals, double-blind peer review, dual-threshold governance, and milestone grant funding.
             </p>
@@ -20,7 +20,7 @@
                 Centralized institutional portal for research proposals, double-blind review, and milestone grant funding.
             </p>
 
-            {{-- Desktop Actions (3 items inline) --}}
+            {{-- Desktop Actions --}}
             <div class="d-none d-sm-flex flex-wrap justify-content-center gap-3 mb-4">
                 @auth
                     <a href="{{ route('dashboard') }}" class="btn btn-dark px-4 py-2 fw-semibold shadow-sm">
@@ -39,7 +39,7 @@
                 </a>
             </div>
 
-            {{-- Mobile Actions (Image 1: 2 by 1 layout with minimized text) --}}
+            {{-- Mobile Actions --}}
             <div class="d-sm-none mb-3 mx-auto" style="max-width: 380px;">
                 <div class="row g-2">
                     <div class="col-12">
@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            {{-- 3 Key Metrics (Compact 1-row on mobile, spacious cards on desktop) --}}
+            {{-- Institutional Key Metrics --}}
             <div class="row g-2 g-md-3 justify-content-center pt-2">
                 <div class="col-4 col-md-4">
                     <div class="p-2 p-md-4 rounded-3 bg-white border text-center shadow-xs h-100">
@@ -143,7 +143,7 @@
             </div>
         </section>
 
-        {{-- Section 2: Core Institutional Standards (Image 2: Minimized Text on Mobile, Full on Desktop) --}}
+        {{-- Section 2: Institutional Governance Principles --}}
         <section class="pt-3 pt-md-4 border-top">
             <h2 class="h5 fw-bold text-dark mb-2 mb-md-3">Institutional Research Governance Principles</h2>
             <div class="row g-2 g-md-3">
@@ -152,11 +152,11 @@
                         <div class="fw-bold text-dark mb-1 fs-6">
                             <i class="bi bi-shield-lock text-dark me-2"></i>Double-Blind Integrity
                         </div>
-                        {{-- Desktop: Full academic detail --}}
+                        {{-- Full detail (Desktop) --}}
                         <p class="text-muted small mb-0 lh-sm d-none d-md-block">
                             Author identities and affiliations are masked dynamically throughout academic peer review to guarantee impartial, merit-first evaluation.
                         </p>
-                        {{-- Mobile: Minimized text --}}
+                        {{-- Summary (Mobile) --}}
                         <p class="text-muted small mb-0 lh-sm d-block d-md-none" style="font-size: 0.82rem;">
                             Masked author identities ensure 100% impartial, merit-first review.
                         </p>
@@ -167,11 +167,11 @@
                         <div class="fw-bold text-dark mb-1 fs-6">
                             <i class="bi bi-sliders text-dark me-2"></i>Dual-Tier Governance
                         </div>
-                        {{-- Desktop: Full academic detail --}}
+                        {{-- Full detail (Desktop) --}}
                         <p class="text-muted small mb-0 lh-sm d-none d-md-block">
                             Proposals under ETB 500k are expedited through College Deans, while major institutional grants (&ge;500k) receive formal RCSC Council review.
                         </p>
-                        {{-- Mobile: Minimized text --}}
+                        {{-- Summary (Mobile) --}}
                         <p class="text-muted small mb-0 lh-sm d-block d-md-none" style="font-size: 0.82rem;">
                             &lt;500k ETB via Deans; &ge;500k reviewed by RCSC Council.
                         </p>
@@ -182,11 +182,11 @@
                         <div class="fw-bold text-dark mb-1 fs-6">
                             <i class="bi bi-cash-stack text-dark me-2"></i>Tranche Disbursements
                         </div>
-                        {{-- Desktop: Full academic detail --}}
+                        {{-- Full detail (Desktop) --}}
                         <p class="text-muted small mb-0 lh-sm d-none d-md-block">
                             Grant funds are disbursed in 3 structured tranches (30% Advance, 40% Mid-Term, 30% Final) strictly tied to verifiable progress milestones.
                         </p>
-                        {{-- Mobile: Minimized text --}}
+                        {{-- Summary (Mobile) --}}
                         <p class="text-muted small mb-0 lh-sm d-block d-md-none" style="font-size: 0.82rem;">
                             3 milestone tranches: 30% advance, 40% mid-term, 30% final.
                         </p>

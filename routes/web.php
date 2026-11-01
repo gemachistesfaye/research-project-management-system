@@ -659,10 +659,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/admin/colleges/{id}', [AdminController::class, 'updateCollege'])->name('admin.colleges.update');
         Route::delete('/admin/colleges/{id}', [AdminController::class, 'destroyCollege'])->name('admin.colleges.destroy');
     });
-
-    // ---------------------------------------------------------------------
-    // Module: Calls for Proposals / Abstracts
-    // ---------------------------------------------------------------------
+    // Calls for Proposals / Abstracts
     Route::get('/calls', [CallController::class, 'index'])->name('calls.index');
     Route::middleware(['role:coordinator,dh,admin'])->group(function () {
         Route::post('/calls', [CallController::class, 'store'])->name('calls.store');
@@ -670,10 +667,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/calls/{id}/status', [CallController::class, 'setStatus'])->name('calls.status');
         Route::delete('/calls/{id}', [CallController::class, 'destroy'])->name('calls.destroy');
     });
-
-    // ---------------------------------------------------------------------
-    // Module: Publication & Award
-    // ---------------------------------------------------------------------
+    // Publication & Award
     Route::get('/papers', [PaperController::class, 'index'])->name('papers.index');
     Route::get('/papers/create', [PaperController::class, 'create'])->name('papers.create');
     Route::post('/papers', [PaperController::class, 'store'])->name('papers.store');
@@ -688,19 +682,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/papers/{id}/record', [PaperController::class, 'record'])->whereNumber('id')->name('papers.record');
     });
     Route::delete('/papers/{id}', [PaperController::class, 'destroy'])->whereNumber('id')->name('papers.destroy');
-
-    // ---------------------------------------------------------------------
-    // Module: Notification Centre & In-App Alerts
-    // ---------------------------------------------------------------------
+    // Notification Centre & In-App Alerts
     Route::get('/notifications', [NotificationCenterController::class, 'index'])->name('notifications.index');
     Route::get('/notifications/poll', [ApiNotificationController::class, 'poll'])->name('notifications.poll');
     Route::post('/notifications/{id}/read', [NotificationCenterController::class, 'markRead'])->whereNumber('id')->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationCenterController::class, 'markAllRead'])->name('notifications.read-all');
     Route::delete('/notifications/{id}', [NotificationCenterController::class, 'destroy'])->whereNumber('id')->name('notifications.destroy');
-
-    // ---------------------------------------------------------------------
-    // Module: Backup / Recovery (Admin)
-    // ---------------------------------------------------------------------
+    // Backup / Recovery (Admin)
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/backups', [BackupController::class, 'index'])->name('admin.backups');
         Route::post('/admin/backups/create', [BackupController::class, 'create'])->name('admin.backups.create');
@@ -708,29 +696,20 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/backups/restore', [BackupController::class, 'restore'])->name('admin.backups.restore');
         Route::delete('/admin/backups/{file}', [BackupController::class, 'destroy'])->name('admin.backups.destroy');
     });
-
-    // ---------------------------------------------------------------------
-    // Module: Legacy Data Migration (Admin)
-    // ---------------------------------------------------------------------
+    // Legacy Data Migration (Admin)
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/data-migration', [DataMigrationController::class, 'index'])->name('admin.data-migration');
         Route::post('/admin/data-migration/import', [DataMigrationController::class, 'import'])->name('admin.data-migration.import');
         Route::get('/admin/data-migration/template', [DataMigrationController::class, 'template'])->name('admin.data-migration.template');
     });
-
-    // ---------------------------------------------------------------------
-    // Module: Presentation Schedules & Defence Timetable
-    // ---------------------------------------------------------------------
+    // Presentation Schedules & Defence Timetable
     Route::get('/schedules', [PresentationScheduleController::class, 'index'])->name('schedules.index');
     Route::middleware(['role:coordinator,admin'])->group(function () {
         Route::post('/schedules', [PresentationScheduleController::class, 'store'])->name('schedules.store');
         Route::put('/schedules/{id}', [PresentationScheduleController::class, 'update'])->name('schedules.update');
         Route::delete('/schedules/{id}', [PresentationScheduleController::class, 'destroy'])->name('schedules.destroy');
     });
-
-    // ---------------------------------------------------------------------
-    // Module: TTCSD / RPED Directorate Portal
-    // ---------------------------------------------------------------------
+    // TTCSD / RPED Directorate Portal
     Route::middleware(['role:ttcsd,vparttcs,admin'])->group(function () {
         Route::get('/ttcsd/dashboard', [TtcsdController::class, 'dashboard'])->name('ttcsd.dashboard');
         Route::get('/ttcsd/projects/{id}', [TtcsdController::class, 'inspectProject'])->name('ttcsd.project');
@@ -738,10 +717,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/ttcsd/amendment/{id}/decision', [TtcsdController::class, 'processBudgetAmendment'])->name('ttcsd.amendment.decision');
         Route::post('/ttcsd/extension/{id}/decision', [TtcsdController::class, 'processExtension'])->name('ttcsd.extension.decision');
     });
-
-    // ---------------------------------------------------------------------
-    // Module: Project Challenges & Bottlenecks
-    // ---------------------------------------------------------------------
+    // Project Challenges & Bottlenecks
     Route::middleware(['role:pi,tm'])->group(function () {
         Route::post('/projects/{projectId}/challenges', [ChallengeController::class, 'store'])->name('challenges.store');
     });
@@ -749,17 +725,11 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:coordinator,admin'])->group(function () {
         Route::post('/challenges/{id}/acknowledge', [ChallengeController::class, 'acknowledge'])->name('challenges.acknowledge');
     });
-
-    // ---------------------------------------------------------------------
     // Coordinator Preliminary Assessment Step
-    // ---------------------------------------------------------------------
     Route::middleware(['role:coordinator,admin'])->group(function () {
         Route::post('/projects/{id}/assess', [ProjectController::class, 'coordinatorAssess'])->name('projects.assess');
     });
-
-    // ---------------------------------------------------------------------
-    // Module: Reports Hub & Operational Reports
-    // ---------------------------------------------------------------------
+    // Reports Hub & Operational Reports
     Route::middleware(['role:coordinator,dean,rcsc,vparttcs,admin,ttcsd'])->group(function () {
         Route::get('/reports/coordinator-operational', [ReportController::class, 'coordinatorOperational'])->name('reports.coordinator-operational');
     });

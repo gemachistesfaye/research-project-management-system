@@ -1951,7 +1951,7 @@
     <style>
     .hover-cal-bg:hover { background-color: #f1f5f9 !important; color: #000 !important; }
     
-    /* Bulletproof modal scroll lock */
+    /* Modal scroll lock */
     body:has(.modal.show),
     html:has(.modal.show),
     body:has(.offcanvas.show),
