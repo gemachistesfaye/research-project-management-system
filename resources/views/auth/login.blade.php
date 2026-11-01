@@ -45,7 +45,7 @@
             <div class="alert alert-success" role="status">{{ session('success') }}</div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}" autocomplete="on" id="loginForm">
+            <form method="POST" action="{{ route('login', [], false) }}" autocomplete="on" id="loginForm">
                 @csrf
 
                 <div class="mb-2">
@@ -92,7 +92,7 @@
                 </button>
             </form>
 
-            @if(config('rpms.show_demo_accounts'))
+            @if(config('rpms.show_demo_accounts') || app()->environment('local'))
             <div class="login-demo mt-2 pt-2 border-top">
                 <div class="d-flex align-items-center justify-content-between mb-1">
                     <span class="text-muted fw-bold" style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em;">
