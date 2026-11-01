@@ -211,7 +211,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Award Name <span class="text-danger">*</span></label>
-                        <input type="text" name="award_name" class="form-control" required placeholder="e.g. GMU Best Research Publication 2026">
+                        <input type="text" name="award_name" class="form-control" required placeholder="e.g. Institutional Best Research Publication 2026">
                     </div>
                     <div class="row g-2">
                         <div class="col-6">

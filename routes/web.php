@@ -573,6 +573,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:coordinator,vparttcs,rcsc,admin', 'permission:manage_certificates'])->group(function () {
         Route::get('/certificates', [GovernanceController::class, 'certificates'])->name('certificates');
+        Route::get('/certificates/index', [GovernanceController::class, 'certificates'])->name('certificates.index');
         Route::post('/certificates', [GovernanceController::class, 'storeCertificate'])->name('certificates.store');
         Route::post('/projects/{id}/complete', [ProjectController::class, 'markComplete'])->name('projects.complete');
         Route::post('/projects/{id}/mark-complete', [ProjectController::class, 'markComplete'])->name('projects.mark-complete');

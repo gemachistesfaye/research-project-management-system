@@ -108,7 +108,7 @@
                     <p class="small mb-0 text-muted">This project has concluded successfully. Certificates can be reviewed and downloaded.</p>
                 </div>
             </div>
-            <a href="{{ route('certificates.index') }}" class="btn btn-outline-success btn-sm fw-bold">
+            <a href="{{ route('certificates') }}" class="btn btn-outline-success btn-sm fw-bold">
                 <i class="bi bi-patch-check me-1"></i>View Certificates
             </a>
         </div>

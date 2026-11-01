@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Gambella University RPMS - Coordinator Operational Report</title>
+<title>RPMS - Coordinator Operational Report</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; color: #1e293b; padding: 25px; }
@@ -36,7 +36,7 @@
 <body>
 
 <div class="header">
-    <h1>Gambella University &bull; Directorate of Research &amp; Community Service</h1>
+    <h1>Directorate of Research &amp; Community Service</h1>
     <h3>Research Project Management System (RPMS) &bull; College Operations Hub</h3>
     <div class="doc-title">{{ ucfirst($period) }} Operational &amp; Research Portfolio Performance Report</div>
 </div>
@@ -181,14 +181,14 @@
         <td>
             <div class="sig-line">
                 Directorate of Research &amp; Technology Transfer<br>
-                Gambella University
+                Research Project Management System
             </div>
         </td>
     </tr>
 </table>
 
 <div class="footer">
-    Gambella University &bull; RPMS Automated Operational Governance Archive &bull; Generated {{ $generatedAt }} &bull; Page 1 of 1
+    Institutional Research Office &bull; RPMS Automated Operational Governance Archive &bull; Generated {{ $generatedAt }} &bull; Page 1 of 1
 </div>
 
 </body>

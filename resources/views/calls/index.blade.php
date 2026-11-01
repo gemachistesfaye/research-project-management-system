@@ -225,7 +225,7 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold">Funding Organization</label>
-                            <input type="text" name="funding_organization" class="form-control" placeholder="e.g. GMU Research Fund">
+                            <input type="text" name="funding_organization" class="form-control" placeholder="e.g. Institutional Research Fund">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold">Budget Ceiling (ETB)</label>
