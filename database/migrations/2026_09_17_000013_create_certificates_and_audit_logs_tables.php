@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained('projects', 'project_id')->onDelete('cascade');
             $table->string('certificate_code')->unique();
             $table->string('issued_to_name');
-            $table->enum('type', ['Completion', 'PublicationAward'])->default('Completion');
+            $table->string('type', 50)->default('Completion');
             $table->string('pdf_url')->nullable();
             $table->timestamp('issued_at')->nullable();
             $table->timestamps();

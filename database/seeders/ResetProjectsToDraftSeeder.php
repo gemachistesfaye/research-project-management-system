@@ -28,18 +28,24 @@ class ResetProjectsToDraftSeeder extends Seeder
         DB::statement('PRAGMA foreign_keys = OFF;');
 
         // 2. Clear all project-related transactions and records
-        Certificate::truncate();
-        BudgetAmendment::truncate();
-        ProcurementRequest::truncate();
-        BudgetRequest::truncate();
-        MilestoneReport::truncate();
-        Evaluation::truncate();
-        IRERCClearance::truncate();
-        ProjectExtension::truncate();
-        ProjectTermination::truncate();
-        PITransfer::truncate();
-        ProjectMember::truncate();
-        Project::truncate();
+        DB::statement('DELETE FROM certificates;');
+        DB::statement('DELETE FROM evaluations;');
+        DB::statement('DELETE FROM project_challenges;');
+        DB::statement('DELETE FROM presentation_schedules;');
+        DB::statement('DELETE FROM project_documents;');
+        DB::statement('DELETE FROM budget_amendments;');
+        DB::statement('DELETE FROM procurement_requests;');
+        DB::statement('DELETE FROM budget_requests;');
+        DB::statement('DELETE FROM milestone_reports;');
+        DB::statement('DELETE FROM irerc_clearances;');
+        DB::statement('DELETE FROM project_extensions;');
+        DB::statement('DELETE FROM project_terminations;');
+        DB::statement('DELETE FROM pi_transfers;');
+        DB::statement('DELETE FROM project_members;');
+        DB::statement('DELETE FROM projects;');
+        
+        // Reset auto-increment sequence
+        DB::statement("DELETE FROM sqlite_sequence WHERE name IN ('projects', 'certificates', 'evaluations', 'project_challenges', 'presentation_schedules', 'project_documents', 'budget_amendments', 'procurement_requests', 'budget_requests', 'milestone_reports', 'irerc_clearances', 'project_extensions', 'project_terminations', 'pi_transfers', 'project_members');");
 
         DB::statement('PRAGMA foreign_keys = ON;');
 
